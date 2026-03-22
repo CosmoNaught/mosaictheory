@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mosaic Theory: Research Intelligence for Capital Markets</title>
+    <meta name="description" content="Mosaic Theory builds research intelligence infrastructure for hedge funds and venture capital. Our flagship product, HiddenState, surfaces convergence signals before the market moves.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%230a0a0f'/><text x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' fill='%23ffffff' font-family='serif' font-size='14' font-weight='400'>MT</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --mono: 'JetBrains Mono', 'Consolas', monospace;
+            --bg: #050608;
+            --surface: #0a0c10;
+            --border: rgba(255,255,255,0.04);
+            --text: #e8e9ec;
+            --text-muted: rgba(255,255,255,0.3);
+            --text-faint: rgba(255,255,255,0.15);
+            --accent: #3b82f6;
+        }
+
+        html { scroll-behavior: smooth; zoom: 1.1; }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ── Mosaic Canvas ── */
+        #mosaic {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ── Nav ── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 0 48px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            background: rgba(5,6,8,0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .nav-company {
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #fff;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 36px;
+        }
+
+        .nav-links a {
+            font-size: 13px;
+            color: rgba(255,255,255,0.45);
+            text-decoration: none;
+            font-weight: 400;
+            transition: color 0.25s;
+        }
+
+        .nav-links a:hover { color: #fff; }
+
+        .nav-cta {
+            font-size: 12px !important;
+            font-weight: 500 !important;
+            color: #fff !important;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            padding: 8px 20px;
+            border-radius: 6px;
+            transition: all 0.25s !important;
+        }
+
+        .nav-cta:hover {
+            background: rgba(255,255,255,0.14) !important;
+            border-color: rgba(255,255,255,0.25) !important;
+        }
+
+        /* ── Hero ── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 32px 80px;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: clamp(40px, 6vw, 72px);
+            font-weight: 300;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            color: #fff;
+            max-width: 800px;
+            margin-bottom: 28px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            font-weight: 300;
+            color: rgba(255,255,255,0.4);
+        }
+
+        .mosaic-text {
+            display: inline;
+            position: relative;
+        }
+
+        .mosaic-text .mosaic-char {
+            display: inline;
+            transition: opacity 0.15s ease;
+        }
+
+        .mosaic-char.scrambling {
+            opacity: 0.4;
+        }
+
+        .hero-body {
+            font-size: 16px;
+            font-weight: 300;
+            line-height: 1.8;
+            color: var(--text-muted);
+            max-width: 520px;
+            margin-bottom: 44px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            background: #fff;
+            color: #050608;
+            border: none;
+            padding: 14px 36px;
+            font-family: var(--sans);
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: -0.2px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(255,255,255,0.08);
+        }
+
+        .btn-ghost {
+            display: inline-flex;
+            align-items: center;
+            color: rgba(255,255,255,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            background: transparent;
+            padding: 14px 36px;
+            font-family: var(--sans);
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.25s;
+        }
+
+        .btn-ghost:hover {
+            color: #fff;
+            border-color: rgba(255,255,255,0.25);
+            background: rgba(255,255,255,0.03);
+        }
+
+        /* ── Sections ── */
+        .content-section {
+            position: relative;
+            z-index: 2;
+        }
+
+        section {
+            padding: 120px 48px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-label {
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: rgba(255,255,255,0.2);
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: clamp(28px, 4vw, 44px);
+            font-weight: 300;
+            letter-spacing: -1.5px;
+            color: #fff;
+            margin-bottom: 20px;
+            max-width: 600px;
+        }
+
+        .section-body {
+            font-size: 16px;
+            font-weight: 300;
+            line-height: 1.9;
+            color: var(--text-muted);
+            max-width: 600px;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 0 48px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ── About ── */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: start;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .stat {
+            padding: 24px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .stat-value {
+            font-family: var(--mono);
+            font-size: 28px;
+            font-weight: 400;
+            color: #fff;
+            letter-spacing: -1px;
+            margin-bottom: 6px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.25);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ── Product ── */
+        .product-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 48px;
+        }
+
+        .product-screenshot {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .product-screenshot img {
+            width: 100%;
+            display: block;
+        }
+
+        .product-content {
+            padding: 56px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: start;
+        }
+
+        .product-name {
+            font-family: var(--mono);
+            font-size: 13px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.3);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .product-title {
+            font-size: clamp(24px, 3vw, 36px);
+            font-weight: 300;
+            letter-spacing: -1px;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .product-desc {
+            font-size: 15px;
+            font-weight: 300;
+            line-height: 1.8;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+        }
+
+        .product-features {
+            list-style: none;
+            margin-bottom: 36px;
+        }
+
+        .product-features li {
+            font-size: 13px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.4);
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .product-features li::before {
+            content: '';
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            flex-shrink: 0;
+        }
+
+        /* ── Pillars 2x2 Grid ── */
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .pillar-box {
+            padding: 24px;
+            background: var(--surface);
+            transition: background 0.3s;
+        }
+
+        .pillar-box:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .pillar-box .pillar-icon {
+            margin-bottom: 10px;
+        }
+
+        .pillar-box-title {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.7);
+            letter-spacing: -0.2px;
+            margin-bottom: 6px;
+        }
+
+        .pillar-box:hover .pillar-box-title { color: #fff; }
+
+        .pillar-box-desc {
+            font-size: 12px;
+            font-weight: 300;
+            line-height: 1.5;
+            color: rgba(255,255,255,0.2);
+        }
+
+        .pillar-box:hover .pillar-box-desc { color: rgba(255,255,255,0.35); }
+
+        /* ── Mini Browser Window ── */
+        .browser-window {
+            background: #08090c;
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03);
+        }
+
+        .browser-chrome {
+            display: flex;
+            align-items: center;
+            padding: 10px 14px;
+            background: #0d0f14;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            gap: 8px;
+        }
+
+        .browser-dots {
+            display: flex;
+            gap: 6px;
+            margin-right: 8px;
+        }
+
+        .browser-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .browser-url {
+            flex: 1;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 4px;
+            padding: 4px 10px;
+            font-family: var(--mono);
+            font-size: 10px;
+            color: rgba(255,255,255,0.25);
+            letter-spacing: 0.3px;
+        }
+
+        .browser-body {
+            padding: 0;
+        }
+
+        /* ── Pillars ── */
+        .pillars {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            margin-top: 48px;
+        }
+
+        .pillar {
+            padding: 32px 28px;
+            border: 1px solid var(--border);
+            border-right: none;
+            background: var(--surface);
+            transition: background 0.3s;
+        }
+
+        .pillar:last-child { border-right: 1px solid var(--border); }
+
+        .pillar:hover { background: rgba(255,255,255,0.02); }
+
+        .pillar-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .pillar-icon {
+            width: 20px;
+            height: 20px;
+            opacity: 0.35;
+            flex-shrink: 0;
+        }
+
+        .pillar:hover .pillar-icon { opacity: 0.6; }
+
+        .pillar-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: rgba(255,255,255,0.7);
+            letter-spacing: -0.2px;
+        }
+
+        .pillar:hover .pillar-title { color: #fff; }
+
+        .pillar-desc {
+            font-size: 12.5px;
+            font-weight: 300;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.2);
+            padding-left: 30px;
+        }
+
+        .pillar:hover .pillar-desc { color: rgba(255,255,255,0.35); }
+
+        /* ── Team ── */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .team-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 40px 32px;
+            transition: border-color 0.3s, background 0.3s;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .team-card:hover {
+            border-color: rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.02);
+        }
+
+        .team-photo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 24px;
+            display: block;
+            filter: grayscale(30%);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .team-photo-placeholder {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .team-photo-placeholder svg {
+            width: 28px;
+            height: 28px;
+            color: rgba(255,255,255,0.12);
+        }
+
+        .team-name {
+            font-size: 17px;
+            font-weight: 500;
+            color: #fff;
+            letter-spacing: -0.3px;
+            margin-bottom: 4px;
+        }
+
+        .team-role {
+            font-family: var(--mono);
+            font-size: 11px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: rgba(255,255,255,0.25);
+            margin-bottom: 20px;
+        }
+
+        .team-bio {
+            font-size: 13.5px;
+            font-weight: 300;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.3);
+            flex: 1;
+        }
+
+        .team-links {
+            margin-top: 20px;
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            align-self: center;
+        }
+
+        .team-links a {
+            font-size: 12px;
+            color: rgba(255,255,255,0.2);
+            text-decoration: none;
+            transition: color 0.25s;
+        }
+
+        .team-links a:hover { color: rgba(255,255,255,0.6); }
+
+        /* ── CTA ── */
+        .cta-section {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 160px 48px;
+        }
+
+        .cta-section .section-title { max-width: 500px; }
+        .cta-section .section-body { max-width: 440px; margin-bottom: 44px; }
+
+        /* ── Footer ── */
+        footer {
+            position: relative;
+            z-index: 2;
+            border-top: 1px solid var(--border);
+            padding: 24px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(5,6,8,0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .footer-company {
+            font-size: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--text-faint);
+        }
+
+        .footer-right {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .footer-links a {
+            font-size: 11px;
+            color: rgba(255,255,255,0.15);
+            text-decoration: none;
+            transition: color 0.2s;
+            margin-left: 24px;
+        }
+
+        .footer-links a:hover { color: rgba(255,255,255,0.4); }
+
+        .footer-legal {
+            font-size: 10px;
+            color: rgba(255,255,255,0.1);
+        }
+
+        /* ── Mobile ── */
+        @media (max-width: 900px) {
+            nav { padding: 0 24px; }
+            .nav-links a:not(.nav-cta) { display: none; }
+            section { padding: 80px 24px; }
+            .divider { margin: 0 24px; }
+            .about-grid { grid-template-columns: 1fr; gap: 48px; }
+            .product-content { grid-template-columns: 1fr; padding: 32px; gap: 32px; }
+            .pillars { grid-template-columns: repeat(2, 1fr); }
+            .pillar:nth-child(2) { border-right: 1px solid var(--border); }
+            .team-grid { grid-template-columns: 1fr; max-width: 400px; }
+            .cta-section { padding: 100px 24px; }
+            footer { flex-direction: column; gap: 12px; text-align: center; padding: 20px 24px; }
+            .footer-right { flex-direction: column; gap: 12px; }
+        }
+
+        @media (max-width: 600px) {
+            .pillars { grid-template-columns: 1fr; }
+            .pillar { border-right: 1px solid var(--border); }
+            .pillar-desc { display: none; }
+            .hero-actions { flex-direction: column; width: 100%; max-width: 300px; }
+            .btn-primary, .btn-ghost { width: 100%; justify-content: center; }
+            .about-stats { grid-template-columns: 1fr; }
+            .browser-window { margin: 0 -16px; border-radius: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="mosaic"></canvas>
+
+    <nav>
+        <a href="/" class="nav-brand">
+            <span class="nav-company">Mosaic Theory</span>
+        </a>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#product">Product</a>
+            <a href="#team">Team</a>
+            <a href="mailto:hello@mosaictheory.co">Contact</a>
+            <a href="https://hiddenstate.io" class="nav-cta">HiddenState</a>
+        </div>
+    </nav>
+
+    <!-- ── Hero ── -->
+    <section class="hero">
+        <h1><span id="mosaic-word" class="mosaic-text">Mosaic</span> Theory.<br>Piece it together<br><em>before the market does.</em></h1>
+        <p class="hero-body">
+            We build signal infrastructure that surfaces convergence patterns across research, code, policy, and talent, giving hedge funds and venture capital the lead time that matters.
+        </p>
+        <div class="hero-actions">
+            <a href="https://hiddenstate.io" class="btn-primary">Explore HiddenState</a>
+            <a href="mailto:hello@mosaictheory.co?subject=Mosaic%20Theory%20%E2%80%94%20Demo%20Request" class="btn-ghost">Request a Demo</a>
+        </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ── About ── -->
+    <section id="about" class="content-section">
+        <div class="about-grid">
+            <div>
+                <span class="section-label">Who we are</span>
+                <h2 class="section-title">The intelligence layer between research and markets.</h2>
+                <p class="section-body">
+                    Mosaic Theory was founded on a simple observation: the signals that precede major market moves are public. Research breakthroughs, infrastructure acquisitions, talent migrations, policy shifts. They're just scattered across thousands of sources, published in different formats, at different times, in different communities.
+                </p>
+                <br>
+                <p class="section-body">
+                    We build the systems that detect, weight, and converge these signals into a single, actionable intelligence layer. Hedge funds and venture capital firms use Mosaic Theory to identify asymmetric opportunities before consensus forms.
+                </p>
+            </div>
+            <div>
+                <div class="about-stats">
+                    <div class="stat">
+                        <div class="stat-value">24/7</div>
+                        <div class="stat-label">Continuous monitoring</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">4x</div>
+                        <div class="stat-label">Ingestion cycles per day</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">W-Index</div>
+                        <div class="stat-label">Proprietary scoring</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">Pre-market</div>
+                        <div class="stat-label">Delivered before consensus</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ── Product ── -->
+    <section id="product" class="content-section">
+        <span class="section-label">Flagship product</span>
+        <h2 class="section-title">HiddenState</h2>
+        <p class="section-body">
+            A daily research intelligence engine that identifies technical convergence across the ML and AI landscape before announcements hit the market.
+        </p>
+
+        <div class="product-card">
+            <!-- Text content on top -->
+            <div class="product-content">
+                <div>
+                    <div class="product-name">HiddenState</div>
+                    <h3 class="product-title">Signals converge.<br>Markets follow.</h3>
+                    <p class="product-desc">
+                        HiddenState continuously monitors independent sources across research, code, policy, and talent, clusters findings by mechanism-level bottlenecks using proprietary ML, and delivers a ranked daily briefing scored by our W-Index, a composite of convergence, maturity, and engagement signals.
+                    </p>
+                    <a href="mailto:hello@mosaictheory.co?subject=HiddenState%20%E2%80%94%20Demo%20Request" class="btn-primary">Request a Demo</a>
+                </div>
+                <div class="pillars-grid">
+                    <div class="pillar-box">
+                        <svg class="pillar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:#fff"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                        <span class="pillar-box-title">Detect</span>
+                        <p class="pillar-box-desc">Surface emerging patterns across research, code, and community</p>
+                    </div>
+                    <div class="pillar-box">
+                        <svg class="pillar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:#fff"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                        <span class="pillar-box-title">Converge</span>
+                        <p class="pillar-box-desc">Score multi-source convergence when research, code, and hiring align</p>
+                    </div>
+                    <div class="pillar-box">
+                        <svg class="pillar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:#fff"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        <span class="pillar-box-title">Confirm</span>
+                        <p class="pillar-box-desc">Track every signal through to announcement with verified lead times</p>
+                    </div>
+                    <div class="pillar-box">
+                        <svg class="pillar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:#fff"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                        <span class="pillar-box-title">Deliver</span>
+                        <p class="pillar-box-desc">One briefing every morning. Ranked, contextualised, ready to act on</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live HiddenState demo embed below -->
+            <div class="product-screenshot">
+                <div class="browser-window" style="border:none;border-radius:0;box-shadow:none;">
+                    <div class="browser-chrome" style="border-radius:0;">
+                        <div class="browser-dots">
+                            <span class="browser-dot"></span>
+                            <span class="browser-dot"></span>
+                            <span class="browser-dot"></span>
+                        </div>
+                        <div class="browser-url">hiddenstate.io/archive/2026-03-18</div>
+                    </div>
+                    <div class="browser-body">
+                        <iframe src="demo.html" style="width:100%;height:700px;border:none;display:block;" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <hr class="divider">
+
+    <!-- ── Team ── -->
+    <section id="team" class="content-section">
+        <span class="section-label">Leadership</span>
+        <h2 class="section-title">Built by <span class="mosaic-text" data-mosaic="researchers">researchers</span>.<br>For decision-makers.</h2>
+        <p class="section-body">
+            Our team combines deep machine learning research, operational scale, and capital markets experience.
+        </p>
+
+        <div class="team-grid">
+            <div class="team-card">
+                <img src="assets/cosmo-santoni.jpeg" alt="Cosmo Santoni" class="team-photo">
+                <div class="team-name">Cosmo Santoni</div>
+                <div class="team-role">Co-Founder, CEO & CTO</div>
+                <p class="team-bio">
+                    Cosmo is a PhD candidate in Foundational Machine Learning and Applied Mathematic at Imperial College London, where he 
+                    specialises in state-of-the-art sequence models and real-time inference. His research and software engineering collaborations span Imperial, Cambridge, and DFKI in academia, 
+                    along Google and the World Health Organisation in industry, with published work in Nature, The Lancet, and NeurIPS. He built HiddenState from the ground up and provides the technical vision, ML architecture, and research depth behind the platform's signal detection and scoring engine.
+                </p>
+                <div class="team-links">
+                    <a href="https://github.com/CosmoNaught/" target="_blank">GitHub</a>
+                    <a href="https://scholar.google.com/citations?user=adjdxWcAAAAJ&hl=en&authuser=1" target="_blank">Scholar</a>
+                    <a href="https://www.linkedin.com/in/cosmo-santoni/" target="_blank">LinkedIn</a>
+                </div>
+            </div>
+
+            <div class="team-card">
+                <img src="assets/gabriel.jpg" alt="Gabriel Gurmail-Kaufmann" class="team-photo">
+                <div class="team-name">Gabriel Gurmail-Kaufmann</div>
+                <div class="team-role">Co-Founder & COO</div>
+                <p class="team-bio">
+                    Gabriel is a PhD candidate at the University of Bristol with research experience spanning UCL, Imperial College London, and the UK Health Security Agency. He established himself as a Senior Scientist across the UK Civil Service, translating science into impact for decision-makers at national scale during some of the most demanding periods in public health. His commercial instinct was built through sales and marketing experience at TomTom. At Mosaic Theory he drives operations, client relationships, and go-to-market strategy.
+                </p>
+                <div class="team-links">
+                    <a href="https://www.linkedin.com/in/gabriel-gurmail-kaufmann-4a30b6157/" target="_blank">LinkedIn</a>
+                </div>
+            </div>
+
+            <div class="team-card">
+                <img src="assets/nick.jpg" alt="Nick Kaufmann" class="team-photo">
+                <div class="team-name">Nicholas (Nick) Kaufmann</div>
+                <div class="team-role">Senior Strategic Adviser</div>
+                <p class="team-bio">
+                    Having begun his career in the UK Treasury, Nick is Managing Director, Head of Equity Capital Markets and Syndicate, and Head of the London Office at WOOD & Company. He served as the independent equity advisor to TomTom on its &euro;539m IPO and previously led Emerging Markets ECM at UniCredit/Creditanstalt and Citi/Schroders. He currently serves as a non-executive director of Pollen Technologies. Nick brings over three decades of institutional capital markets experience, buy-side relationships, and strategic positioning to Mosaic Theory.
+                </p>
+                <div class="team-links">
+                    <a href="https://www.linkedin.com/in/nick-kaufmann-728a0421/" target="_blank">LinkedIn</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ── CTA ── -->
+    <section class="cta-section content-section">
+        <span class="section-label">Get started</span>
+        <h2 class="section-title">The signal is already there.<br><em style="font-weight:300;color:rgba(255,255,255,0.4)">We just surface it first.</em></h2>
+        <p class="section-body">
+            Request a demo of HiddenState or get in touch to discuss how Mosaic Theory can give your fund an information edge.
+        </p>
+        <div class="hero-actions">
+            <a href="https://hiddenstate.io" class="btn-primary">Explore HiddenState</a>
+            <a href="mailto:hello@mosaictheory.co?subject=Mosaic%20Theory%20%E2%80%94%20Demo%20Request" class="btn-ghost">Request a Demo</a>
+        </div>
+    </section>
+
+    <footer>
+        <span class="footer-company">Mosaic Theory</span>
+        <div class="footer-right">
+            <div class="footer-links">
+                <a href="https://hiddenstate.io">HiddenState</a>
+                <a href="https://hiddenstate.io/privacy.html">Privacy</a>
+                <a href="mailto:hello@mosaictheory.co">Contact</a>
+            </div>
+            <span class="footer-legal">&copy; 2026 Mosaic Theory Ltd.</span>
+        </div>
+    </footer>
+
+    <!-- ── Mosaic Canvas Animation ── -->
+    <script>
+    (function() {
+        var canvas = document.getElementById('mosaic');
+        var ctx = canvas.getContext('2d');
+        var dpr = window.devicePixelRatio || 1;
+        var W, H;
+
+        function resize() {
+            W = window.innerWidth;
+            H = document.documentElement.scrollHeight;
+            canvas.width = W * dpr;
+            canvas.height = H * dpr;
+            canvas.style.width = W + 'px';
+            canvas.style.height = H + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        // ── Tile grid ──
+        var COLS, ROWS;
+        var tileW = 0, tileH = 0;
+        var tiles = [];
+        var time = 0;
+
+        function buildGrid() {
+            // Aim for tiles ~40-60px
+            var targetSize = 50;
+            COLS = Math.ceil(W / targetSize);
+            ROWS = Math.ceil(H / targetSize);
+            tileW = W / COLS;
+            tileH = H / ROWS;
+
+            tiles = [];
+            for (var r = 0; r < ROWS; r++) {
+                for (var c = 0; c < COLS; c++) {
+                    tiles.push({
+                        r: r, c: c,
+                        phase: Math.random() * Math.PI * 2,
+                        speed: 0.002 + Math.random() * 0.004,
+                        baseAlpha: 0.015 + Math.random() * 0.025,
+                        pulseAmp: 0.01 + Math.random() * 0.02,
+                        hue: 210 + Math.random() * 30, // blue-ish range
+                    });
+                }
+            }
+        }
+
+        resize();
+        buildGrid();
+
+        var resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+                resize();
+                buildGrid();
+            }, 200);
+        });
+
+        // ── Convergence pulses ──
+        var pulses = [];
+        function spawnPulse() {
+            pulses.push({
+                cx: Math.random() * W,
+                cy: Math.random() * H,
+                radius: 0,
+                maxRadius: 300 + Math.random() * 400,
+                speed: 0.6 + Math.random() * 1.0,
+                alpha: 0.06 + Math.random() * 0.06,
+                life: 1
+            });
+        }
+
+        // Spawn a pulse every few seconds
+        var lastPulse = 0;
+        var pulseInterval = 1800 + Math.random() * 2200;
+
+        function draw(timestamp) {
+            time += 0.016;
+
+            // Occasionally spawn pulses
+            if (timestamp - lastPulse > pulseInterval) {
+                spawnPulse();
+                lastPulse = timestamp;
+                pulseInterval = 3000 + Math.random() * 4000;
+            }
+
+            // Update pulses
+            for (var p = pulses.length - 1; p >= 0; p--) {
+                var pulse = pulses[p];
+                pulse.radius += pulse.speed;
+                pulse.life = 1 - (pulse.radius / pulse.maxRadius);
+                if (pulse.life <= 0) {
+                    pulses.splice(p, 1);
+                }
+            }
+
+            ctx.clearRect(0, 0, W, H);
+
+            // Draw tiles
+            for (var i = 0; i < tiles.length; i++) {
+                var t = tiles[i];
+                var x = t.c * tileW;
+                var y = t.r * tileH;
+                var centerX = x + tileW / 2;
+                var centerY = y + tileH / 2;
+
+                // Base breathing
+                var alpha = t.baseAlpha + Math.sin(time * t.speed * 60 + t.phase) * t.pulseAmp;
+
+                // Pulse influence
+                for (var p = 0; p < pulses.length; p++) {
+                    var pulse = pulses[p];
+                    var dx = centerX - pulse.cx;
+                    var dy = centerY - pulse.cy;
+                    var dist = Math.sqrt(dx * dx + dy * dy);
+                    var ringDist = Math.abs(dist - pulse.radius);
+                    if (ringDist < 60) {
+                        var influence = (1 - ringDist / 60) * pulse.life * pulse.alpha;
+                        alpha += influence;
+                    }
+                }
+
+                alpha = Math.max(0, Math.min(alpha, 0.14));
+
+                if (alpha > 0.003) {
+                    // Slight gap between tiles for the mosaic feel
+                    var gap = 1;
+                    ctx.fillStyle = 'rgba(100, 140, 220, ' + alpha + ')';
+                    ctx.fillRect(x + gap, y + gap, tileW - gap * 2, tileH - gap * 2);
+                }
+            }
+
+            // Draw subtle grid lines at some intersections
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.025)';
+            ctx.lineWidth = 0.5;
+            for (var c = 1; c < COLS; c++) {
+                var lx = c * tileW;
+                // Only draw every 3rd line to keep it sparse
+                if (c % 3 === 0) {
+                    ctx.beginPath();
+                    ctx.moveTo(lx, 0);
+                    ctx.lineTo(lx, H);
+                    ctx.stroke();
+                }
+            }
+            for (var r = 1; r < ROWS; r++) {
+                var ly = r * tileH;
+                if (r % 3 === 0) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, ly);
+                    ctx.lineTo(W, ly);
+                    ctx.stroke();
+                }
+            }
+
+            requestAnimationFrame(draw);
+        }
+
+        requestAnimationFrame(draw);
+
+        // Resize canvas when content changes (e.g. scroll)
+        var lastH = H;
+        setInterval(function() {
+            var newH = document.documentElement.scrollHeight;
+            if (newH !== lastH) {
+                lastH = newH;
+                resize();
+                buildGrid();
+            }
+        }, 2000);
+    })();
+    </script>
+
+    <!-- ── Mosaic Word Scramble ── -->
+    <script>
+    (function() {
+        var glyphs = '▪▫▬▮▯◻◼◾◽▣▤▥▦▧▨▩░▒';
+        var elements = document.querySelectorAll('.mosaic-text');
+
+        elements.forEach(function(el) {
+            var word = el.getAttribute('data-mosaic') || el.textContent;
+            var chars = [];
+            el.textContent = '';
+
+            // Create spans first
+            for (var i = 0; i < word.length; i++) {
+                var span = document.createElement('span');
+                span.className = 'mosaic-char';
+                span.textContent = word[i];
+                span.setAttribute('data-original', word[i]);
+                el.appendChild(span);
+                chars.push(span);
+            }
+
+
+            function scrambleCycle() {
+                var count = Math.min(chars.length, 2 + Math.floor(Math.random() * 3));
+                var indices = [];
+                while (indices.length < count) {
+                    var idx = Math.floor(Math.random() * chars.length);
+                    if (indices.indexOf(idx) === -1) indices.push(idx);
+                }
+
+                indices.forEach(function(idx, i) {
+                    var span = chars[idx];
+                    var delay = i * 80 + Math.random() * 60;
+                    var flickCount = 5 + Math.floor(Math.random() * 5);
+                    var flickInterval = 120 + Math.random() * 60;
+
+                    setTimeout(function() {
+                        span.classList.add('scrambling');
+                        var flick = 0;
+                        var timer = setInterval(function() {
+                            span.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+                            flick++;
+                            if (flick >= flickCount) {
+                                clearInterval(timer);
+                                setTimeout(function() {
+                                    span.textContent = span.getAttribute('data-original');
+                                    span.classList.remove('scrambling');
+                                }, 60 + Math.random() * 80);
+                            }
+                        }, flickInterval);
+                    }, delay);
+                });
+            }
+
+            // Stagger start times so they don't all fire together
+            var startDelay = 1500 + Math.random() * 1000;
+            setTimeout(function() {
+                scrambleCycle();
+                setInterval(scrambleCycle, 2200 + Math.random() * 1200);
+            }, startDelay);
+        });
+    })();
+    </script>
+
+</body>
+</html>
