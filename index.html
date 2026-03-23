@@ -522,33 +522,17 @@
             z-index: 0;
         }
 
-        /* Grain on each founder row — heavy grit */
+        /* Subtle grain on each founder row */
         .team-row::after {
             content: '';
             position: absolute;
             inset: 0;
             z-index: 1;
             pointer-events: none;
-            opacity: 0.25;
+            opacity: 0.07;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
             background-repeat: repeat;
             background-size: 200px 200px;
-        }
-
-        /* Scanline overlay */
-        .team-row::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            z-index: 1;
-            pointer-events: none;
-            background: repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 2px,
-                rgba(0,0,0,0.02) 2px,
-                rgba(0,0,0,0.02) 4px
-            );
         }
 
         .team-photo-col {
@@ -967,36 +951,21 @@
         </footer>
     </div>
 
-    <!-- ── Team Mosaic Canvases — 22nd century engine ── -->
+    <!-- ── Team Mosaic Canvases — wireframe grid ── -->
     <script>
     (function() {
-        // High-contrast palettes with accent pops — deep tech, not watercolor
-        var palettes = {
-            blue: [
-                { r: 160, g: 175, b: 210 }, { r: 130, g: 150, b: 195 },
-                { r: 100, g: 125, b: 180 }, { r: 180, g: 190, b: 215 },
-                { r: 85, g: 110, b: 170 },  { r: 200, g: 208, b: 225 },
-                { r: 70, g: 95, b: 160 },   { r: 220, g: 225, b: 235 },
-            ],
-            pink: [
-                { r: 210, g: 170, b: 185 }, { r: 190, g: 145, b: 165 },
-                { r: 170, g: 120, b: 145 }, { r: 225, g: 195, b: 208 },
-                { r: 155, g: 105, b: 135 }, { r: 235, g: 215, b: 222 },
-                { r: 140, g: 90, b: 120 },  { r: 200, g: 180, b: 195 },
-            ],
-            lavender: [
-                { r: 175, g: 165, b: 210 }, { r: 150, g: 140, b: 195 },
-                { r: 125, g: 115, b: 180 }, { r: 195, g: 188, b: 225 },
-                { r: 110, g: 100, b: 170 }, { r: 215, g: 210, b: 235 },
-                { r: 95, g: 85, b: 160 },   { r: 185, g: 178, b: 218 },
-            ],
+        // Single accent tone per card — monochrome, not rainbow
+        var accents = {
+            blue:     { r: 140, g: 160, b: 200 },
+            pink:     { r: 190, g: 155, b: 170 },
+            lavender: { r: 165, g: 155, b: 200 },
         };
 
         document.querySelectorAll('.team-row').forEach(function(row) {
             var canvas = row.querySelector('.team-canvas');
             if (!canvas) return;
-            var paletteName = row.getAttribute('data-palette');
-            var palette = palettes[paletteName] || palettes.blue;
+            var accentName = row.getAttribute('data-palette');
+            var accent = accents[accentName] || accents.blue;
             var ctx = canvas.getContext('2d');
             var dpr = window.devicePixelRatio || 1;
             var W = row.offsetWidth;
@@ -1007,67 +976,39 @@
             canvas.style.height = H + 'px';
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-            var tiles = [];
-            var time = 0;
-            var BASE = 60;
+            // Build subdivided wireframe grid
+            var cells = [];
+            var BASE = 70;
 
             function subdivide(x, y, w, h, depth) {
-                var minSize = 12;
-                var splitChance = depth === 0 ? 0.6 : depth === 1 ? 0.45 : depth === 2 ? 0.25 : 0.1;
-                if (depth < 4 && w > minSize * 2 && h > minSize * 2 && Math.random() < splitChance) {
+                var minSize = 16;
+                var chance = depth === 0 ? 0.5 : depth === 1 ? 0.35 : 0.15;
+                if (depth < 3 && w > minSize * 2 && h > minSize * 2 && Math.random() < chance) {
                     var hw = w / 2, hh = h / 2;
                     subdivide(x, y, hw, hh, depth + 1);
                     subdivide(x + hw, y, hw, hh, depth + 1);
                     subdivide(x, y + hh, hw, hh, depth + 1);
                     subdivide(x + hw, y + hh, hw, hh, depth + 1);
                 } else {
-                    var col = palette[Math.floor(Math.random() * palette.length)];
-                    var jitter = 30;
-                    tiles.push({
+                    cells.push({
                         x: x, y: y, w: w, h: h,
                         phase: Math.random() * Math.PI * 2,
-                        speed: 0.008 + Math.random() * 0.015,
-                        baseAlpha: 0.25 + Math.random() * 0.25,
-                        pulseAmp: 0.08 + Math.random() * 0.12,
-                        r: Math.max(0, Math.min(255, col.r + (Math.random() - 0.5) * jitter)),
-                        g: Math.max(0, Math.min(255, col.g + (Math.random() - 0.5) * jitter)),
-                        b: Math.max(0, Math.min(255, col.b + (Math.random() - 0.5) * jitter)),
-                        morphing: 0,
-                        glitchTimer: 0,
-                        glitchAlpha: 0,
+                        speed: 0.003 + Math.random() * 0.006,
+                        baseAlpha: 0,
+                        glow: 0,
+                        glowTarget: 0,
                     });
                 }
             }
 
-            function buildGrid() {
-                tiles = [];
-                var cols = Math.ceil(W / BASE);
-                var rows = Math.ceil(H / BASE);
-                var cellW = W / cols, cellH = H / rows;
-                for (var r = 0; r < rows; r++)
-                    for (var c = 0; c < cols; c++)
-                        subdivide(c * cellW, r * cellH, cellW, cellH, 0);
-            }
+            var cols = Math.ceil(W / BASE);
+            var rows = Math.ceil(H / BASE);
+            var cellW = W / cols, cellH = H / rows;
+            for (var r = 0; r < rows; r++)
+                for (var c = 0; c < cols; c++)
+                    subdivide(c * cellW, r * cellH, cellW, cellH, 0);
 
-            buildGrid();
-
-            // Convergence pulses — faster, more frequent
-            var pulses = [];
-            function spawnPulse() {
-                pulses.push({
-                    cx: Math.random() * W,
-                    cy: Math.random() * H,
-                    radius: 0,
-                    maxRadius: 150 + Math.random() * 250,
-                    speed: 1.2 + Math.random() * 2.0,
-                    alpha: 0.25 + Math.random() * 0.2,
-                    life: 1
-                });
-            }
-            var lastPulse = 0;
-            var pulseInterval = 400 + Math.random() * 600;
-
-            // Mouse interaction
+            // Mouse
             var mouseX = -1000, mouseY = -1000;
             row.addEventListener('mousemove', function(e) {
                 var rect = row.getBoundingClientRect();
@@ -1078,82 +1019,44 @@
                 mouseX = -1000; mouseY = -1000;
             });
 
-            // Aggressive tile scramble + glitch bursts
-            function scrambleTick() {
+            // Convergence pulses — subtle rings
+            var pulses = [];
+            var lastPulse = 0;
+
+            // Random soft glow assignments
+            setInterval(function() {
                 var rect = row.getBoundingClientRect();
-                var inView = rect.top < window.innerHeight && rect.bottom > 0;
-                if (!inView || tiles.length === 0) return;
-
-                // Color morphs
-                var count = 3 + Math.floor(Math.random() * 5);
-                for (var j = 0; j < count; j++) {
-                    var pick = Math.floor(Math.random() * tiles.length);
-                    var tile = tiles[pick];
-                    var newCol = palette[Math.floor(Math.random() * palette.length)];
-                    tile.targetR = newCol.r;
-                    tile.targetG = newCol.g;
-                    tile.targetB = newCol.b;
-                    tile.morphing = 1.0;
-                    tile.phase = Math.random() * Math.PI * 2;
+                if (rect.top > window.innerHeight || rect.bottom < 0) return;
+                // Pick 1-2 cells to softly illuminate
+                var count = 1 + Math.floor(Math.random() * 2);
+                for (var i = 0; i < count; i++) {
+                    var pick = Math.floor(Math.random() * cells.length);
+                    cells[pick].glowTarget = 0.06 + Math.random() * 0.08;
                 }
-
-                // Glitch flash — random tiles briefly go bright
-                if (Math.random() < 0.4) {
-                    var glitchCount = 1 + Math.floor(Math.random() * 4);
-                    for (var g = 0; g < glitchCount; g++) {
-                        var gi = Math.floor(Math.random() * tiles.length);
-                        tiles[gi].glitchTimer = 0.15 + Math.random() * 0.2;
-                        tiles[gi].glitchAlpha = 0.6 + Math.random() * 0.35;
-                    }
+                // Pick 2-3 cells to dim back
+                for (var j = 0; j < 3; j++) {
+                    var dim = Math.floor(Math.random() * cells.length);
+                    cells[dim].glowTarget = 0;
                 }
+            }, 300);
 
-                // Occasional split
-                if (Math.random() < 0.15) {
-                    var si = Math.floor(Math.random() * tiles.length);
-                    var st = tiles[si];
-                    if (st.w > 20 && st.h > 20) {
-                        var hw = st.w / 2, hh = st.h / 2;
-                        var offsets = [[0,0],[hw,0],[0,hh],[hw,hh]];
-                        tiles.splice(si, 1);
-                        for (var k = 0; k < 4; k++) {
-                            var sc = palette[Math.floor(Math.random() * palette.length)];
-                            tiles.push({
-                                x: st.x + offsets[k][0], y: st.y + offsets[k][1],
-                                w: hw, h: hh,
-                                phase: Math.random() * Math.PI * 2,
-                                speed: 0.008 + Math.random() * 0.015,
-                                baseAlpha: 0.2 + Math.random() * 0.25,
-                                pulseAmp: 0.08 + Math.random() * 0.12,
-                                r: sc.r, g: sc.g, b: sc.b, morphing: 0,
-                                glitchTimer: 0, glitchAlpha: 0,
-                            });
-                        }
-                    }
-                }
-
-                // Merge tiny tiles back occasionally to prevent infinite fragmentation
-                if (tiles.length > 400 && Math.random() < 0.3) {
-                    var mi = Math.floor(Math.random() * (tiles.length - 1));
-                    var mt = tiles[mi];
-                    if (mt.w < 20 || mt.h < 20) {
-                        tiles.splice(mi, 1);
-                    }
-                }
-            }
-            setInterval(scrambleTick, 80);
-
-            // Horizontal scan line that sweeps across
-            var scanY = -10;
-            var scanSpeed = 0.3 + Math.random() * 0.5;
+            var time = 0;
+            var ar = accent.r, ag = accent.g, ab = accent.b;
 
             function draw(timestamp) {
                 time += 0.016;
 
-                // Pulses
-                if (timestamp - lastPulse > pulseInterval) {
-                    spawnPulse();
+                // Spawn pulse occasionally
+                if (timestamp - lastPulse > 2500 + Math.random() * 2000) {
+                    pulses.push({
+                        cx: Math.random() * W,
+                        cy: Math.random() * H,
+                        radius: 0,
+                        maxRadius: 200 + Math.random() * 200,
+                        speed: 0.5 + Math.random() * 0.5,
+                        life: 1,
+                    });
                     lastPulse = timestamp;
-                    pulseInterval = 500 + Math.random() * 800;
                 }
 
                 for (var p = pulses.length - 1; p >= 0; p--) {
@@ -1162,102 +1065,54 @@
                     if (pulses[p].life <= 0) pulses.splice(p, 1);
                 }
 
-                // Sweep scan line
-                scanY += scanSpeed;
-                if (scanY > H + 20) {
-                    scanY = -20;
-                    scanSpeed = 0.3 + Math.random() * 0.5;
-                }
-
                 ctx.clearRect(0, 0, W, H);
 
-                for (var i = 0; i < tiles.length; i++) {
-                    var t = tiles[i];
+                for (var i = 0; i < cells.length; i++) {
+                    var cell = cells[i];
+                    var cx = cell.x + cell.w / 2;
+                    var cy = cell.y + cell.h / 2;
 
-                    // Color morphing
-                    if (t.morphing > 0) {
-                        t.r += (t.targetR - t.r) * 0.1;
-                        t.g += (t.targetG - t.g) * 0.1;
-                        t.b += (t.targetB - t.b) * 0.1;
-                        t.morphing -= 0.025;
-                        if (t.morphing <= 0) t.morphing = 0;
-                    }
+                    // Lerp glow toward target
+                    cell.glow += (cell.glowTarget - cell.glow) * 0.04;
 
-                    // Glitch decay
-                    if (t.glitchTimer > 0) {
-                        t.glitchTimer -= 0.016;
-                    }
+                    // Base wireframe line alpha — very faint
+                    var lineAlpha = 0.04 + Math.sin(time * cell.speed * 60 + cell.phase) * 0.015;
 
-                    var cx = t.x + t.w / 2;
-                    var cy = t.y + t.h / 2;
-                    var alpha = t.baseAlpha + Math.sin(time * t.speed * 60 + t.phase) * t.pulseAmp;
-
-                    // Pulse ring influence — stronger
+                    // Pulse ring influence on lines
                     for (var p = 0; p < pulses.length; p++) {
                         var dx = cx - pulses[p].cx;
                         var dy = cy - pulses[p].cy;
                         var dist = Math.sqrt(dx * dx + dy * dy);
                         var ringDist = Math.abs(dist - pulses[p].radius);
-                        if (ringDist < 80) {
-                            alpha += (1 - ringDist / 80) * pulses[p].life * pulses[p].alpha;
+                        if (ringDist < 50) {
+                            lineAlpha += (1 - ringDist / 50) * pulses[p].life * 0.08;
                         }
                     }
 
-                    // Mouse proximity — larger radius, stronger effect
+                    // Mouse proximity — subtly brighten nearby lines
                     var mdx = cx - mouseX;
                     var mdy = cy - mouseY;
                     var mDist = Math.sqrt(mdx * mdx + mdy * mdy);
-                    if (mDist < 200) {
-                        alpha += (1 - mDist / 200) * 0.35;
+                    if (mDist < 180) {
+                        var prox = (1 - mDist / 180);
+                        lineAlpha += prox * 0.1;
+                        cell.glow = Math.max(cell.glow, prox * 0.12);
                     }
 
-                    // Scan line boost
-                    var scanDist = Math.abs(cy - scanY);
-                    if (scanDist < 30) {
-                        alpha += (1 - scanDist / 30) * 0.15;
+                    lineAlpha = Math.min(lineAlpha, 0.15);
+
+                    // Draw wireframe rectangle
+                    if (lineAlpha > 0.01) {
+                        ctx.strokeStyle = 'rgba(' + ar + ',' + ag + ',' + ab + ',' + lineAlpha + ')';
+                        ctx.lineWidth = 0.5;
+                        ctx.strokeRect(cell.x + 0.5, cell.y + 0.5, cell.w - 1, cell.h - 1);
                     }
 
-                    // Glitch flash override
-                    if (t.glitchTimer > 0) {
-                        alpha = t.glitchAlpha;
+                    // Soft fill glow — very transparent
+                    if (cell.glow > 0.005) {
+                        ctx.fillStyle = 'rgba(' + ar + ',' + ag + ',' + ab + ',' + cell.glow + ')';
+                        ctx.fillRect(cell.x + 1, cell.y + 1, cell.w - 2, cell.h - 2);
                     }
-
-                    alpha = Math.max(0, Math.min(alpha, 0.7));
-
-                    if (alpha > 0.005) {
-                        var gap = 1;
-                        var tr = Math.round(t.r);
-                        var tg = Math.round(t.g);
-                        var tb = Math.round(t.b);
-
-                        // Glitch tiles render brighter/whiter
-                        if (t.glitchTimer > 0) {
-                            var blend = t.glitchTimer * 4;
-                            tr = Math.round(tr + (255 - tr) * blend * 0.4);
-                            tg = Math.round(tg + (255 - tg) * blend * 0.4);
-                            tb = Math.round(tb + (255 - tb) * blend * 0.4);
-                        }
-
-                        ctx.fillStyle = 'rgba(' + tr + ',' + tg + ',' + tb + ',' + alpha + ')';
-                        ctx.fillRect(t.x + gap, t.y + gap, t.w - gap * 2, t.h - gap * 2);
-
-                        // Visible edge lines on higher alpha tiles
-                        if (alpha > 0.15) {
-                            ctx.strokeStyle = 'rgba(' + tr + ',' + tg + ',' + tb + ',' + (alpha * 0.4) + ')';
-                            ctx.lineWidth = 0.5;
-                            ctx.strokeRect(t.x + gap, t.y + gap, t.w - gap * 2, t.h - gap * 2);
-                        }
-                    }
-                }
-
-                // Draw scan line glow
-                if (scanY > -20 && scanY < H + 20) {
-                    var grad = ctx.createLinearGradient(0, scanY - 8, 0, scanY + 8);
-                    grad.addColorStop(0, 'rgba(255,255,255,0)');
-                    grad.addColorStop(0.5, 'rgba(255,255,255,0.03)');
-                    grad.addColorStop(1, 'rgba(255,255,255,0)');
-                    ctx.fillStyle = grad;
-                    ctx.fillRect(0, scanY - 8, W, 16);
                 }
 
                 requestAnimationFrame(draw);
