@@ -200,10 +200,24 @@
             opacity: 0.4;
         }
 
-        .hero h1 em {
+        .hero-rotating {
             font-style: italic;
             font-weight: 300;
-            color: rgba(255,255,255,0.75);
+        }
+
+        .hero-rotating .hero-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 0.85em;
+            background: rgba(255,255,255,0.7);
+            margin-left: 2px;
+            vertical-align: baseline;
+            animation: blink 0.6s step-end infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
 
         .hero-body {
@@ -736,8 +750,14 @@
             </div>
         </nav>
 
+        <!-- Mini network graphs in hero (white, high visibility) -->
+        <canvas class="net-mini" data-size="420" data-speed="0.001" data-labels="M&A,Product,Infra,News" style="position:absolute;top:3%;left:1%;z-index:1;pointer-events:none;opacity:0.8;"></canvas>
+        <canvas class="net-mini" data-size="380" data-speed="-0.0008" data-labels="Policy,Talent,Security,Patents" style="position:absolute;top:5%;right:1%;z-index:1;pointer-events:none;opacity:0.75;"></canvas>
+        <canvas class="net-mini" data-size="340" data-speed="0.0012" data-labels="Compliance,Research,Hiring" style="position:absolute;bottom:10%;left:8%;z-index:1;pointer-events:none;opacity:0.65;"></canvas>
+        <canvas class="net-mini" data-size="300" data-speed="-0.0014" data-labels="Funding,Compute" style="position:absolute;bottom:12%;right:5%;z-index:1;pointer-events:none;opacity:0.6;"></canvas>
+
         <section class="hero">
-            <h1>Markets follow.<br><em>Move first.</em></h1>
+            <h1>Markets <span id="hero-verb" class="hero-rotating">follow</span>.<br><span id="hero-adj" class="hero-rotating">Move</span> first.</h1>
             <p class="hero-body">
                 We build signal infrastructure that surfaces convergence patterns across research, code, policy, and talent, giving your team the lead time that matters.
             </p>
@@ -788,6 +808,11 @@
         </div>
         </div>
     </section>
+
+    <div style="position:relative;height:0;overflow:visible;">
+        <canvas class="net-mini" data-size="350" data-speed="0.0011" data-labels="Licensing,Supply Chain,IP" data-color="dark" style="position:absolute;top:-180px;right:1%;z-index:0;pointer-events:none;opacity:0.5;"></canvas>
+        <canvas class="net-mini" data-size="300" data-speed="-0.0009" data-labels="Regulation,Exits" data-color="dark" style="position:absolute;top:-150px;left:2%;z-index:0;pointer-events:none;opacity:0.45;"></canvas>
+    </div>
 
     <hr class="section-divider">
 
@@ -924,12 +949,16 @@
     </section>
 
     <!-- ── CTA + Footer ── -->
-    <div class="cta-wrap">
+    <div class="cta-wrap" style="position:relative;overflow:visible;">
+        <canvas class="net-mini" data-size="420" data-speed="0.001" data-labels="M&A,Talent,Infra,News" data-color="dark" style="position:absolute;top:2%;right:1%;z-index:0;pointer-events:none;opacity:1;"></canvas>
+        <canvas class="net-mini" data-size="380" data-speed="-0.0013" data-labels="Governance,Venture,Defence" data-color="dark" style="position:absolute;top:3%;left:0%;z-index:0;pointer-events:none;opacity:1;"></canvas>
+        <canvas class="net-mini" data-size="350" data-speed="0.0009" data-labels="Patents,Compute,Talent" style="position:absolute;bottom:3%;right:5%;z-index:0;pointer-events:none;opacity:0.7;"></canvas>
+        <canvas class="net-mini" data-size="360" data-speed="-0.0011" data-labels="Policy,Research,Hiring" style="position:absolute;bottom:5%;left:2%;z-index:0;pointer-events:none;opacity:0.7;"></canvas>
         <section>
             <div class="container">
             <div class="cta-section">
                 <span class="section-label">Get started</span>
-                <h2 class="section-title">The <span class="mosaic-text">signals</span> are already there.<br>We give you the<br><span id="rotating-word">edge</span>.</h2>
+                <h2 class="section-title">The <span class="mosaic-text">signals</span> are already there.<br>We give your team<br><em><span id="rotating-word" class="mosaic-text" data-mosaic="edge">edge</span>.</em></h2>
                 <div class="hero-actions">
                     <a href="https://hiddenstate.io" class="btn-primary-dark">Explore HiddenState</a>
                     <a href="mailto:hello@mosaictheory.co?subject=Mosaic%20Theory%20%E2%80%94%20Demo%20Request" class="btn-primary-dark" style="background:#fff;color:#0a0a0a;border:1px solid #ddd;">Request a Demo</a>
@@ -1122,6 +1151,304 @@
     })();
     </script>
 
+    <!-- ── Mini Network Graphs ── -->
+    <script>
+    (function() {
+        document.querySelectorAll('.net-mini').forEach(function(canvas) {
+            var size = parseInt(canvas.getAttribute('data-size')) || 200;
+            var rotSpeed = parseFloat(canvas.getAttribute('data-speed')) || 0.001;
+            var labelStr = canvas.getAttribute('data-labels') || 'M&A,Product,Infra';
+            var isDark = canvas.getAttribute('data-color') === 'dark';
+            var labels = labelStr.split(',');
+
+            var ctx = canvas.getContext('2d');
+            var dpr = window.devicePixelRatio || 1;
+            canvas.width = size * dpr;
+            canvas.height = size * dpr;
+            canvas.style.width = size + 'px';
+            canvas.style.height = size + 'px';
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            var W = size, H = size;
+            var cxC = W / 2, cyC = H / 2;
+            var spread = size * 0.32;
+            var fov = size * 1.2;
+            var maxDist = size * 0.42;
+            var col = isDark ? '0,0,0' : '255,255,255';
+
+            // Build nodes: sources on a sphere + intermediaries clustered near them
+            var N_SRC = labels.length;
+            var N_MID = N_SRC * 4;
+            var N = N_SRC + N_MID;
+            var nodes = [];
+            var edges = [];
+            var pulses = [];
+
+            // Distribute source nodes evenly on sphere
+            for (var i = 0; i < N_SRC; i++) {
+                var phi = Math.acos(1 - 2 * (i + 0.5) / N_SRC);
+                var theta = Math.PI * (1 + Math.sqrt(5)) * i;
+                nodes.push({
+                    x: Math.sin(phi) * Math.cos(theta) * spread,
+                    y: Math.sin(phi) * Math.sin(theta) * spread * 0.8,
+                    z: Math.cos(phi) * spread,
+                    vx: 0, vy: 0, vz: 0,
+                    size: 3.5,
+                    label: labels[i],
+                    isSource: true,
+                });
+            }
+
+            // Intermediary nodes
+            for (var i = 0; i < N_MID; i++) {
+                var parent = nodes[Math.floor(Math.random() * N_SRC)];
+                var jitter = spread * 0.5;
+                nodes.push({
+                    x: parent.x + (Math.random() - 0.5) * jitter,
+                    y: parent.y + (Math.random() - 0.5) * jitter,
+                    z: parent.z + (Math.random() - 0.5) * jitter,
+                    vx: 0, vy: 0, vz: 0,
+                    size: 0.6 + Math.random() * 0.8,
+                    label: null,
+                    isSource: false,
+                });
+            }
+
+            // Edges: source to nearby intermediaries
+            for (var i = 0; i < N_SRC; i++) {
+                for (var j = N_SRC; j < N; j++) {
+                    var dx = nodes[i].x - nodes[j].x;
+                    var dy = nodes[i].y - nodes[j].y;
+                    var dz = nodes[i].z - nodes[j].z;
+                    var d = Math.sqrt(dx*dx + dy*dy + dz*dz);
+                    if (d < spread * 0.7) {
+                        edges.push({ a: i, b: j, len: d, src: true });
+                    }
+                }
+            }
+            // Intermediary to intermediary
+            for (var i = N_SRC; i < N; i++) {
+                var ct = 0;
+                for (var j = i + 1; j < N && ct < 2; j++) {
+                    var dx = nodes[i].x - nodes[j].x;
+                    var dy = nodes[i].y - nodes[j].y;
+                    var dz = nodes[i].z - nodes[j].z;
+                    var d = Math.sqrt(dx*dx + dy*dy + dz*dz);
+                    if (d < spread * 0.6) { edges.push({ a: i, b: j, len: d, src: false }); ct++; }
+                }
+            }
+            // Source to source
+            for (var i = 0; i < N_SRC; i++) {
+                for (var j = i + 1; j < N_SRC; j++) {
+                    var dx = nodes[i].x - nodes[j].x;
+                    var dy = nodes[i].y - nodes[j].y;
+                    var dz = nodes[i].z - nodes[j].z;
+                    edges.push({ a: i, b: j, len: Math.sqrt(dx*dx + dy*dy + dz*dz), src: true });
+                }
+            }
+
+            var camRotY = Math.random() * Math.PI * 2;
+            var camRotX = -0.2 + Math.random() * 0.4;
+
+            function project(x, y, z) {
+                var cosY = Math.cos(camRotY), sinY = Math.sin(camRotY);
+                var x1 = x * cosY - z * sinY;
+                var z1 = x * sinY + z * cosY;
+                var cosX = Math.cos(camRotX), sinX = Math.sin(camRotX);
+                var y2 = y * cosX - z1 * sinX;
+                var z2 = y * sinX + z1 * cosX;
+                var sc = fov / (fov + z2);
+                return { x: cxC + x1 * sc, y: cyC + y2 * sc, z: z2, sc: sc };
+            }
+
+            // Simple force sim
+            function simulate() {
+                var repulsion = 1200;
+                var springK = 0.003;
+                var damping = 0.88;
+                var center = 0.0008;
+
+                for (var i = 0; i < N; i++) {
+                    for (var j = i + 1; j < N; j++) {
+                        var dx = nodes[i].x - nodes[j].x;
+                        var dy = nodes[i].y - nodes[j].y;
+                        var dz = nodes[i].z - nodes[j].z;
+                        var d2 = dx*dx + dy*dy + dz*dz;
+                        if (d2 < 1) d2 = 1;
+                        var d = Math.sqrt(d2);
+                        var f = repulsion / d2;
+                        nodes[i].vx += (dx/d)*f; nodes[i].vy += (dy/d)*f; nodes[i].vz += (dz/d)*f;
+                        nodes[j].vx -= (dx/d)*f; nodes[j].vy -= (dy/d)*f; nodes[j].vz -= (dz/d)*f;
+                    }
+                }
+                for (var i = 0; i < edges.length; i++) {
+                    var e = edges[i], a = nodes[e.a], b = nodes[e.b];
+                    var dx = b.x-a.x, dy = b.y-a.y, dz = b.z-a.z;
+                    var d = Math.sqrt(dx*dx+dy*dy+dz*dz) || 1;
+                    var f = (d - e.len * 0.7) * springK;
+                    a.vx += (dx/d)*f; a.vy += (dy/d)*f; a.vz += (dz/d)*f;
+                    b.vx -= (dx/d)*f; b.vy -= (dy/d)*f; b.vz -= (dz/d)*f;
+                }
+                for (var i = 0; i < N; i++) {
+                    var n = nodes[i];
+                    n.vx -= n.x * center; n.vy -= n.y * center; n.vz -= n.z * center;
+                    n.vx *= damping; n.vy *= damping; n.vz *= damping;
+                    n.x += n.vx; n.y += n.vy; n.z += n.vz;
+                    // Hard clamp — prevent nodes from leaving the safe zone
+                    var dist = Math.sqrt(n.x*n.x + n.y*n.y + n.z*n.z);
+                    if (dist > maxDist) {
+                        var scale = maxDist / dist;
+                        n.x *= scale; n.y *= scale; n.z *= scale;
+                        n.vx *= 0.5; n.vy *= 0.5; n.vz *= 0.5;
+                    }
+                }
+            }
+
+            var pulseTimer = 0;
+            var convTimer = 100;
+            var convergences = [];
+
+            function frame() {
+                camRotY += rotSpeed;
+                simulate();
+                ctx.clearRect(0, 0, W, H);
+
+                // Spawn pulses
+                if (++pulseTimer > 15) {
+                    if (edges.length) {
+                        var e = edges[Math.floor(Math.random() * edges.length)];
+                        var fwd = Math.random() > 0.5;
+                        pulses.push({ edge: e, t: 0, speed: 0.008 + Math.random() * 0.01, from: fwd ? e.a : e.b, to: fwd ? e.b : e.a });
+                    }
+                    pulseTimer = 0;
+                }
+
+                // Convergence events
+                if (++convTimer > 300 + Math.random() * 200) {
+                    var chosen = [];
+                    var pool = [];
+                    for (var i = 0; i < N_SRC; i++) pool.push(i);
+                    var n = 2 + Math.floor(Math.random() * Math.min(2, N_SRC - 1));
+                    for (var i = 0; i < n && pool.length; i++) {
+                        var idx = Math.floor(Math.random() * pool.length);
+                        chosen.push(pool[idx]); pool.splice(idx, 1);
+                    }
+                    var group = chosen.slice();
+                    for (var i = 0; i < edges.length; i++) {
+                        for (var j = 0; j < chosen.length; j++) {
+                            if (edges[i].a === chosen[j] && group.indexOf(edges[i].b) < 0) group.push(edges[i].b);
+                            if (edges[i].b === chosen[j] && group.indexOf(edges[i].a) < 0) group.push(edges[i].a);
+                        }
+                    }
+                    convergences.push({ nodes: group, t: 0, dur: 150 + Math.random() * 100 });
+                    convTimer = 0;
+                }
+
+                // Convergence glow map
+                var cGlow = {};
+                for (var i = convergences.length - 1; i >= 0; i--) {
+                    var cv = convergences[i];
+                    cv.t++;
+                    if (cv.t / cv.dur > 1) { convergences.splice(i, 1); continue; }
+                    var intensity = Math.sin(cv.t / cv.dur * Math.PI);
+                    intensity *= intensity;
+                    for (var j = 0; j < cv.nodes.length; j++) {
+                        cGlow[cv.nodes[j]] = Math.max(cGlow[cv.nodes[j]] || 0, intensity);
+                    }
+                }
+
+                // Project all
+                var projected = [];
+                for (var i = 0; i < N; i++) {
+                    var pr = project(nodes[i].x, nodes[i].y, nodes[i].z);
+                    projected[i] = pr;
+                }
+
+                // Draw edges
+                for (var i = 0; i < edges.length; i++) {
+                    var e = edges[i];
+                    var a = projected[e.a], b = projected[e.b];
+                    var depth = fov / (fov + Math.abs((a.z + b.z) / 2));
+                    var glow = Math.max(cGlow[e.a] || 0, cGlow[e.b] || 0);
+                    var op = 0.15 + depth * 0.25 + glow * 0.4;
+                    if (op < 0.01) continue;
+                    ctx.beginPath();
+                    ctx.moveTo(a.x, a.y);
+                    ctx.lineTo(b.x, b.y);
+                    ctx.strokeStyle = 'rgba(' + col + ',' + Math.min(op, 0.8) + ')';
+                    ctx.lineWidth = e.src ? 0.8 + glow * 1.0 : 0.5 + glow * 0.6;
+                    ctx.stroke();
+                }
+
+                // Draw nodes (sorted back to front)
+                var order = [];
+                for (var i = 0; i < N; i++) order.push(i);
+                order.sort(function(a, b) { return projected[a].z - projected[b].z; });
+
+                for (var k = 0; k < order.length; k++) {
+                    var i = order[k];
+                    var n = nodes[i];
+                    var pr = projected[i];
+                    var depth = fov / (fov + Math.abs(pr.z));
+                    var glow = cGlow[i] || 0;
+                    var alpha = 0.3 + depth * 0.4 + glow * 0.6;
+                    var r = (n.isSource ? 3.5 : n.size * 1.3) * pr.sc + glow * (n.isSource ? 4 : 2);
+
+                    ctx.beginPath();
+                    ctx.arc(pr.x, pr.y, Math.max(r, 0.5), 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(' + col + ',' + Math.min(alpha, 0.95) + ')';
+                    ctx.fill();
+
+                    if (n.isSource) {
+                        // Ring
+                        var ringA = (0.15 + glow * 0.3) * depth;
+                        ctx.beginPath();
+                        ctx.arc(pr.x, pr.y, r + 4 + glow * 5, 0, Math.PI * 2);
+                        ctx.strokeStyle = 'rgba(' + col + ',' + Math.min(ringA, 0.45) + ')';
+                        ctx.lineWidth = 0.7;
+                        ctx.stroke();
+
+                        // Label
+                        var labelA = 0.4 + glow * 0.5;
+                        ctx.font = '600 ' + Math.round(9 * pr.sc) + 'px "Inter", sans-serif';
+                        ctx.textAlign = 'center';
+                        ctx.fillStyle = 'rgba(' + col + ',' + Math.min(labelA * depth, 0.8) + ')';
+                        ctx.fillText(n.label, pr.x, pr.y - r - 7);
+
+                        // Convergence glow halo
+                        if (glow > 0.1) {
+                            ctx.beginPath();
+                            ctx.arc(pr.x, pr.y, r + 12 + glow * 15, 0, Math.PI * 2);
+                            ctx.fillStyle = 'rgba(' + col + ',' + (glow * 0.04 * depth) + ')';
+                            ctx.fill();
+                        }
+                    }
+                }
+
+                // Pulses
+                for (var i = pulses.length - 1; i >= 0; i--) {
+                    var p = pulses[i];
+                    p.t += p.speed;
+                    if (p.t > 1) { pulses.splice(i, 1); continue; }
+                    var a = projected[p.from], b = projected[p.to];
+                    var px = a.x + (b.x - a.x) * p.t;
+                    var py = a.y + (b.y - a.y) * p.t;
+                    var pz = a.z + (b.z - a.z) * p.t;
+                    var depth = fov / (fov + Math.abs(pz));
+                    var alpha = Math.sin(p.t * Math.PI) * 0.7 * depth;
+                    ctx.beginPath();
+                    ctx.arc(px, py, 1.8 * depth, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(' + col + ',' + alpha + ')';
+                    ctx.fill();
+                }
+
+                requestAnimationFrame(frame);
+            }
+            frame();
+        });
+    })();
+    </script>
+
     <!-- ── Mosaic Word Scramble ── -->
     <script>
     (function() {
@@ -1189,56 +1516,48 @@
     })();
     </script>
 
-    <!-- ── Rotating Word ── -->
+    <!-- ── Rotating Word (mosaic scramble) ── -->
     <script>
     (function() {
         var words = ['edge', 'lead', 'pace', 'clarity', 'foresight'];
         var glyphs = '\u25aa\u25ab\u25ac\u25ae\u25af\u25fb\u25fc\u25fe\u25fd\u25a3\u25a4\u25a5\u25a6\u25a7\u25a8\u25a9\u2591\u2592';
         var el = document.getElementById('rotating-word');
         if (!el) return;
-        var currentIdx = 0;
-        var transitioning = false;
+        var idx = 0;
+        var busy = false;
 
-        // Build initial spans from the text content
-        function initWord(word) {
+        function buildSpans(word) {
             el.textContent = '';
             for (var i = 0; i < word.length; i++) {
-                var span = document.createElement('span');
-                span.className = 'mosaic-char';
-                span.textContent = word[i];
-                span.setAttribute('data-original', word[i]);
-                span.style.display = 'inline-block';
-                span.style.textAlign = 'center';
-                el.appendChild(span);
+                var s = document.createElement('span');
+                s.className = 'mosaic-char';
+                s.textContent = word[i];
+                s.setAttribute('data-original', word[i]);
+                s.style.display = 'inline-block';
+                s.style.textAlign = 'center';
+                el.appendChild(s);
             }
-            // Lock widths
-            var spans = el.querySelectorAll('.mosaic-char');
-            spans.forEach(function(s) {
+            el.querySelectorAll('.mosaic-char').forEach(function(s) {
                 s.style.width = s.getBoundingClientRect().width + 'px';
             });
         }
 
-        initWord(words[0]);
+        buildSpans(words[0]);
 
-        function scrambleToWord(newWord) {
-            if (transitioning) return;
-            transitioning = true;
-
+        function scrambleTo(newWord) {
+            if (busy) return;
+            busy = true;
             var spans = Array.from(el.querySelectorAll('.mosaic-char'));
             var oldLen = spans.length;
-            var newLen = newWord.length;
 
             // Scramble out
             spans.forEach(function(span, i) {
                 setTimeout(function() {
                     span.classList.add('scrambling');
-                    var flick = 0;
-                    var timer = setInterval(function() {
+                    var f = 0;
+                    var t = setInterval(function() {
                         span.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
-                        flick++;
-                        if (flick >= 4) {
-                            clearInterval(timer);
-                        }
+                        if (++f >= 4) clearInterval(t);
                     }, 70);
                 }, i * 40);
             });
@@ -1247,51 +1566,142 @@
             setTimeout(function() {
                 el.textContent = '';
                 var chars = [];
-                for (var i = 0; i < newLen; i++) {
-                    var span = document.createElement('span');
-                    span.className = 'mosaic-char scrambling';
-                    span.style.display = 'inline-block';
-                    span.style.textAlign = 'center';
-                    span.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
-                    span.setAttribute('data-original', newWord[i]);
-                    el.appendChild(span);
-                    chars.push(span);
+                for (var i = 0; i < newWord.length; i++) {
+                    var s = document.createElement('span');
+                    s.className = 'mosaic-char scrambling';
+                    s.style.display = 'inline-block';
+                    s.style.textAlign = 'center';
+                    s.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+                    s.setAttribute('data-original', newWord[i]);
+                    el.appendChild(s);
+                    chars.push(s);
                 }
-
-                // Measure and lock widths
                 requestAnimationFrame(function() {
-                    chars.forEach(function(span) {
-                        var orig = span.textContent;
-                        span.textContent = span.getAttribute('data-original');
-                        span.style.width = span.getBoundingClientRect().width + 'px';
-                        span.textContent = orig;
+                    chars.forEach(function(s) {
+                        var tmp = s.textContent;
+                        s.textContent = s.getAttribute('data-original');
+                        s.style.width = s.getBoundingClientRect().width + 'px';
+                        s.textContent = tmp;
                     });
-
-                    // Scramble in
-                    chars.forEach(function(span, i) {
+                    chars.forEach(function(s, i) {
                         setTimeout(function() {
-                            var flick = 0;
-                            var timer = setInterval(function() {
-                                span.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
-                                flick++;
-                                if (flick >= 3) {
-                                    clearInterval(timer);
-                                    span.textContent = span.getAttribute('data-original');
-                                    span.classList.remove('scrambling');
+                            var f = 0;
+                            var t = setInterval(function() {
+                                s.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+                                if (++f >= 3) {
+                                    clearInterval(t);
+                                    s.textContent = s.getAttribute('data-original');
+                                    s.classList.remove('scrambling');
                                 }
                             }, 70);
                         }, i * 50);
                     });
-
-                    setTimeout(function() { transitioning = false; }, newLen * 50 + 300);
+                    setTimeout(function() { busy = false; }, newWord.length * 50 + 300);
                 });
             }, oldLen * 40 + 350);
         }
 
         setInterval(function() {
-            currentIdx = (currentIdx + 1) % words.length;
-            scrambleToWord(words[currentIdx]);
+            idx = (idx + 1) % words.length;
+            scrambleTo(words[idx]);
         }, 3000);
+    })();
+    </script>
+
+    <!-- ── Hero Paired Word Rotation (delete/type) ── -->
+    <script>
+    (function() {
+        var pairs = [
+            ['follow',  'Move'],
+            ['lag',     'See'],
+            ['react',   'Know'],
+            ['converge','Act'],
+            ['catch up','Arrive'],
+        ];
+        var verbEl = document.getElementById('hero-verb');
+        var adjEl = document.getElementById('hero-adj');
+        if (!verbEl || !adjEl) return;
+        var idx = 0;
+        var busy = false;
+        var DEL_SPEED = 55;
+        var TYPE_SPEED = 70;
+        var PAUSE = 150;
+
+        function setCursor(el, show) {
+            var cur = el.querySelector('.hero-cursor');
+            if (show && !cur) {
+                cur = document.createElement('span');
+                cur.className = 'hero-cursor';
+                el.appendChild(cur);
+            } else if (!show && cur) {
+                cur.remove();
+            }
+        }
+
+        function deleteWord(el, cb) {
+            setCursor(el, true);
+            var text = el.childNodes[0];
+            if (!text || !text.textContent) { setCursor(el, false); cb(); return; }
+            function step() {
+                var str = text.textContent;
+                if (str.length <= 0) {
+                    setTimeout(cb, PAUSE);
+                    return;
+                }
+                text.textContent = str.slice(0, -1);
+                setTimeout(step, DEL_SPEED);
+            }
+            step();
+        }
+
+        function typeWord(el, word, cb) {
+            var text = el.childNodes[0];
+            if (!text || text.nodeType !== 3) {
+                text = document.createTextNode('');
+                el.insertBefore(text, el.firstChild);
+            }
+            text.textContent = '';
+            var i = 0;
+            function step() {
+                if (i >= word.length) {
+                    setCursor(el, false);
+                    if (cb) cb();
+                    return;
+                }
+                text.textContent += word[i];
+                i++;
+                setTimeout(step, TYPE_SPEED);
+            }
+            step();
+        }
+
+        // Init with plain text + no cursor
+        verbEl.textContent = pairs[0][0];
+        adjEl.textContent = pairs[0][1];
+
+        setInterval(function() {
+            if (busy) return;
+            busy = true;
+            idx = (idx + 1) % pairs.length;
+
+            // Delete both, then type both
+            var deleted = 0;
+            function onBothDeleted() {
+                if (++deleted < 2) return;
+                // Type new words with line 2 slightly staggered
+                var typed = 0;
+                function onDone() { if (++typed >= 2) busy = false; }
+                typeWord(verbEl, pairs[idx][0], onDone);
+                setTimeout(function() {
+                    typeWord(adjEl, pairs[idx][1], onDone);
+                }, 150);
+            }
+
+            deleteWord(verbEl, onBothDeleted);
+            setTimeout(function() {
+                deleteWord(adjEl, onBothDeleted);
+            }, 120);
+        }, 3500);
     })();
     </script>
 
