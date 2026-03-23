@@ -3,8 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mosaic Theory: Research Intelligence for Capital Markets</title>
-    <meta name="description" content="Mosaic Theory builds research intelligence infrastructure for hedge funds and venture capital. Our flagship product, HiddenState, surfaces convergence signals before the market moves.">
+    <title>Mosaic Theory — Markets react. Know first.</title>
+    <meta name="description" content="Mosaic Theory builds signal infrastructure that surfaces convergence patterns across research, code, policy, and talent — giving your team the lead time that matters.">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Mosaic Theory — Markets react. Know first.">
+    <meta property="og:description" content="Signal infrastructure that surfaces convergence patterns across research, code, policy, and talent — giving your team the lead time that matters.">
+    <meta property="og:image" content="https://mosaictheory.co/assets/og.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://mosaictheory.co">
+    <meta property="og:site_name" content="Mosaic Theory">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Mosaic Theory — Markets react. Know first.">
+    <meta name="twitter:description" content="Signal infrastructure that surfaces convergence patterns across research, code, policy, and talent.">
+    <meta name="twitter:image" content="https://mosaictheory.co/assets/og.png">
+
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231a1a2e'/><text x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' fill='%23ffffff' font-family='serif' font-size='14' font-weight='400'>MT</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -613,6 +630,8 @@
         /* ── CTA ── */
         .cta-wrap {
             position: relative;
+            margin-bottom: 0;
+            padding-bottom: 0;
             background: linear-gradient(
                 to bottom,
                 #ffffff 0%,
@@ -632,6 +651,7 @@
             content: '';
             position: absolute;
             inset: 0;
+            z-index: 1;
             pointer-events: none;
             opacity: 0.14;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -720,6 +740,7 @@
             .team-row.reverse .team-mosaic-wrap img { margin: 20px 20px 0 auto; }
             .cta-section { padding: 80px 0 120px; }
             footer { padding: 48px 24px 32px; }
+            .net-mini { display: none; }
         }
 
         @media (max-width: 600px) {
@@ -868,10 +889,10 @@
                             <span class="browser-dot"></span>
                             <span class="browser-dot"></span>
                         </div>
-                        <div class="browser-url">hiddenstate.io/archive/2026-03-18</div>
+                        <div class="browser-url">hiddenstate.io/archive/2026-03-20</div>
                     </div>
                     <div class="browser-body">
-                        <iframe src="demo.html" style="width:100%;height:700px;border:none;display:block;" loading="lazy"></iframe>
+                        <img src="assets/hs_sc.png" alt="HiddenState daily briefing — 2026-03-20" style="width:100%;display:block;" loading="lazy">
                     </div>
                 </div>
             </div>
