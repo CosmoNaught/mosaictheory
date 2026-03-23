@@ -627,6 +627,18 @@
 
         .team-links a:hover { color: var(--text); }
 
+        /* Team heading typing cursor */
+        #team-word1 .hero-cursor,
+        #team-word2 .hero-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 0.85em;
+            background: rgba(10,10,10,0.6);
+            margin-left: 2px;
+            vertical-align: baseline;
+            animation: blink 0.6s step-end infinite;
+        }
+
         /* ── CTA ── */
         .cta-wrap {
             position: relative;
@@ -894,7 +906,7 @@
     <section id="team">
         <div class="container">
         <span class="section-label">Leadership</span>
-        <h2 class="section-title">Built by researchers.<br>For decision-makers.</h2>
+        <h2 class="section-title">Built by <em><span id="team-word1">researchers</span></em>.<br>For <em><span id="team-word2">decision-makers</span></em>.</h2>
         <p class="section-body">
             Our team combines deep machine learning research, operational scale, and capital markets experience.
         </p>
@@ -1819,6 +1831,80 @@
                 deleteWord(adjEl, onBothDeleted);
             }, 120);
         }, 3500);
+    })();
+    </script>
+
+    <!-- ── Team Heading Alternating Rotation ── -->
+    <script>
+    (function() {
+        var words1 = ['researchers', 'leaders', 'experts', 'engineers', 'scientists'];
+        var words2 = ['decision-makers', 'strategists', 'operators', 'allocators', 'pioneers'];
+        var el1 = document.getElementById('team-word1');
+        var el2 = document.getElementById('team-word2');
+        if (!el1 || !el2) return;
+
+        var idx1 = 0, idx2 = 0;
+        var DEL_SPEED = 55, TYPE_SPEED = 70, PAUSE = 150;
+        var turn = 0; // 0 = rotate word1, 1 = rotate word2
+
+        function setCursor(el, show) {
+            var cur = el.querySelector('.hero-cursor');
+            if (show && !cur) {
+                cur = document.createElement('span');
+                cur.className = 'hero-cursor';
+                el.appendChild(cur);
+            } else if (!show && cur) {
+                cur.remove();
+            }
+        }
+
+        function deleteWord(el, cb) {
+            setCursor(el, true);
+            var text = el.childNodes[0];
+            if (!text || !text.textContent) { setCursor(el, false); cb(); return; }
+            function step() {
+                var str = text.textContent;
+                if (str.length <= 0) { setTimeout(cb, PAUSE); return; }
+                text.textContent = str.slice(0, -1);
+                setTimeout(step, DEL_SPEED);
+            }
+            step();
+        }
+
+        function typeWord(el, word, cb) {
+            var text = el.childNodes[0];
+            if (!text || text.nodeType !== 3) {
+                text = document.createTextNode('');
+                el.insertBefore(text, el.firstChild);
+            }
+            text.textContent = '';
+            var i = 0;
+            function step() {
+                if (i >= word.length) { setCursor(el, false); if (cb) cb(); return; }
+                text.textContent += word[i];
+                i++;
+                setTimeout(step, TYPE_SPEED);
+            }
+            step();
+        }
+
+        el1.textContent = words1[0];
+        el2.textContent = words2[0];
+
+        setInterval(function() {
+            if (turn === 0) {
+                idx1 = (idx1 + 1) % words1.length;
+                deleteWord(el1, function() {
+                    typeWord(el1, words1[idx1]);
+                });
+            } else {
+                idx2 = (idx2 + 1) % words2.length;
+                deleteWord(el2, function() {
+                    typeWord(el2, words2[idx2]);
+                });
+            }
+            turn = (turn + 1) % 2;
+        }, 3000);
     })();
     </script>
 
