@@ -338,7 +338,7 @@
         /* ── Mobile ── */
         @media (max-width: 900px) {
             nav { padding: 5px 5px; top: 12px; }
-            .nav-links a:not(.nav-cta) { display: none; }
+            .nav-links a:not(.nav-cta):not([href="blog.html"]):not([href="/blog.html"]) { display: none; }
             .page-header { padding: 140px 24px 60px; }
             .blog-list { padding: 48px 24px 64px; }
             footer { padding: 48px 24px 32px; }
