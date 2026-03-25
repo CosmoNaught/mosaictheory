@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Distillation Pipeline Is Open for Business — Mosaic Theory Blog</title>
+    <meta name="description" content="Frontier model distillation went industrial, the AI coding culture war crystallized, and Nvidia telegraphed its GTC moves days early.">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231a1a2e'/><text x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' fill='%23ffffff' font-family='serif' font-size='14' font-weight='400'>MT</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --bg: #ffffff;
+            --text: #0a0a0a;
+            --text-secondary: #555;
+            --text-muted: #999;
+            --border: #e8e8e8;
+        }
+
+        html { scroll-behavior: smooth; overflow-y: auto; overscroll-behavior: none; }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ── Hero ── */
+        .hero-wrap {
+            position: relative;
+            min-height: 50vh;
+            overflow: hidden;
+            background: linear-gradient(
+                to bottom,
+                #0c1428 0%,
+                #1a2850 12%,
+                #2e4080 26%,
+                #5060a0 40%,
+                #8070a0 52%,
+                #b08898 62%,
+                #d4aab0 72%,
+                #e8ccc8 82%,
+                #f2e2de 90%,
+                #ffffff 100%
+            );
+        }
+
+        .hero-wrap::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.19;
+            background-image: url("../assets/noise.png");
+            background-repeat: repeat;
+            background-size: 128px 128px;
+        }
+
+        /* ── Nav ── */
+        nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(8,12,20,0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 100px;
+            padding: 5px 6px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            padding: 8px 14px;
+            white-space: nowrap;
+        }
+
+        .nav-brand-inner {
+            display: inline-flex;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+            color: #fff;
+        }
+
+        .nav-expand {
+            display: inline-block;
+            max-width: 0;
+            overflow: hidden;
+            transition: max-width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            vertical-align: bottom;
+        }
+
+        .nav-brand:hover .nav-expand-left {
+            max-width: 120px;
+        }
+
+        .nav-brand:hover .nav-expand-right {
+            max-width: 100px;
+        }
+
+        .nav-expand .mosaic-char {
+            display: inline-block;
+            text-align: center;
+            transition: opacity 0.15s ease;
+        }
+
+        .nav-expand .mosaic-char.scrambling {
+            opacity: 0.4;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1px;
+        }
+
+        .nav-links a {
+            font-size: 13px;
+            color: rgba(255,255,255,0.45);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 100px;
+            transition: all 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .nav-links a.active {
+            color: rgba(255,255,255,0.9);
+        }
+
+        .nav-cta {
+            font-weight: 600 !important;
+            color: #0a0a0a !important;
+            background: #fff !important;
+            padding: 8px 22px !important;
+        }
+
+        .nav-cta:hover {
+            background: rgba(255,255,255,0.85) !important;
+            color: #0a0a0a !important;
+        }
+
+        /* ── Post Header ── */
+        .post-header {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            text-align: center;
+            padding: 160px 32px 80px;
+        }
+
+        .post-header time {
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 16px;
+        }
+
+        .post-header h1 {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            color: #fff;
+            max-width: 800px;
+            margin-bottom: 16px;
+        }
+
+        .post-header .post-author {
+            font-size: 14px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* ── Article ── */
+        .post-body {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 64px 32px 80px;
+        }
+
+        .post-body p {
+            font-size: 17px;
+            font-weight: 400;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .post-body h2 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--text);
+            margin: 48px 0 20px;
+        }
+
+        .post-body h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text);
+            margin: 32px 0 16px;
+        }
+
+        .post-body ul {
+            margin: 0 0 24px 24px;
+        }
+
+        .post-body li {
+            font-size: 17px;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .post-body a {
+            color: #2e4080;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(46,64,128,0.2);
+            transition: border-color 0.2s;
+        }
+
+        .post-body a:hover {
+            border-color: #2e4080;
+        }
+
+        .post-body strong {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .post-body code {
+            font-size: 15px;
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 48px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover { color: var(--text); }
+
+        .post-body em a {
+            color: #2e4080;
+            border-bottom: 1px solid rgba(46,64,128,0.2);
+        }
+
+        /* ── Footer ── */
+        .footer-wrap {
+            position: relative;
+            margin-bottom: 0;
+            padding-bottom: 0;
+            background: linear-gradient(
+                to bottom,
+                #ffffff 0%,
+                #ffffff 0%,
+                #ffffff 30%,
+                #f5ece0 45%,
+                #e8d0b8 55%,
+                #d4a070 65%,
+                #c07040 75%,
+                #7b4b3a 85%,
+                #4a2c4a 95%,
+                #2d1f3d 100%
+            );
+        }
+
+        .footer-wrap::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.14;
+            background-image: url("../assets/noise.png");
+            background-repeat: repeat;
+            background-size: 128px 128px;
+        }
+
+        footer {
+            position: relative;
+            z-index: 2;
+            padding: 200px 48px 48px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 24px;
+        }
+
+        .footer-company {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .footer-legal {
+            font-size: 13px;
+            color: rgba(255,255,255,0.3);
+        }
+
+        .footer-links {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-links a {
+            font-size: 13px;
+            color: rgba(255,255,255,0.35);
+            text-decoration: none;
+            transition: color 0.2s;
+            font-weight: 500;
+        }
+
+        .footer-links a:hover { color: rgba(255,255,255,0.7); }
+
+        .footer-divider {
+            color: rgba(255,255,255,0.15);
+            font-size: 13px;
+        }
+
+        /* ── Mobile ── */
+        @media (max-width: 900px) {
+            nav { padding: 5px 5px; top: 12px; }
+            .nav-links a:not(.nav-cta) { display: none; }
+            .post-header { padding: 140px 24px 60px; }
+            .post-body { padding: 48px 24px 64px; }
+            footer { padding: 48px 24px 32px; }
+        }
+
+        @media (max-width: 600px) {
+            .post-header h1 { letter-spacing: -1.5px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero-wrap">
+        <nav>
+            <a href="/" class="nav-brand" id="nav-brand">
+                <span class="nav-brand-inner">
+                    <span>M</span><span class="nav-expand nav-expand-left" id="nav-expand-left"></span><span>T</span><span class="nav-expand nav-expand-right" id="nav-expand-right"></span>
+                </span>
+            </a>
+            <div class="nav-links">
+                <a href="/">About</a>
+                <a href="/">Product</a>
+                <a href="/">Team</a>
+                <a href="/blog.html" class="active">Blog</a>
+                <a href="mailto:support@hiddenstate.io">Contact</a>
+                <a href="https://hiddenstate.io" class="nav-cta">HiddenState</a>
+            </div>
+        </nav>
+
+        <div class="post-header">
+            <time datetime="2026-03-16">March 16, 2026</time>
+            <h1>The Distillation Pipeline Is Open for Business</h1>
+            <p class="post-author">by Cosmo Santoni, Imperial College London / Mosaic Theory</p>
+        </div>
+    </div>
+
+    <div class="post-body">
+        <a href="/blog.html" class="back-link">&larr; All posts</a>
+
+        <article>
+
+            <p><strong>The week's loudest signal wasn't a model launch.</strong> It was a pattern that kept intensifying across independent sources for seven straight days: people are distilling frontier model outputs into tiny, uncensored local weights. By Sunday, we counted at least six separate releases spanning distillation of frontier reasoning and outright safety-refusal removal. Qwen3.5 shells stuffed with Claude Opus reasoning. Safety refusals edited out at the weight level. All of it running on consumer GPUs. The supply chain for "frontier-class intelligence you own" is forming rapidly.</p>
+
+            <p><strong>Distillation went from experiment to cottage industry.</strong> Early in the week we started tracking a 27B Qwen3.5 model <a href="https://huggingface.co/Jackrong/Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-GGUF">distilled from Claude Opus 4.6 reasoning traces</a>. The next day it had spawned a 2B variant. By the weekend, a 9B uncensored version and several "HERETIC" models had joined the party, each one compressing proprietary capability into something you could run on a gaming rig. Separately, a parallel thread of safety-removal tools kept surfacing. New weight-editing methods that strip refusals without touching personality. Multiple independent teams, same playbook. This is no longer a niche hobby. It is a repeatable pipeline for stripping safety training from frontier-grade models and redistributing the results to anyone with a consumer GPU. The capability implications are obvious. The safety implications are harder to contain: once refusals are removed at the weight level, there is no practical way to restore them in the distributed copies.</p>
+
+            <h2>The code quality question nobody wants to answer</h2>
+
+            <p><strong>A culture war is crystallizing around AI-assisted coding.</strong> Midweek, multiple independent sources converged on the same fault line. A <a href="https://simonwillison.net/2026/Mar/12/coding-after-coders/#atom-everything">NYT longform piece interviewing 70+ developers</a>, a widely circulated <a href="https://blog.lmorchard.com/2026/03/11/grief-and-the-ai-split/">essay on craft versus results</a>, and heated discussion across developer communities all pointed at the same tension: AI code generation is splitting the profession into people who see it as liberation and people who see it as the end of something valuable. This isn't abstract. Replit just closed a $400M round at $9B valuation. Lovable reportedly added $100M in revenue in a single month with 146 employees. The market has already chosen a side. Whether the code holds up is a different question, and it's one the data suggests nobody has answered yet. Across the week, a recurring signal kept appearing: agentic coding tools lack verification mechanisms beyond unit tests. Simon Willison started codifying <a href="https://simonwillison.net/guides/agentic-engineering-patterns/what-is-agentic-engineering/#atom-everything">"agentic engineering" as a discipline</a>. The fact that someone needs to write a guide for how to supervise your AI coder tells you where the maturity level actually is.</p>
+
+            <p><strong>The pretraining data arms race has a new front.</strong> Friday's strongest signal was a pair of papers on improving code model quality not by scaling compute, but by curating data more intelligently. One proposes <a href="https://huggingface.co/papers/2603.11103">reverse software-development pretraining</a>, training models on the process of reconstructing code from its outputs rather than just predicting the next token. The other introduces bidirectional semantic filtering to weed out noisy synthetic training examples. Both converged with a new 9B coding agent fine-tuned on 425K agentic trajectories. The implication is clear: this week's strongest code model results came from data engineering rather than architecture changes. If that trend holds, startups still competing on model size are fighting the last war. The ones investing in training data curation and filtering have the structural advantage.</p>
+
+            <p><strong>Nvidia tipped its hand days before GTC.</strong> On Thursday, we were tracking a signal around Nvidia investing heavily in the open-weight model ecosystem. Four days later, <a href="https://siliconangle.com/2026/03/16/nvidia-expands-open-ai-model-portfolio-enlists-partners-frontier-development/">SiliconAngle confirmed it at GTC</a>: Nvidia is expanding its open model portfolio and enlisting partners for frontier development. The timing tracked with the release of <a href="https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-FP8">Nemotron-3-Super-120B</a>, a 120B-parameter MoE model shipping in both FP8 and NVFP4 quantization. Meanwhile, a separate research thread on FP4 bias correction kept building. The picture: Nvidia is positioning itself as the gravity well for open-weight AI, offering both the silicon and the models. If you are competing with them on inference infrastructure, this is the week the competitive landscape shifted.</p>
+
+            <p><strong>Peer review has a bot problem.</strong> A signal surfaced midweek from research communities: at least one fully AI-generated paper appears to have made it into the ICML review pipeline undetected. No public confirmation yet from conference organizers, but the discussion was heated and specific enough to take seriously. This is the second-order problem nobody budgeted for. If distilled models can now produce passable research prose, the integrity of the publication pipeline is compromised. For anyone whose investment thesis depends on reading the literature to evaluate technical moats, the ground just shifted. You can no longer assume a published paper was written by someone who did the work.</p>
+
+            <h2>On our radar</h2>
+
+            <p><strong>Agent sandboxing infrastructure.</strong> Early convergence across multiple independent sources on filesystem-level isolation for agentic code execution. Docker's acquisition of NanoClaw landed at the end of the week, but the underlying signal had been building since Tuesday. Expect more deals in this space.</p>
+
+            <p><strong>FP4 quantization reliability.</strong> The tension between aggressive compression and output quality is unresolved. Research on bias correction is accelerating. If someone cracks reliable FP4 inference, the cost floor drops again.</p>
+
+            <p><strong>Academic AI integrity.</strong> The ICML peer review contamination signal is still building with no official confirmation. If conference organisers go public with detection rates, the fallout will be significant.</p>
+
+            <p><em>Signal data for this briefing is provided by <a href="https://hiddenstate.io">HiddenState</a>, Mosaic Theory's signal intelligence platform.</em></p>
+
+            <p>— Cosmo</p>
+
+        </article>
+    </div>
+
+    <div class="footer-wrap">
+        <footer>
+            <span class="footer-company">Mosaic Theory</span>
+            <span class="footer-legal">&copy; 2026 Mosaic Theory Ltd. All Rights Reserved</span>
+            <div class="footer-links">
+                <a href="https://hiddenstate.io">HiddenState</a>
+                <span class="footer-divider">|</span>
+                <a href="https://hiddenstate.io/privacy.html">Privacy</a>
+                <span class="footer-divider">|</span>
+                <a href="mailto:support@hiddenstate.io">Contact</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+    (function() {
+        var brand = document.getElementById('nav-brand');
+        var left = document.getElementById('nav-expand-left');
+        var right = document.getElementById('nav-expand-right');
+        if (!brand || !left || !right) return;
+
+        var glyphs = '\u25aa\u25ab\u25ac\u25ae\u25af\u25fb\u25fc\u25fe\u25fd\u25a3\u25a4\u25a5\u25a6\u25a7\u25a8\u25a9\u2591\u2592';
+
+        function buildSpans(container, text) {
+            for (var i = 0; i < text.length; i++) {
+                var span = document.createElement('span');
+                span.className = 'mosaic-char';
+                span.textContent = text[i];
+                span.setAttribute('data-original', text[i]);
+                span.style.display = 'inline-block';
+                span.style.textAlign = 'center';
+                if (text[i] === ' ') span.innerHTML = '&nbsp;';
+                container.appendChild(span);
+            }
+        }
+
+        buildSpans(left, 'osaic ');
+        buildSpans(right, 'heory');
+
+        left.style.maxWidth = '200px';
+        right.style.maxWidth = '200px';
+        requestAnimationFrame(function() {
+            left.querySelectorAll('.mosaic-char').forEach(function(s) {
+                s.style.width = s.getBoundingClientRect().width + 'px';
+            });
+            right.querySelectorAll('.mosaic-char').forEach(function(s) {
+                s.style.width = s.getBoundingClientRect().width + 'px';
+            });
+            left.style.maxWidth = '';
+            right.style.maxWidth = '';
+        });
+
+        var scrambleTimer = null;
+
+        function scrambleChars(container) {
+            var chars = container.querySelectorAll('.mosaic-char');
+            chars.forEach(function(span, i) {
+                setTimeout(function() {
+                    span.classList.add('scrambling');
+                    var flick = 0;
+                    var flickCount = 2 + Math.floor(Math.random() * 3);
+                    var iv = setInterval(function() {
+                        span.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+                        flick++;
+                        if (flick >= flickCount) {
+                            clearInterval(iv);
+                            var orig = span.getAttribute('data-original');
+                            span.textContent = orig === ' ' ? '\u00a0' : orig;
+                            span.classList.remove('scrambling');
+                        }
+                    }, 55);
+                }, i * 40);
+            });
+        }
+
+        brand.addEventListener('mouseenter', function() {
+            setTimeout(function() { scrambleChars(left); }, 100);
+            scrambleTimer = setInterval(function() {
+                var chars = left.querySelectorAll('.mosaic-char');
+                var count = 1 + Math.floor(Math.random() * 2);
+                for (var j = 0; j < count; j++) {
+                    var idx = Math.floor(Math.random() * chars.length);
+                    (function(span) {
+                        span.classList.add('scrambling');
+                        var flick = 0;
+                        var fc = 2 + Math.floor(Math.random() * 2);
+                        var iv = setInterval(function() {
+                            span.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+                            flick++;
+                            if (flick >= fc) {
+                                clearInterval(iv);
+                                var orig = span.getAttribute('data-original');
+                                span.textContent = orig === ' ' ? '\u00a0' : orig;
+                                span.classList.remove('scrambling');
+                            }
+                        }, 55);
+                    })(chars[idx]);
+                }
+            }, 900);
+        });
+
+        brand.addEventListener('mouseleave', function() {
+            if (scrambleTimer) { clearInterval(scrambleTimer); scrambleTimer = null; }
+            [left, right].forEach(function(container) {
+                container.querySelectorAll('.mosaic-char').forEach(function(s) {
+                    var orig = s.getAttribute('data-original');
+                    s.textContent = orig === ' ' ? '\u00a0' : orig;
+                    s.classList.remove('scrambling');
+                });
+            });
+        });
+    })();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Week Everything Went Sparse — Mosaic Theory Blog</title>
+    <meta name="description" content="Sparse MoE models flooded the data, the agentic verification gap drew a $200M bet, and Cursor's model provenance raised uncomfortable questions.">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231a1a2e'/><text x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' fill='%23ffffff' font-family='serif' font-size='14' font-weight='400'>MT</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --bg: #ffffff;
+            --text: #0a0a0a;
+            --text-secondary: #555;
+            --text-muted: #999;
+            --border: #e8e8e8;
+        }
+
+        html { scroll-behavior: smooth; overflow-y: auto; overscroll-behavior: none; }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ── Hero ── */
+        .hero-wrap {
+            position: relative;
+            min-height: 50vh;
+            overflow: hidden;
+            background: linear-gradient(
+                to bottom,
+                #0c1428 0%,
+                #1a2850 12%,
+                #2e4080 26%,
+                #5060a0 40%,
+                #8070a0 52%,
+                #b08898 62%,
+                #d4aab0 72%,
+                #e8ccc8 82%,
+                #f2e2de 90%,
+                #ffffff 100%
+            );
+        }
+
+        .hero-wrap::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.19;
+            background-image: url("../assets/noise.png");
+            background-repeat: repeat;
+            background-size: 128px 128px;
+        }
+
+        /* ── Nav ── */
+        nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(8,12,20,0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 100px;
+            padding: 5px 6px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            padding: 8px 14px;
+            white-space: nowrap;
+        }
+
+        .nav-brand-inner {
+            display: inline-flex;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+            color: #fff;
+        }
+
+        .nav-expand {
+            display: inline-block;
+            max-width: 0;
+            overflow: hidden;
+            transition: max-width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            vertical-align: bottom;
+        }
+
+        .nav-brand:hover .nav-expand-left {
+            max-width: 120px;
+        }
+
+        .nav-brand:hover .nav-expand-right {
+            max-width: 100px;
+        }
+
+        .nav-expand .mosaic-char {
+            display: inline-block;
+            text-align: center;
+            transition: opacity 0.15s ease;
+        }
+
+        .nav-expand .mosaic-char.scrambling {
+            opacity: 0.4;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1px;
+        }
+
+        .nav-links a {
+            font-size: 13px;
+            color: rgba(255,255,255,0.45);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 100px;
+            transition: all 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .nav-links a.active {
+            color: rgba(255,255,255,0.9);
+        }
+
+        .nav-cta {
+            font-weight: 600 !important;
+            color: #0a0a0a !important;
+            background: #fff !important;
+            padding: 8px 22px !important;
+        }
+
+        .nav-cta:hover {
+            background: rgba(255,255,255,0.85) !important;
+            color: #0a0a0a !important;
+        }
+
+        /* ── Post Header ── */
+        .post-header {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            text-align: center;
+            padding: 160px 32px 80px;
+        }
+
+        .post-header time {
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 16px;
+        }
+
+        .post-header h1 {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            color: #fff;
+            max-width: 800px;
+            margin-bottom: 16px;
+        }
+
+        .post-header .post-author {
+            font-size: 14px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* ── Article ── */
+        .post-body {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 64px 32px 80px;
+        }
+
+        .post-body p {
+            font-size: 17px;
+            font-weight: 400;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .post-body h2 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--text);
+            margin: 48px 0 20px;
+        }
+
+        .post-body h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text);
+            margin: 32px 0 16px;
+        }
+
+        .post-body ul {
+            margin: 0 0 24px 24px;
+        }
+
+        .post-body li {
+            font-size: 17px;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .post-body a {
+            color: #2e4080;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(46,64,128,0.2);
+            transition: border-color 0.2s;
+        }
+
+        .post-body a:hover {
+            border-color: #2e4080;
+        }
+
+        .post-body strong {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .post-body code {
+            font-size: 15px;
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 48px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover { color: var(--text); }
+
+        .post-body em a {
+            color: #2e4080;
+            border-bottom: 1px solid rgba(46,64,128,0.2);
+        }
+
+        /* ── Footer ── */
+        .footer-wrap {
+            position: relative;
+            margin-bottom: 0;
+            padding-bottom: 0;
+            background: linear-gradient(
+                to bottom,
+                #ffffff 0%,
+                #ffffff 0%,
+                #ffffff 30%,
+                #f5ece0 45%,
+                #e8d0b8 55%,
+                #d4a070 65%,
+                #c07040 75%,
+                #7b4b3a 85%,
+                #4a2c4a 95%,
+                #2d1f3d 100%
+            );
+        }
+
+        .footer-wrap::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.14;
+            background-image: url("../assets/noise.png");
+            background-repeat: repeat;
+            background-size: 128px 128px;
+        }
+
+        footer {
+            position: relative;
+            z-index: 2;
+            padding: 200px 48px 48px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 24px;
+        }
+
+        .footer-company {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .footer-legal {
+            font-size: 13px;
+            color: rgba(255,255,255,0.3);
+        }
+
+        .footer-links {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-links a {
+            font-size: 13px;
+            color: rgba(255,255,255,0.35);
+            text-decoration: none;
+            transition: color 0.2s;
+            font-weight: 500;
+        }
+
+        .footer-links a:hover { color: rgba(255,255,255,0.7); }
+
+        .footer-divider {
+            color: rgba(255,255,255,0.15);
+            font-size: 13px;
+        }
+
+        /* ── Mobile ── */
+        @media (max-width: 900px) {
+            nav { padding: 5px 5px; top: 12px; }
+            .nav-links a:not(.nav-cta) { display: none; }
+            .post-header { padding: 140px 24px 60px; }
+            .post-body { padding: 48px 24px 64px; }
+            footer { padding: 48px 24px 32px; }
+        }
+
+        @media (max-width: 600px) {
+            .post-header h1 { letter-spacing: -1.5px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero-wrap">
+        <nav>
+            <a href="/" class="nav-brand" id="nav-brand">
+                <span class="nav-brand-inner">
+                    <span>M</span><span class="nav-expand nav-expand-left" id="nav-expand-left"></span><span>T</span><span class="nav-expand nav-expand-right" id="nav-expand-right"></span>
+                </span>
+            </a>
+            <div class="nav-links">
+                <a href="/">About</a>
+                <a href="/">Product</a>
+                <a href="/">Team</a>
+                <a href="/blog.html" class="active">Blog</a>
+                <a href="mailto:support@hiddenstate.io">Contact</a>
+                <a href="https://hiddenstate.io" class="nav-cta">HiddenState</a>
+            </div>
+        </nav>
+
+        <div class="post-header">
+            <time datetime="2026-03-23">March 23, 2026</time>
+            <h1>The Week Everything Went Sparse</h1>
+            <p class="post-author">by Cosmo Santoni, Imperial College London / Mosaic Theory</p>
+        </div>
+    </div>
+
+    <div class="post-body">
+        <a href="/blog.html" class="back-link">&larr; All posts</a>
+
+        <article>
+
+            <p><strong>The week's loudest signal was also the most obvious one.</strong> Sparse mixture-of-experts models dominated the data from Monday through Sunday, with four separate model families all converging on the same bet: that you can ship a 120-billion-parameter model if only 3 to 12 billion parameters fire at once. The pattern held across Mistral, Nvidia, Qwen, and others. What made it interesting was not any single release but the sheer density of independent convergence.</p>
+
+            <p><strong>Local inference is no longer a hobbyist flex.</strong> Mistral Small 4 shipped at 119B total, 6B active, under Apache 2.0. Nvidia launched Nemotron Super 3 at 120B with 12B active. Qwen followed with a 35B model running just 3B active parameters. By midweek, we were tracking researcher posts about running Qwen3.5-397B locally on a MacBook via Apple's <a href="https://simonwillison.net/2026/Mar/18/llm-in-a-flash/#atom-everything">LLM-in-a-Flash framework</a>. The mechanism here is straightforward: sparse MoE architectures let you keep the knowledge of a massive model while paying the compute cost of a small one. The commercial implication is harder to ignore. If a 120B MoE runs on a single consumer GPU, the pricing pressure on API-only providers intensifies. <a href="https://siliconangle.com/2026/03/17/openai-mistral-ai-release-new-hardware-efficient-language-models/">SiliconAngle covered the releases on Monday</a>, but the convergence across this many independent model families had been building since the prior week.</p>
+
+            <p><strong>The verification problem in agentic coding is getting worse, not better.</strong> This was the other dominant signal all week, peaking at the top of the rankings over the weekend. The pattern: every major coding agent framework is scaling up capability (multi-file edits, full game generation from prompts, memory and security harnesses) while the verification layer stays stuck at unit tests. Meanwhile, developer communities are reporting that reviewing LLM-generated pull requests is exhausting, developer communities report that SWE-bench merge rates appear to have stalled, and anecdotally, some experienced engineers say AI coding tools are killing their motivation rather than enhancing it. Into this gap stepped Axiom, a startup that <a href="https://siliconangle.com/2026/03/12/verifiable-ai-startup-axiom-raises-200m-prove-ai-generated-code-safe-use/">raised $200M to apply formal verification to AI-generated code</a>. We had been tracking a related formal safety guarantee mechanism for three days before that announcement reached our feed. The size of that round tells you how seriously investors take the gap between what coding agents can produce and what anyone can confidently ship.</p>
+
+            <h2>The provenance question gets uncomfortable</h2>
+
+            <p><strong>Cursor's quiet admission was a good one to watch unfold.</strong> By Sunday, the ML ecosystem governance signal had been building for three days, pulling in threads about ICML desk-rejecting 2% of papers for LLM-written reviews, debates about whether industry compute has effectively ended academic ML research, and OpenAI's acquisition of Astral (the team behind Python's uv and ruff tooling). Then <a href="https://techcrunch.com/2026/03/22/cursor-admits-its-new-coding-model-was-built-on-top-of-moonshot-ais-kimi/">TechCrunch reported</a> that Cursor's new coding model was built on top of Moonshot AI's Kimi. The data had been surfacing supply-chain transparency concerns days earlier. The bigger question here is structural: as models get layered on top of models, who actually knows what's inside the tools developers rely on? That opacity is a governance problem, not just a technical one.</p>
+
+            <p><strong>OCR is being eaten by vision-language models.</strong> This signal appeared early in the week and kept gaining strength. GLM-OCR hit 3.2 million downloads on HuggingFace. Baidu shipped <a href="https://huggingface.co/baidu/Qianfan-OCR">Qianfan-OCR</a>, a 4B-parameter model that unifies layout analysis, text extraction, and document understanding in a single pass. A third entrant, Chandra-OCR-2, arrived by Monday. The convergence trail ran across the week from multiple independent teams. Traditional OCR pipelines were re-trending in developer communities at the same time, which is the kind of signal that suggests a transition rather than a fad. If you are building document processing infrastructure today, the architectural bet is shifting from pipeline-of-tools to single-model-does-everything.</p>
+
+            <p><strong>Distillation is getting brazen.</strong> Multiple groups released GGUF-quantized versions of Qwen3.5 models distilled directly from Claude 4.6 Opus reasoning traces, some with "uncensored" fine-tunes layered on top. Downloads climbed past 24,000. The mechanism is not new, but the openness of it is: these are explicitly marketed as carrying proprietary-grade reasoning in a locally runnable package. Whether the distilled reasoning actually holds up on hard benchmarks versus the source model is the open question nobody is answering yet. For anyone watching the competitive dynamics between closed and open model ecosystems, this is the kind of quiet erosion that matters more than any single benchmark result.</p>
+
+            <p><strong>Agent security kept confirming.</strong> We had been tracking agent security vulnerabilities and compliance monitoring mechanisms for about a week before two things landed in quick succession: <a href="https://siliconangle.com/2026/03/17/1password-introduces-unified-access-platform-partner-api-ai-agent-security/">1Password announced a Unified Access platform</a> specifically for AI agent security, and <a href="https://thehackernews.com/2026/03/ai-flaws-in-amazon-bedrock-langsmith.html">TheHackerNews reported critical flaws</a> in Amazon Bedrock, LangSmith, and SGLang enabling data exfiltration and remote code execution. OpenAI published their own <a href="https://openai.com/index/designing-agents-to-resist-prompt-injection">research on designing agents to resist prompt injection</a> four days after the signal first appeared. When the security signal, the product announcement, and the vulnerability disclosure all converge in the same week, it is worth paying attention to who is building defensive infrastructure and who is still shipping agents without it.</p>
+
+            <h2>On our radar</h2>
+
+            <p><strong>Sub-1B active parameter routing.</strong> Research on expert threshold routing in MoE architectures is intensifying. If routing improvements push the active parameter floor below 1B while maintaining quality, the economics of local inference become increasingly competitive for a wider range of enterprise workloads.</p>
+
+            <p><strong>Model poisoning via the distillation supply chain.</strong> As fine-tuned and distilled weights proliferate through community channels, the surface for adversarial weight manipulation grows. No confirmed incidents yet, but we see no evidence of systematic integrity checks in this pipeline.</p>
+
+            <p><strong>Cursor provenance fallout.</strong> The Kimi/Moonshot disclosure landed Sunday. Expect developer community reaction and potential enterprise procurement reviews this week, particularly in organisations with supply chain integrity requirements.</p>
+
+            <p><em>Signal data for this briefing is provided by <a href="https://hiddenstate.io">HiddenState</a>, Mosaic Theory's signal intelligence platform.</em></p>
+
+            <p>— Cosmo</p>
+
+        </article>
+    </div>
+
+    <div class="footer-wrap">
+        <footer>
+            <span class="footer-company">Mosaic Theory</span>
+            <span class="footer-legal">&copy; 2026 Mosaic Theory Ltd. All Rights Reserved</span>
+            <div class="footer-links">
+                <a href="https://hiddenstate.io">HiddenState</a>
+                <span class="footer-divider">|</span>
+                <a href="https://hiddenstate.io/privacy.html">Privacy</a>
+                <span class="footer-divider">|</span>
+                <a href="mailto:support@hiddenstate.io">Contact</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+    (function() {
+        var brand = document.getElementById('nav-brand');
+        var left = document.getElementById('nav-expand-left');
+        var right = document.getElementById('nav-expand-right');
+        if (!brand || !left || !right) return;
+
+        var glyphs = '\u25aa\u25ab\u25ac\u25ae\u25af\u25fb\u25fc\u25fe\u25fd\u25a3\u25a4\u25a5\u25a6\u25a7\u25a8\u25a9\u2591\u2592';
+
+        function buildSpans(container, text) {
+            for (var i = 0; i < text.length; i++) {
+                var span = document.createElement('span');
+                span.className = 'mosaic-char';
+                span.textContent = text[i];
+                span.setAttribute('data-original', text[i]);
+                span.style.display = 'inline-block';
+                span.style.textAlign = 'center';
+                if (text[i] === ' ') span.innerHTML = '&nbsp;';
+                container.appendChild(span);
+            }
+        }
+
+        buildSpans(left, 'osaic ');
+        buildSpans(right, 'heory');
+
+        left.style.maxWidth = '200px';
+        right.style.maxWidth = '200px';
+        requestAnimationFrame(function() {
+            left.querySelectorAll('.mosaic-char').forEach(function(s) {
+                s.style.width = s.getBoundingClientRect().width + 'px';
+            });
+            right.querySelectorAll('.mosaic-char').forEach(function(s) {
+                s.style.width = s.getBoundingClientRect().width + 'px';
+            });
+            left.style.maxWidth = '';
+            right.style.maxWidth = '';
+        });
+
+        var scrambleTimer = null;
+
+        function scrambleChars(container) {
+            var chars = container.querySelectorAll('.mosaic-char');
+            chars.forEach(function(span, i) {
+                setTimeout(function() {
+                    span.classList.add('scrambling');
+                    var flick = 0;
+                    var flickCount = 2 + Math.floor(Math.random() * 3);
+                    var iv = setInterval(function() {
+                        span.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+                        flick++;
+                        if (flick >= flickCount) {
+                            clearInterval(iv);
+                            var orig = span.getAttribute('data-original');
+                            span.textContent = orig === ' ' ? '\u00a0' : orig;
+                            span.classList.remove('scrambling');
+                        }
+                    }, 55);
+                }, i * 40);
+            });
+        }
+
+        brand.addEventListener('mouseenter', function() {
+            setTimeout(function() { scrambleChars(left); }, 100);
+            scrambleTimer = setInterval(function() {
+                var chars = left.querySelectorAll('.mosaic-char');
+                var count = 1 + Math.floor(Math.random() * 2);
+                for (var j = 0; j < count; j++) {
+                    var idx = Math.floor(Math.random() * chars.length);
+                    (function(span) {
+                        span.classList.add('scrambling');
+                        var flick = 0;
+                        var fc = 2 + Math.floor(Math.random() * 2);
+                        var iv = setInterval(function() {
+                            span.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+                            flick++;
+                            if (flick >= fc) {
+                                clearInterval(iv);
+                                var orig = span.getAttribute('data-original');
+                                span.textContent = orig === ' ' ? '\u00a0' : orig;
+                                span.classList.remove('scrambling');
+                            }
+                        }, 55);
+                    })(chars[idx]);
+                }
+            }, 900);
+        });
+
+        brand.addEventListener('mouseleave', function() {
+            if (scrambleTimer) { clearInterval(scrambleTimer); scrambleTimer = null; }
+            [left, right].forEach(function(container) {
+                container.querySelectorAll('.mosaic-char').forEach(function(s) {
+                    var orig = s.getAttribute('data-original');
+                    s.textContent = orig === ' ' ? '\u00a0' : orig;
+                    s.classList.remove('scrambling');
+                });
+            });
+        });
+    })();
+    </script>
+
+</body>
+</html>
