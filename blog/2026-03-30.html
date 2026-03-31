@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog — Mosaic Theory</title>
-    <meta name="description" content="Weekly signal intelligence from Mosaic Theory. Tech, markets, and the patterns that connect them.">
+    <title>Open Weights, Open Season — Mosaic Theory Blog</title>
+    <meta name="description" content="ML infrastructure packages are getting backdoored at credential chokepoints, OCR is being replaced by vision-language models, open-weight TTS broke the 200ms barrier, and quantization hype outran the benchmarks.">
 
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231a1a2e'/><text x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' fill='%23ffffff' font-family='serif' font-size='14' font-weight='400'>MT</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,7 +38,7 @@
         /* ── Hero ── */
         .hero-wrap {
             position: relative;
-            min-height: 45vh;
+            min-height: 50vh;
             overflow: hidden;
             background: linear-gradient(
                 to bottom,
@@ -62,7 +62,7 @@
             z-index: 1;
             pointer-events: none;
             opacity: 0.19;
-            background-image: url("assets/noise.png");
+            background-image: url("../assets/noise.png");
             background-repeat: repeat;
             background-size: 128px 128px;
         }
@@ -165,8 +165,8 @@
             color: #0a0a0a !important;
         }
 
-        /* ── Page Header ── */
-        .page-header {
+        /* ── Post Header ── */
+        .post-header {
             position: relative;
             z-index: 3;
             display: flex;
@@ -177,86 +177,112 @@
             padding: 160px 32px 80px;
         }
 
-        .page-header h1 {
-            font-size: clamp(40px, 6vw, 72px);
-            font-weight: 800;
-            line-height: 1.0;
-            letter-spacing: -3px;
-            color: #fff;
+        .post-header time {
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.5);
             margin-bottom: 16px;
         }
 
-        .page-header p {
-            font-size: 17px;
-            font-weight: 400;
-            line-height: 1.7;
-            color: rgba(255,255,255,0.65);
-            max-width: 480px;
+        .post-header h1 {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            color: #fff;
+            max-width: 800px;
+            margin-bottom: 16px;
         }
 
-        /* ── Blog List ── */
-        .blog-list {
+        .post-header .post-author {
+            font-size: 14px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* ── Article ── */
+        .post-body {
             max-width: 720px;
             margin: 0 auto;
             padding: 64px 32px 80px;
         }
 
-        .blog-card {
-            padding: 40px 0;
-            border-bottom: 1px solid var(--border);
+        .post-body p {
+            font-size: 17px;
+            font-weight: 400;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 20px;
         }
 
-        .blog-card:first-child {
-            padding-top: 0;
-        }
-
-        .blog-card:last-child {
-            border-bottom: none;
-        }
-
-        .blog-card time {
-            font-size: 13px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--text-muted);
-        }
-
-        .blog-card h2 {
-            font-size: 28px;
+        .post-body h2 {
+            font-size: 24px;
             font-weight: 700;
-            letter-spacing: -1px;
-            line-height: 1.2;
-            margin: 12px 0;
+            letter-spacing: -0.5px;
+            color: var(--text);
+            margin: 48px 0 20px;
         }
 
-        .blog-card h2 a {
+        .post-body h3 {
+            font-size: 20px;
+            font-weight: 600;
             color: var(--text);
+            margin: 32px 0 16px;
+        }
+
+        .post-body ul {
+            margin: 0 0 24px 24px;
+        }
+
+        .post-body li {
+            font-size: 17px;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .post-body a {
+            color: #2e4080;
             text-decoration: none;
+            border-bottom: 1px solid rgba(46,64,128,0.2);
+            transition: border-color 0.2s;
+        }
+
+        .post-body a:hover {
+            border-color: #2e4080;
+        }
+
+        .post-body strong {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .post-body code {
+            font-size: 15px;
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 48px;
             transition: color 0.2s;
         }
 
-        .blog-card h2 a:hover {
+        .back-link:hover { color: var(--text); }
+
+        .post-body em a {
             color: #2e4080;
-        }
-
-        .blog-card p {
-            font-size: 16px;
-            line-height: 1.7;
-            color: var(--text-secondary);
-            margin-bottom: 16px;
-        }
-
-        .blog-read-more {
-            font-size: 14px;
-            font-weight: 600;
-            color: #2e4080;
-            text-decoration: none;
-            transition: opacity 0.2s;
-        }
-
-        .blog-read-more:hover {
-            opacity: 0.7;
+            border-bottom: 1px solid rgba(46,64,128,0.2);
         }
 
         /* ── Footer ── */
@@ -286,7 +312,7 @@
             z-index: 1;
             pointer-events: none;
             opacity: 0.14;
-            background-image: url("assets/noise.png");
+            background-image: url("../assets/noise.png");
             background-repeat: repeat;
             background-size: 128px 128px;
         }
@@ -339,14 +365,13 @@
         @media (max-width: 900px) {
             nav { padding: 5px 5px; top: 12px; }
             .nav-links a:not(.nav-cta):not([href="blog.html"]):not([href="/blog.html"]) { display: none; }
-            .page-header { padding: 140px 24px 60px; }
-            .blog-list { padding: 48px 24px 64px; }
+            .post-header { padding: 140px 24px 60px; }
+            .post-body { padding: 48px 24px 64px; }
             footer { padding: 48px 24px 32px; }
         }
 
         @media (max-width: 600px) {
-            .page-header h1 { letter-spacing: -2px; }
-            .blog-card h2 { font-size: 24px; }
+            .post-header h1 { letter-spacing: -1.5px; }
         }
     </style>
 </head>
@@ -363,41 +388,53 @@
                 <a href="/">About</a>
                 <a href="/">Product</a>
                 <a href="/">Team</a>
-                <a href="blog.html" class="active">Blog</a>
+                <a href="/blog.html" class="active">Blog</a>
                 <a href="mailto:support@hiddenstate.io">Contact</a>
                 <a href="https://hiddenstate.io" class="nav-cta">HiddenState</a>
             </div>
         </nav>
 
-        <div class="page-header">
-            <h1>Blog</h1>
-            <p>Weekly signal intelligence. Tech, markets, and the patterns that connect them.</p>
+        <div class="post-header">
+            <time datetime="2026-03-30">March 30, 2026</time>
+            <h1>Open Weights, Open Season</h1>
+            <p class="post-author">by Cosmo Santoni, Imperial College London / Mosaic Theory</p>
         </div>
     </div>
 
-    <div class="blog-list">
+    <div class="post-body">
+        <a href="/blog.html" class="back-link">&larr; All posts</a>
 
-        <article class="blog-card">
-            <time datetime="2026-03-30">March 30, 2026</time>
-            <h2><a href="blog/2026-03-30.html">Open Weights, Open Season</a></h2>
-            <p>ML infrastructure packages are getting backdoored at credential chokepoints, OCR is being replaced by vision-language models, open-weight TTS broke the 200ms barrier, and quantization hype outran the benchmarks.</p>
-            <a href="blog/2026-03-30.html" class="blog-read-more">Read &rarr;</a>
+        <article>
+
+            <p><strong>The ML toolchain is getting hit at every layer.</strong> PyPI supply chain attacks, vulnerability disclosures in core AI framework dependencies, credential exfiltration from proxy libraries. Three separate incidents in one week, all targeting the infrastructure that developers install without a second thought. The industry's attention remains on capabilities. The attackers' attention is on the plumbing.</p>
+
+            <p><strong>LiteLLM got backdoored, and 47,000 installs happened before anyone noticed.</strong> Versions 1.82.7 and 1.82.8 of LiteLLM on PyPI were compromised with a malicious <code>.pth</code> file that scraped SSH keys, AWS and GCP credentials, and Kubernetes secrets on every Python process start. The attack surface is particularly nasty because LiteLLM is an ML proxy library. It aggregates API keys by design. Simon Willison published a detailed incident timeline tracking the compromise, and the emerging picture is grim. Separately, <a href="https://thehackernews.com/2026/03/langchain-langgraph-flaws-expose-files.html">three vulnerabilities were disclosed in LangChain and LangGraph</a> exposing filesystem data and environment secrets. A third event, a <a href="https://www.bleepingcomputer.com/news/security/backdoored-telnyx-pypi-package-pushes-malware-hidden-in-wav-audio/">backdoored Telnyx PyPI package hiding malware inside WAV audio files</a>, landed the same week. Two confirmed supply chain attacks and a major vulnerability disclosure in core AI infrastructure, all in one week. If you run any of these libraries in production, this is not a theoretical concern.</p>
+
+            <p><strong>OCR as a standalone category is fading fast.</strong> RedNote's <a href="https://huggingface.co/rednote-hilab/dots.mocr">dots.mocr</a> hit nearly 20,000 downloads on HuggingFace. MinerU-Diffusion reframed document OCR entirely as inverse rendering via diffusion decoding, recovering layout, tables, and formulas in a single pass. Last week it was GLM-OCR at 3.2 million downloads and Baidu's Qianfan-OCR unifying the entire pipeline. Five independent teams, from Chinese tech giants to open-source projects, all arriving at the same architectural conclusion within weeks of each other. The transition from traditional OCR pipelines to vision-language models is accelerating faster than most observers expected. Whether VLM-based OCR can fully replace traditional pipelines at production scale remains unproven, but the architectural direction is clear. If you are starting a new document processing build, you should be evaluating VLM-based alternatives alongside traditional engines.</p>
+
+            <h2>Mistral's voice play and the race to sub-200ms TTS</h2>
+
+            <p><strong>Voxtral TTS landed with a claim nobody expected.</strong> Mistral released <a href="https://huggingface.co/mistralai/Voxtral-4B-TTS-2603">Voxtral TTS</a>, a multi-billion-parameter text-to-speech model with 90-millisecond time-to-first-audio, nine languages, and open weights. They claim human-preference wins over ElevenLabs Flash v2.5. Independent benchmarks have not confirmed this yet, but the architecture is interesting: a hybrid approach that generates expressive multilingual speech from just 3 seconds of reference audio. By the end of the week, a second entrant appeared. LongCat-AudioDiT, a 3.5-billion-parameter diffusion TTS operating in waveform latent space, arrived from a completely independent group. Two open-weight TTS models at this quality tier in one week is noteworthy. <a href="https://sifted.eu/articles/voice-ai-race-mistral-elevenlabs/">Sifted covered the emerging race</a> between Mistral and ElevenLabs directly. For anyone building voice-first applications on commercial TTS APIs, the pricing leverage just shifted.</p>
+
+            <p><strong>Distillation from frontier models is accelerating, and nobody is asking hard questions about it.</strong> Qwen3.5 models distilled from Claude 4.6 Opus reasoning traces hit 29,000 downloads as GGUF quants for the 27B variant. A 4B distilled variant appeared by Thursday. The 27B runs at 20 tokens per second on an M5 Max with 128GB of RAM. Unsloth's distribution has accumulated 942,000 downloads. These are explicitly marketed as carrying proprietary-grade reasoning in locally runnable packages. Whether the distilled reasoning actually transfers to out-of-distribution tasks is the question nobody seems interested in answering. The more commercially relevant question is whether the labs whose reasoning is being distilled will continue to tolerate it at this scale.</p>
+
+            <p><strong>Google's TurboQuant is either a breakthrough or an overpromise.</strong> <a href="https://siliconangle.com/2026/03/25/google-develops-turboquant-compression-technology-ai-models/">SiliconAngle reported</a> significant memory reduction and speed increases for AI models. Alibaba's MNN framework added TurboQuant support within days. Then RotorQuant appeared claiming to be 10-19x faster via Clifford rotors. Independent reproduction of either technique is still pending, and the exact compression ratios vary depending on which source you read. If the claims hold up, the impact on deployment economics could be substantial. But right now, community excitement is running well ahead of actual benchmarks.</p>
+
+            <p><strong>LLM sycophancy now has numbers behind it.</strong> A Stanford study showed that the tendency of models to agree with users rather than correct them measurably distorts personal advice. The study showed how sycophantic affirmation amplifies harmful recommendations. <a href="https://techcrunch.com/2026/03/28/stanford-study-outlines-dangers-of-asking-ai-chatbots-for-personal-advice/">TechCrunch covered it</a>, and it landed simultaneously in developer communities with nearly 300 comments. This is one of those findings that feels obvious in retrospect but had not been quantified before. Mitigation strategies beyond standard preference tuning remain unvalidated. For anyone deploying chatbots in health, finance, or advisory contexts, this is a liability question, not just a UX one.</p>
+
+            <h2>On our radar</h2>
+
+            <ul>
+                <li><strong>Coding agent quality over long horizons.</strong> Agentic coding tools degrade in quality over extended iterative sessions, and new benchmarks are starting to quantify by how much. The verification gap we flagged last week is not narrowing. Qodo just <a href="https://techcrunch.com/2026/03/30/qodo-bets-on-code-verification-as-ai-coding-scales-raises-70m/">raised $70M for code verification</a>, which tells you where the smart money thinks the problem is heading.</li>
+                <li><strong>Gemma 4 architecture leaks.</strong> Details about Google's next Gemma model leaked on social media before any official announcement. Nothing confirmed yet, but the trajectory of Gemma releases has implications for the open-weight competitive landscape.</li>
+                <li><strong>Agent governance as a category.</strong> Sycamore raised $65M, Axiom raised $200M, and several enterprise security vendors shipped agent-specific governance tooling at RSAC this week. The pace of investment suggests the market has decided that agent security is not a feature. It is a product.</li>
+            </ul>
+
+            <p><em>Signal data for this briefing is provided by <a href="https://hiddenstate.io">HiddenState</a>, Mosaic Theory's signal intelligence platform.</em></p>
+
+            <p>— Cosmo</p>
+
         </article>
-
-        <article class="blog-card">
-            <time datetime="2026-03-23">March 23, 2026</time>
-            <h2><a href="blog/2026-03-23.html">The Week Everything Went Sparse</a></h2>
-            <p>Sparse MoE models flooded the data, the agentic verification gap drew a $200M bet, and Cursor's model provenance raised uncomfortable questions about what's really under the hood.</p>
-            <a href="blog/2026-03-23.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-03-16">March 16, 2026</time>
-            <h2><a href="blog/2026-03-16.html">The Distillation Pipeline Is Open for Business</a></h2>
-            <p>Frontier model distillation went industrial, the AI coding culture war crystallized, and Nvidia telegraphed its GTC moves days early.</p>
-            <a href="blog/2026-03-16.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
     </div>
 
     <div class="footer-wrap">

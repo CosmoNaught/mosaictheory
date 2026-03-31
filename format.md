@@ -48,6 +48,7 @@ There is no rigid "Feature" section. If one signal dominates the week and deserv
 - Don't use em dashes.
 - Don't cover every signal. Pick the 4-6 most interesting ones and do them justice.
 - Don't end observations with "worth monitoring" or "worth watching" without saying what it means. That's a hedge, not an insight.
+- Don't narrate the analysis process. Sentences like "This signal ran all week", "It was a pattern that kept repeating", "the data had been building for three days", "we were tracking" are meta-narration. They describe the experience of looking at a dashboard rather than telling the reader what happened in the world. Lead with the claim or the fact. If timing matters (e.g. a lead time before a public announcement), state it as a concrete fact, not as a story about watching something unfold.
 - Don't treat safety-critical developments (model safety removal, supply chain compromise, scientific integrity threats) with the same casual tone as commercial competition. Dry wit is fine. Trivialising is not.
 
 ***
