@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog — Mosaic Theory</title>
-    <meta name="description" content="Weekly signal intelligence from Mosaic Theory. Tech, markets, and the patterns that connect them.">
+    <title>The Memory Layer Reopens — Mosaic Theory Blog</title>
+    <meta name="description" content="Flat vector retrieval is being dismantled by a wall of new agent-memory papers, Anthropic's Mythos model walked out the door, DeepSeek dropped V4, and the web-agent attack surface is finally getting named.">
 
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231a1a2e'/><text x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' fill='%23ffffff' font-family='serif' font-size='14' font-weight='400'>MT</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,10 +35,10 @@
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* ── Hero ── */
+        /* -- Hero -- */
         .hero-wrap {
             position: relative;
-            min-height: 45vh;
+            min-height: 50vh;
             overflow: hidden;
             background: linear-gradient(
                 to bottom,
@@ -62,12 +62,12 @@
             z-index: 1;
             pointer-events: none;
             opacity: 0.19;
-            background-image: url("assets/noise.png");
+            background-image: url("../assets/noise.png");
             background-repeat: repeat;
             background-size: 128px 128px;
         }
 
-        /* ── Nav ── */
+        /* -- Nav -- */
         nav {
             position: fixed;
             top: 20px;
@@ -165,8 +165,8 @@
             color: #0a0a0a !important;
         }
 
-        /* ── Page Header ── */
-        .page-header {
+        /* -- Post Header -- */
+        .post-header {
             position: relative;
             z-index: 3;
             display: flex;
@@ -177,89 +177,115 @@
             padding: 160px 32px 80px;
         }
 
-        .page-header h1 {
-            font-size: clamp(40px, 6vw, 72px);
-            font-weight: 800;
-            line-height: 1.0;
-            letter-spacing: -3px;
-            color: #fff;
+        .post-header time {
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.5);
             margin-bottom: 16px;
         }
 
-        .page-header p {
-            font-size: 17px;
-            font-weight: 400;
-            line-height: 1.7;
-            color: rgba(255,255,255,0.65);
-            max-width: 480px;
+        .post-header h1 {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            color: #fff;
+            max-width: 800px;
+            margin-bottom: 16px;
         }
 
-        /* ── Blog List ── */
-        .blog-list {
+        .post-header .post-author {
+            font-size: 14px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* -- Article -- */
+        .post-body {
             max-width: 720px;
             margin: 0 auto;
             padding: 64px 32px 80px;
         }
 
-        .blog-card {
-            padding: 40px 0;
-            border-bottom: 1px solid var(--border);
+        .post-body p {
+            font-size: 17px;
+            font-weight: 400;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 20px;
         }
 
-        .blog-card:first-child {
-            padding-top: 0;
-        }
-
-        .blog-card:last-child {
-            border-bottom: none;
-        }
-
-        .blog-card time {
-            font-size: 13px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--text-muted);
-        }
-
-        .blog-card h2 {
-            font-size: 28px;
+        .post-body h2 {
+            font-size: 24px;
             font-weight: 700;
-            letter-spacing: -1px;
-            line-height: 1.2;
-            margin: 12px 0;
+            letter-spacing: -0.5px;
+            color: var(--text);
+            margin: 48px 0 20px;
         }
 
-        .blog-card h2 a {
+        .post-body h3 {
+            font-size: 20px;
+            font-weight: 600;
             color: var(--text);
+            margin: 32px 0 16px;
+        }
+
+        .post-body ul {
+            margin: 0 0 24px 24px;
+        }
+
+        .post-body li {
+            font-size: 17px;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .post-body a {
+            color: #2e4080;
             text-decoration: none;
+            border-bottom: 1px solid rgba(46,64,128,0.2);
+            transition: border-color 0.2s;
+        }
+
+        .post-body a:hover {
+            border-color: #2e4080;
+        }
+
+        .post-body strong {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .post-body code {
+            font-size: 15px;
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 48px;
             transition: color 0.2s;
         }
 
-        .blog-card h2 a:hover {
+        .back-link:hover { color: var(--text); }
+
+        .post-body em a {
             color: #2e4080;
+            border-bottom: 1px solid rgba(46,64,128,0.2);
         }
 
-        .blog-card p {
-            font-size: 16px;
-            line-height: 1.7;
-            color: var(--text-secondary);
-            margin-bottom: 16px;
-        }
-
-        .blog-read-more {
-            font-size: 14px;
-            font-weight: 600;
-            color: #2e4080;
-            text-decoration: none;
-            transition: opacity 0.2s;
-        }
-
-        .blog-read-more:hover {
-            opacity: 0.7;
-        }
-
-        /* ── Footer ── */
+        /* -- Footer -- */
         .footer-wrap {
             position: relative;
             margin-bottom: 0;
@@ -286,7 +312,7 @@
             z-index: 1;
             pointer-events: none;
             opacity: 0.14;
-            background-image: url("assets/noise.png");
+            background-image: url("../assets/noise.png");
             background-repeat: repeat;
             background-size: 128px 128px;
         }
@@ -335,18 +361,17 @@
             font-size: 13px;
         }
 
-        /* ── Mobile ── */
+        /* -- Mobile -- */
         @media (max-width: 900px) {
             nav { padding: 5px 5px; top: 12px; }
             .nav-links a:not(.nav-cta):not([href="blog.html"]):not([href="/blog.html"]) { display: none; }
-            .page-header { padding: 140px 24px 60px; }
-            .blog-list { padding: 48px 24px 64px; }
+            .post-header { padding: 140px 24px 60px; }
+            .post-body { padding: 48px 24px 64px; }
             footer { padding: 48px 24px 32px; }
         }
 
         @media (max-width: 600px) {
-            .page-header h1 { letter-spacing: -2px; }
-            .blog-card h2 { font-size: 24px; }
+            .post-header h1 { letter-spacing: -1.5px; }
         }
     </style>
 </head>
@@ -363,97 +388,59 @@
                 <a href="/">About</a>
                 <a href="/">Product</a>
                 <a href="/">Team</a>
-                <a href="blog.html" class="active">Blog</a>
+                <a href="/blog.html" class="active">Blog</a>
                 <a href="mailto:support@hiddenstate.io">Contact</a>
                 <a href="https://hiddenstate.io" class="nav-cta">HiddenState</a>
             </div>
         </nav>
 
-        <div class="page-header">
-            <h1>Blog</h1>
-            <p>Weekly signal intelligence. Tech, markets, and the patterns that connect them.</p>
+        <div class="post-header">
+            <time datetime="2026-05-18">May 18, 2026</time>
+            <h1>The Memory Layer Reopens</h1>
+            <p class="post-author">by Cosmo Santoni, Imperial College London / Mosaic Theory</p>
         </div>
     </div>
 
-    <div class="blog-list">
+    <div class="post-body">
+        <a href="/blog.html" class="back-link">&larr; All posts</a>
 
-        <article class="blog-card">
-            <time datetime="2026-05-25">May 25, 2026</time>
-            <h2><a href="blog/2026-05-25.html">The Test Suite Is the Last Reviewer Left</a></h2>
-            <p>Reward hacking in long-horizon coding agents got measured, the npm supply chain kept burning into GitHub, DeepSeek-V4-Flash crossed 2.7M downloads in a day, and agent-on-agent commerce stopped being a thought experiment.</p>
-            <a href="blog/2026-05-25.html" class="blog-read-more">Read &rarr;</a>
+        <article>
+
+            <p><strong>Agent memory is being rebuilt from scratch.</strong> Across five of the past seven days, independent research groups converged on the same conclusion. Flat vector stores plus a context window are not memory. They are an embarrassing stand-in for it. More than ten distinct replacement proposals landed in a single 24-hour window, with one of them quietly claiming the top spot on the leading long-term-memory benchmark on a Gemini Flash backbone rather than Pro. The flat-RAG era of agent design is closing.</p>
+
+            <h2>What is actually replacing flat vector retrieval</h2>
+
+            <p><strong>The convergence has a shape.</strong> The new memory papers are not random. They cluster on three architectural moves. Self-evolving graph structures update under RL signals rather than static embeddings. Belief-state and prospective retrieval lets the agent retrieve what it thinks it will need rather than what matches the current query. Explicit benchmark redesigns test multi-party, multimodal, and timeline-consistent recall instead of single-turn question answering. <a href="https://huggingface.co/papers/2605.12493">LongMemEval-V2</a> reframes the problem around an "experienced colleague" rather than a search index. <a href="https://huggingface.co/papers/2605.09942">HAGE</a> uses RL-driven weighted graph evolution. <a href="https://huggingface.co/papers/2605.13941">EvolveMem</a> builds the memory architecture itself through AutoResearch. <a href="https://arxiv.org/abs/2605.14177v1">Thinking Ahead</a> retrieves prospectively rather than reactively. <a href="https://arxiv.org/abs/2605.14498v1">GroupMemBench</a> stops pretending agents only ever talk to one user.</p>
+
+            <p><strong>The benchmark result that matters.</strong> A new system topped LongMemEval running on Gemini Flash, not Pro. If that reproduces, it means the bottleneck in long-horizon memory is the retrieval architecture, not the base model. That has direct implications for the unit economics of any agent product that currently leans on the most expensive frontier API for "remembering" things. The cheap model with a better memory layer beat the expensive model with a worse one. If you are running an agent platform with per-token pricing assumptions tied to Pro-tier reasoning, that assumption needs revisiting.</p>
+
+            <p><strong>The commercial validation arrived in parallel.</strong> NeoCognition raised <a href="https://techcrunch.com/2026/04/21/ai-research-lab-neocognition-lands-40m-seed-to-build-agents-that-learn-like-humans/">$40M in seed funding</a> specifically to build agents that learn over time. Cognition, the maker of Devin, is reportedly <a href="https://siliconangle.com/2026/04/23/cognition-creator-ai-software-engineer-devin-talks-raise-hundreds-millions-25b-valuation/">raising at a $25B valuation</a>. The market is pricing persistent-agent infrastructure as a category before the architectures are even settled. Read the research papers and the term sheets together. They are the same story.</p>
+
+            <h2>The web agent attack surface is finally getting named</h2>
+
+            <p><strong>Two security stories ran in lockstep this week.</strong> Anthropic's restricted Claude Mythos cyber model, which the NSA is reportedly already using, <a href="https://techcrunch.com/2026/04/21/unauthorized-group-has-gained-access-to-anthropics-exclusive-cyber-tool-mythos-report-claims/">was accessed by an unauthorized group</a>. Separately, OpenAI <a href="https://www.bleepingcomputer.com/news/security/openai-confirms-security-breach-in-tanstack-supply-chain-attack/">confirmed it was hit in the TanStack supply chain attack</a>. Both incidents are downstream of the same root cause. As labs ship more powerful agentic and cyber-capable models behind narrow access controls, the access controls themselves become the highest-value target. A frontier cyber model is more useful to an attacker than to its intended customer.</p>
+
+            <p><strong>The research side of the same problem is catching up.</strong> A wave of papers this week attacked the web-agent attack surface directly. <a href="https://arxiv.org/abs/2605.15030v1">WARD</a> proposes adversarial defenses for browser agents against prompt injection. <a href="https://arxiv.org/abs/2605.14290v1">Plan-Then-Execute</a> argues that ReAct-style agents leak attack surface by exposing reasoning to compromised pages, and that planning before browsing is structurally safer. The Hacker News ran a piece bluntly titled <a href="https://thehackernews.com/2026/05/why-agentic-ai-is-securitys-next-blind.html">Why Agentic AI Is Security's Next Blind Spot</a>. Read it. Then look at how many of the agent demos shipped at Google Cloud Next and AWS re:Invent in the last month operate with cleartext credentials and zero prompt-injection defense. If you are deploying browser agents inside an enterprise perimeter, you are running a class of system that the defenders have not yet figured out how to monitor.</p>
+
+            <h2>DeepSeek V4, and what the open-weight curve is doing to pricing</h2>
+
+            <p><strong>DeepSeek open-sourced the V4 series.</strong> <a href="https://siliconangle.com/2026/04/24/deepseek-open-sources-v4-large-language-model-series/">SiliconAngle covered the release</a>. The V4 line continues the sparse-MoE routing approach DeepSeek has been refining since V3, and lands in a week where new MoE research is converging on the same view. Aggressive routing and per-token expert sparsity are the production answer to inference cost, not denser quantization of dense models. Combine that with <a href="https://siliconangle.com/2026/04/24/ai-startups-cohere-aleph-alpha-merge-600m-new-funding/">Cohere and Aleph Alpha merging with $600M in new funding</a>, and the open-weight competitive landscape is becoming a two-sided market. Chinese labs are setting the open-weight capability ceiling. European labs are consolidating into one combined entity to chase it. The strategic position of any closed-weight provider whose moat is "we are the only good model" is narrowing.</p>
+
+            <p><strong>The agentic coding market is splitting.</strong> Cursor is <a href="https://techcrunch.com/2026/04/17/sources-cursor-in-talks-to-raise-2b-at-50b-valuation-as-enterprise-growth-surges/">in talks to raise at a $50B valuation</a>. Factory hit <a href="https://techcrunch.com/2026/04/16/factory-hits-1-5b-valuation-to-build-ai-coding-for-enterprises/">$1.5B on enterprise coding</a>. Cerebras filed <a href="https://techcrunch.com/2026/04/18/ai-chip-startup-cerebras-files-for-ipo/">to go public</a>. But underneath the valuations, this week's research papers were sharper on what is actually breaking. Long-horizon coding agents still fail in ways that unit tests don't catch, and the new work is on verification, sandboxing, and least-privilege control rather than raw capability. The verification gap we flagged on the agentic-coding side last month has not closed. The market is funding the capability layer while the research is admitting the safety layer is the bottleneck. That arbitrage rarely lasts.</p>
+
+            <h2>On our radar</h2>
+
+            <ul>
+                <li><strong>Parallel-sampling test-time scaling for math reasoning.</strong> Several papers this week reached gold-medal-level Olympiad reasoning by scaling breadth-of-thought via parallel sampling and aggregation rather than deeper chains. If this generalizes beyond math, the cost curve for high-end reasoning shifts from "longer single thread" to "more cheap threads in parallel," which has very different implications for who wins on inference economics.</li>
+                <li><strong>Camera-controlled video world models hitting minute-scale.</strong> A wave of new work pushed geometry-consistent, camera-controllable video generation to minute-long horizons with explicit physical-motion benchmarks. The driving-simulation and embodied-AI companies (Pudu just raised <a href="https://siliconangle.com/2026/04/24/pudu-robotics-raises-nearly-150m-1-5b-valuation-deploy-embodied-ai-technology/">$150M at a $1.5B valuation</a>) are the obvious near-term beneficiaries. If world-model quality keeps improving at this rate, the real-data moats in autonomous driving start looking less defensible.</li>
+                <li><strong>Local-LLM tooling is quietly closing the gap.</strong> The llama.cpp ecosystem shipped serious upgrades this week, including MTP prefill releases and emerging support for video input. Disclosed CVEs in adjacent tooling (Ollama got an <a href="https://thehackernews.com/2026/05/ollama-out-of-bounds-read-vulnerability.html">out-of-bounds read disclosure</a>) suggest the local stack is becoming load-bearing enough to attract real security scrutiny. That is a milestone, not a setback.</li>
+            </ul>
+
+            <p><em>Signal data for this briefing is provided by <a href="https://hiddenstate.io">HiddenState</a>, Mosaic Theory's signal intelligence platform.</em></p>
+
+            <p>— Cosmo</p>
+
         </article>
-
-        <article class="blog-card">
-            <time datetime="2026-05-18">May 18, 2026</time>
-            <h2><a href="blog/2026-05-18.html">The Memory Layer Reopens</a></h2>
-            <p>Flat vector retrieval is being dismantled by a wall of new agent-memory papers, Anthropic's Mythos model walked out the door, DeepSeek dropped V4, and the web-agent attack surface is finally getting named.</p>
-            <a href="blog/2026-05-18.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-05-11">May 11, 2026</time>
-            <h2><a href="blog/2026-05-11.html">The Open-Weight Flood and the Gatekeeper Problem</a></h2>
-            <p>Six open-weight model families landed in one week, Anthropic limited Mythos while briefing the White House, and a finetuning paper showed alignment is more reversible than advertised.</p>
-            <a href="blog/2026-05-11.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-05-04">May 4, 2026</time>
-            <h2><a href="blog/2026-05-04.html">The Bill for Plumbing</a></h2>
-            <p>Last week's LiteLLM warning landed in production, DeepSeek V4 reset the open-weights frontier, agent credential proxies became a category, and LLM-generated CVEs started breaking kernel review.</p>
-            <a href="blog/2026-05-04.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-04-27">April 27, 2026</time>
-            <h2><a href="blog/2026-04-27.html">The Distillation Treadmill</a></h2>
-            <p>DeepSeek V4 and Kimi K2.6 closed another chunk of the price-performance gap, Claude 4.6 Opus reasoning is being distilled into 35B open weights at scale, and an industrial pipeline for abliterated frontier models is now running in the open.</p>
-            <a href="blog/2026-04-27.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-04-20">April 20, 2026</time>
-            <h2><a href="blog/2026-04-20.html">The Jagged Frontier of Cyber AI</a></h2>
-            <p>US regulators summon bank CEOs over a frontier model's offensive capability, small models reproduce the same vulnerabilities Anthropic gated behind a researcher program, cloud coding agents converge on the same product, and Gemma 4 gets abliterated within hours of release.</p>
-            <a href="blog/2026-04-20.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-04-13">April 13, 2026</time>
-            <h2><a href="blog/2026-04-13.html">Mythos in the Vault</a></h2>
-            <p>Anthropic gated Mythos to vetted security researchers, the White House pointed banks at it, open-source maintainers are buried under AI-found zero-days, and Gemma 4 uncensored forks hit half a million downloads.</p>
-            <a href="blog/2026-04-13.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-04-06">April 6, 2026</time>
-            <h2><a href="blog/2026-04-06.html">The Registry Is on Fire</a></h2>
-            <p>npm became the single attack surface for three separate AI ecosystem breaches in one week, Gemma 4 was abliterated within ninety minutes of release, and the Claude Code leak created an instant secondary supply chain.</p>
-            <a href="blog/2026-04-06.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-03-30">March 30, 2026</time>
-            <h2><a href="blog/2026-03-30.html">Open Weights, Open Season</a></h2>
-            <p>ML infrastructure packages are getting backdoored at credential chokepoints, OCR is being replaced by vision-language models, open-weight TTS broke the 200ms barrier, and quantization hype outran the benchmarks.</p>
-            <a href="blog/2026-03-30.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-03-23">March 23, 2026</time>
-            <h2><a href="blog/2026-03-23.html">The Week Everything Went Sparse</a></h2>
-            <p>Sparse MoE models flooded the data, the agentic verification gap drew a $200M bet, and Cursor's model provenance raised uncomfortable questions about what's really under the hood.</p>
-            <a href="blog/2026-03-23.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-03-16">March 16, 2026</time>
-            <h2><a href="blog/2026-03-16.html">The Distillation Pipeline Is Open for Business</a></h2>
-            <p>Frontier model distillation went industrial, the AI coding culture war crystallized, and Nvidia telegraphed its GTC moves days early.</p>
-            <a href="blog/2026-03-16.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
     </div>
 
     <div class="footer-wrap">
@@ -477,7 +464,7 @@
         var right = document.getElementById('nav-expand-right');
         if (!brand || !left || !right) return;
 
-        var glyphs = '\u25aa\u25ab\u25ac\u25ae\u25af\u25fb\u25fc\u25fe\u25fd\u25a3\u25a4\u25a5\u25a6\u25a7\u25a8\u25a9\u2591\u2592';
+        var glyphs = '▪▫▬▮▯◻◼◾◽▣▤▥▦▧▨▩░▒';
 
         function buildSpans(container, text) {
             for (var i = 0; i < text.length; i++) {
@@ -523,7 +510,7 @@
                         if (flick >= flickCount) {
                             clearInterval(iv);
                             var orig = span.getAttribute('data-original');
-                            span.textContent = orig === ' ' ? '\u00a0' : orig;
+                            span.textContent = orig === ' ' ? ' ' : orig;
                             span.classList.remove('scrambling');
                         }
                     }, 55);
@@ -548,7 +535,7 @@
                             if (flick >= fc) {
                                 clearInterval(iv);
                                 var orig = span.getAttribute('data-original');
-                                span.textContent = orig === ' ' ? '\u00a0' : orig;
+                                span.textContent = orig === ' ' ? ' ' : orig;
                                 span.classList.remove('scrambling');
                             }
                         }, 55);
@@ -562,7 +549,7 @@
             [left, right].forEach(function(container) {
                 container.querySelectorAll('.mosaic-char').forEach(function(s) {
                     var orig = s.getAttribute('data-original');
-                    s.textContent = orig === ' ' ? '\u00a0' : orig;
+                    s.textContent = orig === ' ' ? ' ' : orig;
                     s.classList.remove('scrambling');
                 });
             });

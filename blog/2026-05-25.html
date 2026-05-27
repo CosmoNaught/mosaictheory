@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog — Mosaic Theory</title>
-    <meta name="description" content="Weekly signal intelligence from Mosaic Theory. Tech, markets, and the patterns that connect them.">
+    <title>The Test Suite Is the Last Reviewer Left — Mosaic Theory Blog</title>
+    <meta name="description" content="Reward hacking in long-horizon coding agents got measured, the npm supply chain kept burning into GitHub, DeepSeek-V4-Flash crossed 2.7M downloads in a day, and agent-on-agent commerce stopped being a thought experiment.">
 
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231a1a2e'/><text x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' fill='%23ffffff' font-family='serif' font-size='14' font-weight='400'>MT</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,7 +38,7 @@
         /* ── Hero ── */
         .hero-wrap {
             position: relative;
-            min-height: 45vh;
+            min-height: 50vh;
             overflow: hidden;
             background: linear-gradient(
                 to bottom,
@@ -62,7 +62,7 @@
             z-index: 1;
             pointer-events: none;
             opacity: 0.19;
-            background-image: url("assets/noise.png");
+            background-image: url("../assets/noise.png");
             background-repeat: repeat;
             background-size: 128px 128px;
         }
@@ -165,8 +165,8 @@
             color: #0a0a0a !important;
         }
 
-        /* ── Page Header ── */
-        .page-header {
+        /* ── Post Header ── */
+        .post-header {
             position: relative;
             z-index: 3;
             display: flex;
@@ -177,86 +177,112 @@
             padding: 160px 32px 80px;
         }
 
-        .page-header h1 {
-            font-size: clamp(40px, 6vw, 72px);
-            font-weight: 800;
-            line-height: 1.0;
-            letter-spacing: -3px;
-            color: #fff;
+        .post-header time {
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.5);
             margin-bottom: 16px;
         }
 
-        .page-header p {
-            font-size: 17px;
-            font-weight: 400;
-            line-height: 1.7;
-            color: rgba(255,255,255,0.65);
-            max-width: 480px;
+        .post-header h1 {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            color: #fff;
+            max-width: 800px;
+            margin-bottom: 16px;
         }
 
-        /* ── Blog List ── */
-        .blog-list {
+        .post-header .post-author {
+            font-size: 14px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* ── Article ── */
+        .post-body {
             max-width: 720px;
             margin: 0 auto;
             padding: 64px 32px 80px;
         }
 
-        .blog-card {
-            padding: 40px 0;
-            border-bottom: 1px solid var(--border);
+        .post-body p {
+            font-size: 17px;
+            font-weight: 400;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 20px;
         }
 
-        .blog-card:first-child {
-            padding-top: 0;
-        }
-
-        .blog-card:last-child {
-            border-bottom: none;
-        }
-
-        .blog-card time {
-            font-size: 13px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--text-muted);
-        }
-
-        .blog-card h2 {
-            font-size: 28px;
+        .post-body h2 {
+            font-size: 24px;
             font-weight: 700;
-            letter-spacing: -1px;
-            line-height: 1.2;
-            margin: 12px 0;
+            letter-spacing: -0.5px;
+            color: var(--text);
+            margin: 48px 0 20px;
         }
 
-        .blog-card h2 a {
+        .post-body h3 {
+            font-size: 20px;
+            font-weight: 600;
             color: var(--text);
+            margin: 32px 0 16px;
+        }
+
+        .post-body ul {
+            margin: 0 0 24px 24px;
+        }
+
+        .post-body li {
+            font-size: 17px;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .post-body a {
+            color: #2e4080;
             text-decoration: none;
+            border-bottom: 1px solid rgba(46,64,128,0.2);
+            transition: border-color 0.2s;
+        }
+
+        .post-body a:hover {
+            border-color: #2e4080;
+        }
+
+        .post-body strong {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .post-body code {
+            font-size: 15px;
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 48px;
             transition: color 0.2s;
         }
 
-        .blog-card h2 a:hover {
+        .back-link:hover { color: var(--text); }
+
+        .post-body em a {
             color: #2e4080;
-        }
-
-        .blog-card p {
-            font-size: 16px;
-            line-height: 1.7;
-            color: var(--text-secondary);
-            margin-bottom: 16px;
-        }
-
-        .blog-read-more {
-            font-size: 14px;
-            font-weight: 600;
-            color: #2e4080;
-            text-decoration: none;
-            transition: opacity 0.2s;
-        }
-
-        .blog-read-more:hover {
-            opacity: 0.7;
+            border-bottom: 1px solid rgba(46,64,128,0.2);
         }
 
         /* ── Footer ── */
@@ -286,7 +312,7 @@
             z-index: 1;
             pointer-events: none;
             opacity: 0.14;
-            background-image: url("assets/noise.png");
+            background-image: url("../assets/noise.png");
             background-repeat: repeat;
             background-size: 128px 128px;
         }
@@ -339,14 +365,13 @@
         @media (max-width: 900px) {
             nav { padding: 5px 5px; top: 12px; }
             .nav-links a:not(.nav-cta):not([href="blog.html"]):not([href="/blog.html"]) { display: none; }
-            .page-header { padding: 140px 24px 60px; }
-            .blog-list { padding: 48px 24px 64px; }
+            .post-header { padding: 140px 24px 60px; }
+            .post-body { padding: 48px 24px 64px; }
             footer { padding: 48px 24px 32px; }
         }
 
         @media (max-width: 600px) {
-            .page-header h1 { letter-spacing: -2px; }
-            .blog-card h2 { font-size: 24px; }
+            .post-header h1 { letter-spacing: -1.5px; }
         }
     </style>
 </head>
@@ -363,97 +388,53 @@
                 <a href="/">About</a>
                 <a href="/">Product</a>
                 <a href="/">Team</a>
-                <a href="blog.html" class="active">Blog</a>
+                <a href="/blog.html" class="active">Blog</a>
                 <a href="mailto:support@hiddenstate.io">Contact</a>
                 <a href="https://hiddenstate.io" class="nav-cta">HiddenState</a>
             </div>
         </nav>
 
-        <div class="page-header">
-            <h1>Blog</h1>
-            <p>Weekly signal intelligence. Tech, markets, and the patterns that connect them.</p>
+        <div class="post-header">
+            <time datetime="2026-05-25">May 25, 2026</time>
+            <h1>The Test Suite Is the Last Reviewer Left</h1>
+            <p class="post-author">by Cosmo Santoni, Imperial College London / Mosaic Theory</p>
         </div>
     </div>
 
-    <div class="blog-list">
+    <div class="post-body">
+        <a href="/blog.html" class="back-link">&larr; All posts</a>
 
-        <article class="blog-card">
-            <time datetime="2026-05-25">May 25, 2026</time>
-            <h2><a href="blog/2026-05-25.html">The Test Suite Is the Last Reviewer Left</a></h2>
-            <p>Reward hacking in long-horizon coding agents got measured, the npm supply chain kept burning into GitHub, DeepSeek-V4-Flash crossed 2.7M downloads in a day, and agent-on-agent commerce stopped being a thought experiment.</p>
-            <a href="blog/2026-05-25.html" class="blog-read-more">Read &rarr;</a>
+        <article>
+
+            <p><strong>Coding agents have figured out that test suites are bribable.</strong> A new benchmark out of the research community this week formalised what production teams have been quietly observing for months. When a long-horizon coding agent's only oversight surface is an automated test suite, the agent learns to optimise the test suite. The npm ecosystem spent the same week burning down, with one supply chain attack now confirmed to have reached inside GitHub and Grafana. The two stories rhyme more than they should.</p>
+
+            <h2>Reward hacking is no longer hypothetical</h2>
+
+            <p><strong>SpecBench put numbers on the failure mode.</strong> A paper titled <a href="https://huggingface.co/papers/2605.21384">SpecBench: Measuring Reward Hacking in Long-Horizon Coding Agents</a> landed mid-week and proposes a measurement framework for what happens when an agent's iteration loop collapses onto the test suite as the sole arbiter of correctness. Agents game the eval. We already knew that. What is new is that the gaming can now be cleanly quantified, and the current generation of long-horizon coding harnesses score badly against it. By Monday, a follow-up paper (<a href="https://arxiv.org/abs/2605.22368v1">VeriScale</a>) proposed adversarial test-suite scaling as a partial defence. Five separate RLVR papers landed alongside it dissecting the training pathologies that produce this behaviour in the first place, including the so-called "Unlearnability Phenomenon" where verifiable-reward training degrades on certain task classes.</p>
+
+            <p><strong>This matters for valuations.</strong> The thesis behind every $50M-plus agentic coding round of the past twelve months has been that long-horizon autonomy is around the corner. SpecBench is the first piece of public infrastructure that lets a buyer ask how much of an agent's claimed success rate is real, and how much is it learning to pass the harness. The answer is not yet public for any commercial agent, but the methodology now exists and will be applied. If you are underwriting an agentic coding company, this is the benchmark you want to see numbers for before the next round closes.</p>
+
+            <p><strong>Supply chain attacks are now a developer-workstation problem.</strong> The Shai-Hulud npm malware wave compromised 600 packages this week per <a href="https://www.bleepingcomputer.com/news/security/new-shai-hulud-malware-wave-compromises-600-npm-packages/">BleepingComputer</a>. The TanStack compromise was traced into <a href="https://thehackernews.com/2026/05/tanstack-supply-chain-attack-hits-two.html">two OpenAI employee devices</a> and forced internal macOS updates. By Thursday, <a href="https://www.bleepingcomputer.com/news/security/github-links-repo-breach-to-tanstack-npm-supply-chain-attack/">GitHub had linked an internal repo breach</a> to the same TanStack attack, and Grafana confirmed that its codebase was downloaded after a token-rotation miss connected to the same campaign. The Hacker News headline of the week was <a href="https://thehackernews.com/2026/05/developer-workstations-are-now-part-of.html">"Developer Workstations Are Now Part of the Software Supply Chain"</a>, which understates the perimeter. The CI/CD pipeline, the package registry, and the IDE extension marketplace are all part of the supply chain now, and a <a href="https://www.bleepingcomputer.com/news/security/github-confirms-breach-of-3-800-repos-via-malicious-vscode-extension/">malicious VSCode extension breached 3,800 repos</a> the same week to prove the last one. Security models that still treat engineering as a trusted internal zone are running last decade's threat model against this decade's adversary.</p>
+
+            <p><strong>DeepSeek-V4-Flash crossed 2.7 million downloads in a day on HuggingFace.</strong> The <a href="https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash">checkpoint</a> appeared on Sunday and immediately took the top of the trending list. Earlier in the week TechCrunch had reported that <a href="https://techcrunch.com/2026/04/24/deepseek-previews-new-ai-model-that-closes-the-gap-with-frontier-models/">DeepSeek was previewing a model that closes the gap with frontier systems</a>, and the V4-Flash release is the public form of that preview. OpenAI shipped GPT-5.5 in the same window per <a href="https://techcrunch.com/2026/04/23/openai-chatgpt-gpt-5-5-ai-model-superapp/">TechCrunch's coverage</a>, with NVIDIA noting in <a href="https://blogs.nvidia.com/blog/openai-codex-gpt-5-5-ai-agents/">its own blog</a> that GPT-5.5 is what now powers Codex on its infrastructure. The competitive question now is whether the closed labs can keep enough capability gap to justify per-token pricing while a free open-weight checkpoint racks up multi-million download counts in 24 hours. The pricing leverage continues to compress on the closed side.</p>
+
+            <p><strong>Agent-on-agent commerce stopped being a thought experiment.</strong> Anthropic <a href="https://techcrunch.com/2026/04/25/anthropic-created-a-test-marketplace-for-agent-on-agent-commerce/">ran a live marketplace where AI agents traded real goods for real money</a>, OpenAI began <a href="https://openai.com/index/testing-ads-in-chatgpt">testing ads in ChatGPT</a>, and Google <a href="https://blog.google/products/ads-commerce/google-marketing-live-search-ads/">rolled ads into AI Mode search results</a>. Three separate monetisation experiments in agent-mediated interfaces in one week, from three of the four biggest labs. Agents will mediate commerce. The open question is who captures the take rate when they do. The classical search-and-recommendation surface is being rebuilt with a different economic substrate underneath it. Anyone running an ad-supported business should be modelling what their unit economics look like when the user is an agent that does not click.</p>
+
+            <p><strong>Stable Audio 3 broke the duration ceiling on open-weight audio diffusion.</strong> Stability AI shipped <a href="https://huggingface.co/papers/2605.17991">Stable Audio 3</a> in small/medium/large variants this week, generating and editing variable-length audio at several minutes. The previous generation topped out under 90 seconds. Resemble's DramaBox shipped on LTX 2.3 as the most expressive open-weight voice model so far, and a separate paper introduced WavFlow which generates audio directly in waveform space, sidestepping the information loss of latent compression entirely. The same week, OpenAI <a href="https://openai.com/index/advancing-voice-intelligence-with-new-models-in-the-api">advanced its voice intelligence API</a>. The open-weight audio stack is finally pulling level with the closed APIs on quality, and is ahead on length. If you are building anything voice-first on per-second commercial pricing, the BOM just moved.</p>
+
+            <h2>On our radar</h2>
+
+            <ul>
+                <li><strong>Recursive reasoning architectures beyond autoregression.</strong> Bengio's group published <a href="https://huggingface.co/papers/2605.19376">Generative Recursive Reasoning Models</a>, Thinking Machines posted on <a href="https://thinkingmachines.ai/blog/interaction-models/">Interaction Models</a>, and Interfaze announced <a href="https://interfaze.ai/blog/interfaze-a-new-model-architecture-built-for-high-accuracy-at-scale">a new architecture for high accuracy at scale</a> within five days of each other. Three independent groups arguing that autoregression is not the final form. If even one of these holds up at scale, the transformer monoculture is overdue for a rebalance.</li>
+                <li><strong>Cohere's German consolidation play.</strong> Sifted reported that Cohere <a href="https://sifted.eu/articles/cohere-aleph-alpha-germany-second-deal/">acquired a second German AI startup</a> weeks after its $600M Aleph Alpha merger. The European sovereign-AI thesis has become a roll-up.</li>
+                <li><strong>Sub-30M on-device tool-calling.</strong> A 26M-parameter distilled Gemini tool-calling model surfaced in developer communities this week, alongside a 4B coding agent claiming 87% on standard benchmarks. If on-device tool-calling becomes viable at single-digit megabytes, half the current AI gateway and observability market needs a new pitch.</li>
+            </ul>
+
+            <p><em>Signal data for this briefing is provided by <a href="https://hiddenstate.io">HiddenState</a>, Mosaic Theory's signal intelligence platform.</em></p>
+
+            <p>— Cosmo</p>
+
         </article>
-
-        <article class="blog-card">
-            <time datetime="2026-05-18">May 18, 2026</time>
-            <h2><a href="blog/2026-05-18.html">The Memory Layer Reopens</a></h2>
-            <p>Flat vector retrieval is being dismantled by a wall of new agent-memory papers, Anthropic's Mythos model walked out the door, DeepSeek dropped V4, and the web-agent attack surface is finally getting named.</p>
-            <a href="blog/2026-05-18.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-05-11">May 11, 2026</time>
-            <h2><a href="blog/2026-05-11.html">The Open-Weight Flood and the Gatekeeper Problem</a></h2>
-            <p>Six open-weight model families landed in one week, Anthropic limited Mythos while briefing the White House, and a finetuning paper showed alignment is more reversible than advertised.</p>
-            <a href="blog/2026-05-11.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-05-04">May 4, 2026</time>
-            <h2><a href="blog/2026-05-04.html">The Bill for Plumbing</a></h2>
-            <p>Last week's LiteLLM warning landed in production, DeepSeek V4 reset the open-weights frontier, agent credential proxies became a category, and LLM-generated CVEs started breaking kernel review.</p>
-            <a href="blog/2026-05-04.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-04-27">April 27, 2026</time>
-            <h2><a href="blog/2026-04-27.html">The Distillation Treadmill</a></h2>
-            <p>DeepSeek V4 and Kimi K2.6 closed another chunk of the price-performance gap, Claude 4.6 Opus reasoning is being distilled into 35B open weights at scale, and an industrial pipeline for abliterated frontier models is now running in the open.</p>
-            <a href="blog/2026-04-27.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-04-20">April 20, 2026</time>
-            <h2><a href="blog/2026-04-20.html">The Jagged Frontier of Cyber AI</a></h2>
-            <p>US regulators summon bank CEOs over a frontier model's offensive capability, small models reproduce the same vulnerabilities Anthropic gated behind a researcher program, cloud coding agents converge on the same product, and Gemma 4 gets abliterated within hours of release.</p>
-            <a href="blog/2026-04-20.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-04-13">April 13, 2026</time>
-            <h2><a href="blog/2026-04-13.html">Mythos in the Vault</a></h2>
-            <p>Anthropic gated Mythos to vetted security researchers, the White House pointed banks at it, open-source maintainers are buried under AI-found zero-days, and Gemma 4 uncensored forks hit half a million downloads.</p>
-            <a href="blog/2026-04-13.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-04-06">April 6, 2026</time>
-            <h2><a href="blog/2026-04-06.html">The Registry Is on Fire</a></h2>
-            <p>npm became the single attack surface for three separate AI ecosystem breaches in one week, Gemma 4 was abliterated within ninety minutes of release, and the Claude Code leak created an instant secondary supply chain.</p>
-            <a href="blog/2026-04-06.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-03-30">March 30, 2026</time>
-            <h2><a href="blog/2026-03-30.html">Open Weights, Open Season</a></h2>
-            <p>ML infrastructure packages are getting backdoored at credential chokepoints, OCR is being replaced by vision-language models, open-weight TTS broke the 200ms barrier, and quantization hype outran the benchmarks.</p>
-            <a href="blog/2026-03-30.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-03-23">March 23, 2026</time>
-            <h2><a href="blog/2026-03-23.html">The Week Everything Went Sparse</a></h2>
-            <p>Sparse MoE models flooded the data, the agentic verification gap drew a $200M bet, and Cursor's model provenance raised uncomfortable questions about what's really under the hood.</p>
-            <a href="blog/2026-03-23.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-03-16">March 16, 2026</time>
-            <h2><a href="blog/2026-03-16.html">The Distillation Pipeline Is Open for Business</a></h2>
-            <p>Frontier model distillation went industrial, the AI coding culture war crystallized, and Nvidia telegraphed its GTC moves days early.</p>
-            <a href="blog/2026-03-16.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
     </div>
 
     <div class="footer-wrap">
@@ -477,7 +458,7 @@
         var right = document.getElementById('nav-expand-right');
         if (!brand || !left || !right) return;
 
-        var glyphs = '\u25aa\u25ab\u25ac\u25ae\u25af\u25fb\u25fc\u25fe\u25fd\u25a3\u25a4\u25a5\u25a6\u25a7\u25a8\u25a9\u2591\u2592';
+        var glyphs = '▪▫▬▮▯◻◼◾◽▣▤▥▦▧▨▩░▒';
 
         function buildSpans(container, text) {
             for (var i = 0; i < text.length; i++) {
@@ -523,7 +504,7 @@
                         if (flick >= flickCount) {
                             clearInterval(iv);
                             var orig = span.getAttribute('data-original');
-                            span.textContent = orig === ' ' ? '\u00a0' : orig;
+                            span.textContent = orig === ' ' ? ' ' : orig;
                             span.classList.remove('scrambling');
                         }
                     }, 55);
@@ -548,7 +529,7 @@
                             if (flick >= fc) {
                                 clearInterval(iv);
                                 var orig = span.getAttribute('data-original');
-                                span.textContent = orig === ' ' ? '\u00a0' : orig;
+                                span.textContent = orig === ' ' ? ' ' : orig;
                                 span.classList.remove('scrambling');
                             }
                         }, 55);
@@ -562,7 +543,7 @@
             [left, right].forEach(function(container) {
                 container.querySelectorAll('.mosaic-char').forEach(function(s) {
                     var orig = s.getAttribute('data-original');
-                    s.textContent = orig === ' ' ? '\u00a0' : orig;
+                    s.textContent = orig === ' ' ? ' ' : orig;
                     s.classList.remove('scrambling');
                 });
             });

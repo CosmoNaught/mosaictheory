@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    width: 1200px;
+    height: 630px;
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: linear-gradient(135deg, #0c1428 0%, #1a2850 30%, #5060a0 55%, #b08898 75%, #d4aab0 90%, #f2e2de 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+body::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.15;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 200px 200px;
+}
+.content { position: relative; z-index: 1; }
+h1 {
+    font-size: 72px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -3px;
+    line-height: 1.0;
+    margin-bottom: 20px;
+}
+h1 em {
+    font-style: italic;
+    font-weight: 300;
+    color: rgba(255,255,255,0.8);
+}
+p {
+    font-size: 22px;
+    color: rgba(255,255,255,0.7);
+    font-weight: 400;
+    max-width: 600px;
+}
+.brand {
+    position: absolute;
+    bottom: 48px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 1;
+}
+.brand span {
+    font-size: 16px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="content">
+    <h1>Markets follow.<br><em>Move first.</em></h1>
+    <p>Research intelligence infrastructure for capital markets</p>
+</div>
+<div class="brand"><span>Mosaic Theory</span></div>
+</body>
+</html>

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog — Mosaic Theory</title>
-    <meta name="description" content="Weekly signal intelligence from Mosaic Theory. Tech, markets, and the patterns that connect them.">
+    <title>The Bill for Plumbing — Mosaic Theory Blog</title>
+    <meta name="description" content="Last week's LiteLLM warning landed in production, DeepSeek V4 reset the open-weights frontier, agent credential proxies became a category, and LLM-generated CVEs started breaking kernel review.">
 
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231a1a2e'/><text x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' fill='%23ffffff' font-family='serif' font-size='14' font-weight='400'>MT</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,7 +38,7 @@
         /* ── Hero ── */
         .hero-wrap {
             position: relative;
-            min-height: 45vh;
+            min-height: 50vh;
             overflow: hidden;
             background: linear-gradient(
                 to bottom,
@@ -62,7 +62,7 @@
             z-index: 1;
             pointer-events: none;
             opacity: 0.19;
-            background-image: url("assets/noise.png");
+            background-image: url("../assets/noise.png");
             background-repeat: repeat;
             background-size: 128px 128px;
         }
@@ -165,8 +165,8 @@
             color: #0a0a0a !important;
         }
 
-        /* ── Page Header ── */
-        .page-header {
+        /* ── Post Header ── */
+        .post-header {
             position: relative;
             z-index: 3;
             display: flex;
@@ -177,86 +177,112 @@
             padding: 160px 32px 80px;
         }
 
-        .page-header h1 {
-            font-size: clamp(40px, 6vw, 72px);
-            font-weight: 800;
-            line-height: 1.0;
-            letter-spacing: -3px;
-            color: #fff;
+        .post-header time {
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.5);
             margin-bottom: 16px;
         }
 
-        .page-header p {
-            font-size: 17px;
-            font-weight: 400;
-            line-height: 1.7;
-            color: rgba(255,255,255,0.65);
-            max-width: 480px;
+        .post-header h1 {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            color: #fff;
+            max-width: 800px;
+            margin-bottom: 16px;
         }
 
-        /* ── Blog List ── */
-        .blog-list {
+        .post-header .post-author {
+            font-size: 14px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* ── Article ── */
+        .post-body {
             max-width: 720px;
             margin: 0 auto;
             padding: 64px 32px 80px;
         }
 
-        .blog-card {
-            padding: 40px 0;
-            border-bottom: 1px solid var(--border);
+        .post-body p {
+            font-size: 17px;
+            font-weight: 400;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 20px;
         }
 
-        .blog-card:first-child {
-            padding-top: 0;
-        }
-
-        .blog-card:last-child {
-            border-bottom: none;
-        }
-
-        .blog-card time {
-            font-size: 13px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--text-muted);
-        }
-
-        .blog-card h2 {
-            font-size: 28px;
+        .post-body h2 {
+            font-size: 24px;
             font-weight: 700;
-            letter-spacing: -1px;
-            line-height: 1.2;
-            margin: 12px 0;
+            letter-spacing: -0.5px;
+            color: var(--text);
+            margin: 48px 0 20px;
         }
 
-        .blog-card h2 a {
+        .post-body h3 {
+            font-size: 20px;
+            font-weight: 600;
             color: var(--text);
+            margin: 32px 0 16px;
+        }
+
+        .post-body ul {
+            margin: 0 0 24px 24px;
+        }
+
+        .post-body li {
+            font-size: 17px;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .post-body a {
+            color: #2e4080;
             text-decoration: none;
+            border-bottom: 1px solid rgba(46,64,128,0.2);
+            transition: border-color 0.2s;
+        }
+
+        .post-body a:hover {
+            border-color: #2e4080;
+        }
+
+        .post-body strong {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .post-body code {
+            font-size: 15px;
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 48px;
             transition: color 0.2s;
         }
 
-        .blog-card h2 a:hover {
+        .back-link:hover { color: var(--text); }
+
+        .post-body em a {
             color: #2e4080;
-        }
-
-        .blog-card p {
-            font-size: 16px;
-            line-height: 1.7;
-            color: var(--text-secondary);
-            margin-bottom: 16px;
-        }
-
-        .blog-read-more {
-            font-size: 14px;
-            font-weight: 600;
-            color: #2e4080;
-            text-decoration: none;
-            transition: opacity 0.2s;
-        }
-
-        .blog-read-more:hover {
-            opacity: 0.7;
+            border-bottom: 1px solid rgba(46,64,128,0.2);
         }
 
         /* ── Footer ── */
@@ -286,7 +312,7 @@
             z-index: 1;
             pointer-events: none;
             opacity: 0.14;
-            background-image: url("assets/noise.png");
+            background-image: url("../assets/noise.png");
             background-repeat: repeat;
             background-size: 128px 128px;
         }
@@ -339,14 +365,13 @@
         @media (max-width: 900px) {
             nav { padding: 5px 5px; top: 12px; }
             .nav-links a:not(.nav-cta):not([href="blog.html"]):not([href="/blog.html"]) { display: none; }
-            .page-header { padding: 140px 24px 60px; }
-            .blog-list { padding: 48px 24px 64px; }
+            .post-header { padding: 140px 24px 60px; }
+            .post-body { padding: 48px 24px 64px; }
             footer { padding: 48px 24px 32px; }
         }
 
         @media (max-width: 600px) {
-            .page-header h1 { letter-spacing: -2px; }
-            .blog-card h2 { font-size: 24px; }
+            .post-header h1 { letter-spacing: -1.5px; }
         }
     </style>
 </head>
@@ -363,97 +388,53 @@
                 <a href="/">About</a>
                 <a href="/">Product</a>
                 <a href="/">Team</a>
-                <a href="blog.html" class="active">Blog</a>
+                <a href="/blog.html" class="active">Blog</a>
                 <a href="mailto:support@hiddenstate.io">Contact</a>
                 <a href="https://hiddenstate.io" class="nav-cta">HiddenState</a>
             </div>
         </nav>
 
-        <div class="page-header">
-            <h1>Blog</h1>
-            <p>Weekly signal intelligence. Tech, markets, and the patterns that connect them.</p>
+        <div class="post-header">
+            <time datetime="2026-05-04">May 4, 2026</time>
+            <h1>The Bill for Plumbing</h1>
+            <p class="post-author">by Cosmo Santoni, Imperial College London / Mosaic Theory</p>
         </div>
     </div>
 
-    <div class="blog-list">
+    <div class="post-body">
+        <a href="/blog.html" class="back-link">&larr; All posts</a>
 
-        <article class="blog-card">
-            <time datetime="2026-05-25">May 25, 2026</time>
-            <h2><a href="blog/2026-05-25.html">The Test Suite Is the Last Reviewer Left</a></h2>
-            <p>Reward hacking in long-horizon coding agents got measured, the npm supply chain kept burning into GitHub, DeepSeek-V4-Flash crossed 2.7M downloads in a day, and agent-on-agent commerce stopped being a thought experiment.</p>
-            <a href="blog/2026-05-25.html" class="blog-read-more">Read &rarr;</a>
+        <article>
+
+            <p><strong>Last week we said the LiteLLM compromise was not a theoretical concern.</strong> This week it stopped being theoretical for Mercor. <a href="https://techcrunch.com/2026/03/31/mercor-says-it-was-hit-by-cyberattack-tied-to-compromise-of-open-source-litellm-project/">Mercor confirmed a cyberattack tied to the LiteLLM compromise</a>, and on the same day <a href="https://www.bleepingcomputer.com/news/security/hackers-are-exploiting-a-critical-litellm-pre-auth-sqli-flaw/">attackers began exploiting a fresh pre-auth SQLi in LiteLLM</a>. The agent-infrastructure attack surface is no longer a slide in a threat-model deck. It is a billing event.</p>
+
+            <p><strong>Credential proxies for agents have crystallised as a category in about three weeks.</strong> Brex open-sourced <a href="https://www.brex.com/crabtrap">CrabTrap</a>, an LLM-as-judge HTTP proxy that mediates agent calls in production. Infisical shipped Agent Vault, a credential broker that sits between an agent and the upstream API so the agent never holds the secret. Simon Willison published <a href="https://simonwillison.net/2026/Apr/23/llm-openai-via-codex/#atom-everything">llm-openai-via-codex</a>, which intercepts and brokers credentials for the Codex backdoor API. Three independent groups, three different threat models, and the same architectural answer. Agents should not be trusted with raw credentials, and a middleware layer should enforce that. Separately, <a href="https://siliconangle.com/2026/04/10/report-cisco-acquire-ai-agent-security-startup-astrix-security-250m/">Cisco is reportedly acquiring Astrix Security for $250M+</a>, and <a href="https://siliconangle.com/2026/04/13/commvault-rolls-ai-capabilities-secure-agentic-workflows-data/">Commvault rolled out agentic-workflow data controls</a>. If you are building autonomous agents and your auth model is "give the LLM the API key in an env var", the market is pricing that risk into acquisitions.</p>
+
+            <h2>DeepSeek V4 and the open-weights reset</h2>
+
+            <p><strong>DeepSeek V4 dropped on HuggingFace and immediately moved the open-weights frontier.</strong> <a href="https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro-Base">DeepSeek-V4-Pro-Base</a> went up alongside V4-Flash-Base, and <a href="https://www.technologyreview.com/2026/04/24/1136422/why-deepseeks-v4-matters/">MIT Tech Review's writeup</a> focuses on the new attention design enabling substantially longer prompts. <a href="https://www.lmsys.org/blog/2026-04-25-deepseek-v4/">SGLang published a Day-0 inference-and-verified-RL stack</a> for V4 on the day of release, which is the more telling fact. The serving infrastructure was ready before the weights cooled. For anyone whose enterprise pitch depends on "frontier reasoning behind a closed API," V4 is the second annual reminder that the gap is not stable.</p>
+
+            <p><strong>The coding-assistant economy is repricing itself in real time.</strong> GitHub <a href="https://simonwillison.net/2026/Apr/22/changes-to-github-copilot/#atom-everything">restructured Copilot Individual plans</a>. Anthropic's <a href="https://simonwillison.net/2026/Apr/22/claude-code-confusion/#atom-everything">Claude Code pricing flirted with a $100/month tier</a>, then walked it back amid confusion about what users were actually paying for. AWS <a href="https://aws.amazon.com/blogs/machine-learning/from-developer-desks-to-the-whole-organization-running-claude-cowork-in-amazon-bedrock/">brought Claude Cowork into Bedrock</a> for enterprise gateways. The signal underneath the pricing churn is that vendors are trying to find the price at which a coding agent looks like a workstation and not a SaaS seat. The fact that Anthropic is reaching for triple digits per developer per month tells you how much compute these agents are actually burning. It also tells you the seat-license model is in trouble.</p>
+
+            <p><strong>The verification layer is where the smart money is going.</strong> <a href="https://techcrunch.com/2026/03/30/qodo-bets-on-code-verification-as-ai-coding-scales-raises-70m/">Qodo raised $70M for code verification</a>. <a href="https://openai.com/index/the-next-evolution-of-the-agents-sdk">OpenAI's Agents SDK gained native sandbox execution</a>. <a href="https://siliconangle.com/2026/04/08/anthropic-launches-claude-managed-agents-speed-ai-agent-development/">Anthropic launched Claude Managed Agents</a>. Charlie Labs <a href="https://charlielabs.ai/">pivoted from building autonomous coding agents to building cleanup tools for the technical debt those agents generate</a>. Every link in that chain points to the same conclusion. Generating the code is the easy part. Verifying it, sandboxing it, and cleaning it up afterward is where the unit economics live. If you are evaluating coding-agent startups, ask where the failure modes go and who pays to fix them.</p>
+
+            <p><strong>Microsoft's TRELLIS.2 collapsed the image-to-3D pipeline onto consumer hardware in a single release.</strong> The model is 4B parameters, generates 1536-cubed PBR outputs with 16x spatial compression, and has an Apple Silicon port that runs without CUDA or flash-attn. A ComfyUI workflow appeared within days. <a href="https://huggingface.co/papers/2604.24479">Zero-to-CAD</a> followed in the same week, agentically synthesising interpretable CAD programs at million-scale without real training data. The combination matters because the two main bottlenecks in 3D-from-image generation, namely the hardware tax and the data-licensing problem, both moved in the same week. Game-asset pipelines, 3D-printing services, and CAD vendors who built their moats on the assumption that high-quality 3D-from-image generation needs an H100 cluster should re-check that assumption.</p>
+
+            <p><strong>LLM-generated CVE reports are now actively degrading Linux kernel review.</strong> <a href="https://lwn.net/Articles/1068928/">LWN documented kernel maintainers excising legitimate code</a> to triage a flood of model-generated security reports. The triage burden has crossed the threshold where it is cheaper to remove code than to argue with a stochastic process. This is a different kind of supply-chain attack. Nobody is exfiltrating credentials. The damage is to the human attention budget of the people who maintain the most critical software in the world. Mitigations remain unclear, and the incentive gradient runs the wrong way. Filing more reports is cheap, reviewing them is expensive, and the production function for "plausible but wrong" CVE reports just got better. If you depend on Linux kernel velocity, this is now a structural risk.</p>
+
+            <h2>On our radar</h2>
+
+            <ul>
+                <li><strong>LeRobot RCE with no patch.</strong> <a href="https://thehackernews.com/2026/04/critical-cve-2026-25874-leaves-hugging.html">HuggingFace's LeRobot has a critical unauthenticated RCE</a> sitting unpatched as of week-end. LeRobot is a popular reference framework for robot policy work, and it is now sitting in research labs and small robotics startups with a live exploit path. If you have a LeRobot install reachable from anywhere except localhost, that needs attention this week.</li>
+                <li><strong>AI-assisted phishing kits are productising.</strong> <a href="https://www.bleepingcomputer.com/news/security/new-bluekit-phishing-service-includes-an-ai-assistant-40-templates/">Bluekit, a new phishing-as-a-service offering, ships with an AI assistant and 40 templates out of the box</a>. The pattern of LLMs as a feature inside criminal tooling is no longer notable on its own. What is notable is the productisation curve, with onboarding flows and template libraries pitched the same way legitimate SaaS does. Defender automation needs to assume this is the baseline now.</li>
+                <li><strong>OCR and document-AI consolidation continues.</strong> Last month we flagged the shift from traditional OCR pipelines to vision-language models. This week's data shows continued momentum on the agentic-document side, with new architectures for optical context retrieval and native file formats designed for agent traversal rather than human reading. The transition from "text extraction" to "document-as-agent-input" is the medium-term direction.</li>
+            </ul>
+
+            <p><em>Signal data for this briefing is provided by <a href="https://hiddenstate.io">HiddenState</a>, Mosaic Theory's signal intelligence platform.</em></p>
+
+            <p>— Cosmo</p>
+
         </article>
-
-        <article class="blog-card">
-            <time datetime="2026-05-18">May 18, 2026</time>
-            <h2><a href="blog/2026-05-18.html">The Memory Layer Reopens</a></h2>
-            <p>Flat vector retrieval is being dismantled by a wall of new agent-memory papers, Anthropic's Mythos model walked out the door, DeepSeek dropped V4, and the web-agent attack surface is finally getting named.</p>
-            <a href="blog/2026-05-18.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-05-11">May 11, 2026</time>
-            <h2><a href="blog/2026-05-11.html">The Open-Weight Flood and the Gatekeeper Problem</a></h2>
-            <p>Six open-weight model families landed in one week, Anthropic limited Mythos while briefing the White House, and a finetuning paper showed alignment is more reversible than advertised.</p>
-            <a href="blog/2026-05-11.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-05-04">May 4, 2026</time>
-            <h2><a href="blog/2026-05-04.html">The Bill for Plumbing</a></h2>
-            <p>Last week's LiteLLM warning landed in production, DeepSeek V4 reset the open-weights frontier, agent credential proxies became a category, and LLM-generated CVEs started breaking kernel review.</p>
-            <a href="blog/2026-05-04.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-04-27">April 27, 2026</time>
-            <h2><a href="blog/2026-04-27.html">The Distillation Treadmill</a></h2>
-            <p>DeepSeek V4 and Kimi K2.6 closed another chunk of the price-performance gap, Claude 4.6 Opus reasoning is being distilled into 35B open weights at scale, and an industrial pipeline for abliterated frontier models is now running in the open.</p>
-            <a href="blog/2026-04-27.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-04-20">April 20, 2026</time>
-            <h2><a href="blog/2026-04-20.html">The Jagged Frontier of Cyber AI</a></h2>
-            <p>US regulators summon bank CEOs over a frontier model's offensive capability, small models reproduce the same vulnerabilities Anthropic gated behind a researcher program, cloud coding agents converge on the same product, and Gemma 4 gets abliterated within hours of release.</p>
-            <a href="blog/2026-04-20.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-04-13">April 13, 2026</time>
-            <h2><a href="blog/2026-04-13.html">Mythos in the Vault</a></h2>
-            <p>Anthropic gated Mythos to vetted security researchers, the White House pointed banks at it, open-source maintainers are buried under AI-found zero-days, and Gemma 4 uncensored forks hit half a million downloads.</p>
-            <a href="blog/2026-04-13.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-04-06">April 6, 2026</time>
-            <h2><a href="blog/2026-04-06.html">The Registry Is on Fire</a></h2>
-            <p>npm became the single attack surface for three separate AI ecosystem breaches in one week, Gemma 4 was abliterated within ninety minutes of release, and the Claude Code leak created an instant secondary supply chain.</p>
-            <a href="blog/2026-04-06.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-03-30">March 30, 2026</time>
-            <h2><a href="blog/2026-03-30.html">Open Weights, Open Season</a></h2>
-            <p>ML infrastructure packages are getting backdoored at credential chokepoints, OCR is being replaced by vision-language models, open-weight TTS broke the 200ms barrier, and quantization hype outran the benchmarks.</p>
-            <a href="blog/2026-03-30.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-03-23">March 23, 2026</time>
-            <h2><a href="blog/2026-03-23.html">The Week Everything Went Sparse</a></h2>
-            <p>Sparse MoE models flooded the data, the agentic verification gap drew a $200M bet, and Cursor's model provenance raised uncomfortable questions about what's really under the hood.</p>
-            <a href="blog/2026-03-23.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-03-16">March 16, 2026</time>
-            <h2><a href="blog/2026-03-16.html">The Distillation Pipeline Is Open for Business</a></h2>
-            <p>Frontier model distillation went industrial, the AI coding culture war crystallized, and Nvidia telegraphed its GTC moves days early.</p>
-            <a href="blog/2026-03-16.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
     </div>
 
     <div class="footer-wrap">

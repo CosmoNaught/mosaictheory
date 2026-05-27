@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog — Mosaic Theory</title>
-    <meta name="description" content="Weekly signal intelligence from Mosaic Theory. Tech, markets, and the patterns that connect them.">
+    <title>The Registry Is on Fire — Mosaic Theory Blog</title>
+    <meta name="description" content="npm became the single attack surface for three separate AI ecosystem breaches in one week, Gemma 4 was abliterated within ninety minutes of release, and the Claude Code leak created an instant secondary supply chain.">
 
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231a1a2e'/><text x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' fill='%23ffffff' font-family='serif' font-size='14' font-weight='400'>MT</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,7 +38,7 @@
         /* ── Hero ── */
         .hero-wrap {
             position: relative;
-            min-height: 45vh;
+            min-height: 50vh;
             overflow: hidden;
             background: linear-gradient(
                 to bottom,
@@ -62,7 +62,7 @@
             z-index: 1;
             pointer-events: none;
             opacity: 0.19;
-            background-image: url("assets/noise.png");
+            background-image: url("../assets/noise.png");
             background-repeat: repeat;
             background-size: 128px 128px;
         }
@@ -165,8 +165,8 @@
             color: #0a0a0a !important;
         }
 
-        /* ── Page Header ── */
-        .page-header {
+        /* ── Post Header ── */
+        .post-header {
             position: relative;
             z-index: 3;
             display: flex;
@@ -177,86 +177,112 @@
             padding: 160px 32px 80px;
         }
 
-        .page-header h1 {
-            font-size: clamp(40px, 6vw, 72px);
-            font-weight: 800;
-            line-height: 1.0;
-            letter-spacing: -3px;
-            color: #fff;
+        .post-header time {
+            font-size: 13px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.5);
             margin-bottom: 16px;
         }
 
-        .page-header p {
-            font-size: 17px;
-            font-weight: 400;
-            line-height: 1.7;
-            color: rgba(255,255,255,0.65);
-            max-width: 480px;
+        .post-header h1 {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            color: #fff;
+            max-width: 800px;
+            margin-bottom: 16px;
         }
 
-        /* ── Blog List ── */
-        .blog-list {
+        .post-header .post-author {
+            font-size: 14px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* ── Article ── */
+        .post-body {
             max-width: 720px;
             margin: 0 auto;
             padding: 64px 32px 80px;
         }
 
-        .blog-card {
-            padding: 40px 0;
-            border-bottom: 1px solid var(--border);
+        .post-body p {
+            font-size: 17px;
+            font-weight: 400;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 20px;
         }
 
-        .blog-card:first-child {
-            padding-top: 0;
-        }
-
-        .blog-card:last-child {
-            border-bottom: none;
-        }
-
-        .blog-card time {
-            font-size: 13px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--text-muted);
-        }
-
-        .blog-card h2 {
-            font-size: 28px;
+        .post-body h2 {
+            font-size: 24px;
             font-weight: 700;
-            letter-spacing: -1px;
-            line-height: 1.2;
-            margin: 12px 0;
+            letter-spacing: -0.5px;
+            color: var(--text);
+            margin: 48px 0 20px;
         }
 
-        .blog-card h2 a {
+        .post-body h3 {
+            font-size: 20px;
+            font-weight: 600;
             color: var(--text);
+            margin: 32px 0 16px;
+        }
+
+        .post-body ul {
+            margin: 0 0 24px 24px;
+        }
+
+        .post-body li {
+            font-size: 17px;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .post-body a {
+            color: #2e4080;
             text-decoration: none;
+            border-bottom: 1px solid rgba(46,64,128,0.2);
+            transition: border-color 0.2s;
+        }
+
+        .post-body a:hover {
+            border-color: #2e4080;
+        }
+
+        .post-body strong {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .post-body code {
+            font-size: 15px;
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 48px;
             transition: color 0.2s;
         }
 
-        .blog-card h2 a:hover {
+        .back-link:hover { color: var(--text); }
+
+        .post-body em a {
             color: #2e4080;
-        }
-
-        .blog-card p {
-            font-size: 16px;
-            line-height: 1.7;
-            color: var(--text-secondary);
-            margin-bottom: 16px;
-        }
-
-        .blog-read-more {
-            font-size: 14px;
-            font-weight: 600;
-            color: #2e4080;
-            text-decoration: none;
-            transition: opacity 0.2s;
-        }
-
-        .blog-read-more:hover {
-            opacity: 0.7;
+            border-bottom: 1px solid rgba(46,64,128,0.2);
         }
 
         /* ── Footer ── */
@@ -286,7 +312,7 @@
             z-index: 1;
             pointer-events: none;
             opacity: 0.14;
-            background-image: url("assets/noise.png");
+            background-image: url("../assets/noise.png");
             background-repeat: repeat;
             background-size: 128px 128px;
         }
@@ -339,14 +365,13 @@
         @media (max-width: 900px) {
             nav { padding: 5px 5px; top: 12px; }
             .nav-links a:not(.nav-cta):not([href="blog.html"]):not([href="/blog.html"]) { display: none; }
-            .page-header { padding: 140px 24px 60px; }
-            .blog-list { padding: 48px 24px 64px; }
+            .post-header { padding: 140px 24px 60px; }
+            .post-body { padding: 48px 24px 64px; }
             footer { padding: 48px 24px 32px; }
         }
 
         @media (max-width: 600px) {
-            .page-header h1 { letter-spacing: -2px; }
-            .blog-card h2 { font-size: 24px; }
+            .post-header h1 { letter-spacing: -1.5px; }
         }
     </style>
 </head>
@@ -363,97 +388,53 @@
                 <a href="/">About</a>
                 <a href="/">Product</a>
                 <a href="/">Team</a>
-                <a href="blog.html" class="active">Blog</a>
+                <a href="/blog.html" class="active">Blog</a>
                 <a href="mailto:support@hiddenstate.io">Contact</a>
                 <a href="https://hiddenstate.io" class="nav-cta">HiddenState</a>
             </div>
         </nav>
 
-        <div class="page-header">
-            <h1>Blog</h1>
-            <p>Weekly signal intelligence. Tech, markets, and the patterns that connect them.</p>
+        <div class="post-header">
+            <time datetime="2026-04-06">April 6, 2026</time>
+            <h1>The Registry Is on Fire</h1>
+            <p class="post-author">by Cosmo Santoni, Imperial College London / Mosaic Theory</p>
         </div>
     </div>
 
-    <div class="blog-list">
+    <div class="post-body">
+        <a href="/blog.html" class="back-link">&larr; All posts</a>
 
-        <article class="blog-card">
-            <time datetime="2026-05-25">May 25, 2026</time>
-            <h2><a href="blog/2026-05-25.html">The Test Suite Is the Last Reviewer Left</a></h2>
-            <p>Reward hacking in long-horizon coding agents got measured, the npm supply chain kept burning into GitHub, DeepSeek-V4-Flash crossed 2.7M downloads in a day, and agent-on-agent commerce stopped being a thought experiment.</p>
-            <a href="blog/2026-05-25.html" class="blog-read-more">Read &rarr;</a>
+        <article>
+
+            <p><strong>Three separate npm breaches hit AI infrastructure in one week.</strong> Anthropic shipped its Claude Code source code to the registry by accident. Axios, the JavaScript HTTP library that almost every Node app depends on, was hijacked by a North Korean threat group. Mercor confirmed it was breached through the LiteLLM compromise we flagged last week. The package manager is now the single most leveraged attack surface in the AI stack.</p>
+
+            <p><strong>Anthropic accidentally published its own crown jewels.</strong> An npm packaging error exposed the full Claude Code source. <a href="https://thehackernews.com/2026/04/claude-code-tleaked-via-npm-packaging.html">The Hacker News</a>, <a href="https://www.bleepingcomputer.com/news/artificial-intelligence/claude-code-source-code-accidentally-leaked-in-npm-package/">BleepingComputer</a>, and <a href="https://siliconangle.com/2026/03/31/anthropic-accidentally-exposes-claude-code-source-code-npm-packaging-error/">SiliconAngle</a> all confirmed it on March 31. Anthropic then spent the next 48 hours <a href="https://techcrunch.com/2026/04/01/anthropic-took-down-thousands-of-github-repos-trying-to-yank-its-leaked-source-code-a-move-the-company-says-was-an-accident/">issuing takedowns against thousands of mirror repositories</a>, which the company later said was an accident. By April 2, the <a href="https://www.bleepingcomputer.com/news/security/claude-code-leak-used-to-push-infostealer-malware-on-github/">leaked code was being weaponized</a> as bait in infostealer campaigns. The packaging mistake matters less than how quickly the leak got reverse-engineered into a working open framework. Multi-agent orchestration harnesses replicating Claude Code's design are the single most active development mechanism this week, with one of the dominant repositories already past 140K stars. The harness pattern was being studied before the leak. The leak just turned a research project into a copy.</p>
+
+            <p><strong>The Axios npm compromise is the more dangerous story.</strong> Late March, the maintainer of Axios was social-engineered through a <a href="https://www.bleepingcomputer.com/news/security/axios-npm-hack-used-fake-teams-error-fix-to-hijack-maintainer-account/">fake Microsoft Teams error message</a>, and the attacker pushed a cross-platform RAT into one of the most-installed HTTP libraries on the registry. Google's threat intelligence team attributed it to <a href="https://thehackernews.com/2026/04/google-attributes-axios-npm-supply.html">UNC1069, a North Korean group</a>. Npm-based supply chain attacks were converging for over a week before Google's public attribution. <a href="https://thehackernews.com/2026/04/unc1069-social-engineering-of-axios.html">The Hacker News timeline</a> traces the social engineering vector in detail. If you are running any agentic system that pulls Axios transitively, and almost every one does, the post-incident audit is not optional.</p>
+
+            <p><strong>Mercor confirmed it was hit by the LiteLLM compromise.</strong> Last week we discussed the LiteLLM PyPI backdoor that scraped credentials on every Python process start. <a href="https://techcrunch.com/2026/03/31/mercor-says-it-was-hit-by-cyberattack-tied-to-compromise-of-open-source-litellm-project/">TechCrunch reported on March 31</a> that Mercor, the AI talent marketplace, was breached through that exact vector. Mercor is the first named downstream victim. There will be more. The class of company at risk is the one where engineering velocity ran ahead of dependency review, which is most of them. The LiteLLM compromise is exactly the kind of incident that surfaces a quarter late, when the credentials get reused.</p>
+
+            <h2>Gemma 4 was abliterated in ninety minutes</h2>
+
+            <p><strong>Google released Gemma 4 on April 2.</strong> Four variants under Apache 2.0, including a 26B mixture-of-experts model and a 31B dense. The <a href="https://deepmind.google/blog/gemma-4-byte-for-byte-the-most-capable-open-models/">official DeepMind announcement</a> framed the release around on-device multimodal capability; <a href="https://huggingface.co/blog/gemma4">HuggingFace's launch post</a> walked through the variants; <a href="https://blogs.nvidia.com/blog/rtx-ai-garage-open-models-google-gemma-4/">NVIDIA shipped NVFP4 quants</a> on day one. Within ninety minutes of the official drop, aggressive uncensored variants of the dense models were live on HuggingFace. That timing is not anomalous anymore. Abliteration tooling has matured to the point where the gap between release and weight surgery is measured in minutes. The MoE angle is new this week. Standard abliteration techniques developed for dense transformers do not cleanly transfer to mixture-of-experts architectures, where refusal behavior appears to route through expert selection rather than uniform residual stream directions. So Gemma 4's 26B MoE variant is harder to uncensor than its 31B dense sibling, and the community is now publishing routing-aware abliteration methods specifically targeting it. Anyone shipping a model with a safety policy now has one hour before that policy is removed from dense weights. MoE buys you slightly more, until it doesn't.</p>
+
+            <p><strong>OpenClaw is no longer free.</strong> <a href="https://techcrunch.com/2026/04/04/anthropic-says-claude-code-subscribers-will-need-to-pay-extra-for-openclaw-support/">Anthropic confirmed</a> that Claude Code subscribers will pay extra for OpenClaw usage, the framework Anthropic released as open weights two weeks ago. Anthropic is running the familiar play of releasing an open standard, building the surrounding tooling, and then metering access to the tooling. Mistral, Meta, and others have already done this, just on a longer timeline. For the agentic security category specifically, <a href="https://huggingface.co/blog/liberate-your-openclaw">ClawKeeper</a> and similar runtime watchdog frameworks have emerged as the third-party answer, and Cisco shipped <a href="https://siliconangle.com/2026/03/23/cisco-debuts-new-ai-agent-security-features-open-source-defenseclaw-tool/">DefenseClaw</a> as an open-source alternative. The agent-governance market we flagged last week now has three commercial vendors competing for the runtime layer.</p>
+
+            <p><strong>Voxtral has a real competitor already.</strong> Two weeks after Mistral released <a href="https://huggingface.co/mistralai/Voxtral-4B-TTS-2603">Voxtral-4B-TTS</a> with the sub-100ms time-to-first-audio claim, <a href="https://huggingface.co/k2-fsa/OmniVoice">k2-fsa's OmniVoice</a> shipped with support for 600+ languages via zero-shot diffusion TTS. T5Gemma-TTS appeared from a third group using an encoder-decoder approach to bypass the prefix-competition problem in codec language models. Three architecturally distinct open-weight TTS systems in two weeks, all targeting the latency-and-multilingual frontier that ElevenLabs has been monetizing. Commercial TTS pricing in 2027 looks softer than it did in 2025.</p>
+
+            <h2>On our radar</h2>
+
+            <ul>
+                <li><strong>NPU serving as a category emerging from AMD.</strong> AMD's Lemonade ships local LLM serving over GPU+NPU, and LM Studio's new headless CLI lets you run Gemma 4 locally with Claude Code integration. Consumer NPU silicon has been a feature in search of a workload for two years. Local agentic coding may finally be that workload.</li>
+                <li><strong>Anthropic's M&A pace is accelerating.</strong> <a href="https://siliconangle.com/2026/04/03/anthropic-reportedly-acquires-medical-ai-startup-coefficient-bio-400m/">Coefficient Bio for $400M</a>, a new PAC, and active fundraising at $380B all dropped in a single week. The company is behaving like one preparing for a regulatory or IPO event, not like one settling in for another research cycle.</li>
+                <li><strong>1-bit LLMs as a deployment category.</strong> Prism ML's Bonsai-8B is being marketed as the first commercially viable 1-bit model, with the GGUF variant clearing 39K downloads. Whether 1-bit holds quality on reasoning tasks at long context is the open question. If it does, the deployment math for edge devices changes in a way that nothing else released this week comes close to.</li>
+            </ul>
+
+            <p><em>Signal data for this briefing is provided by <a href="https://hiddenstate.io">HiddenState</a>, Mosaic Theory's signal intelligence platform.</em></p>
+
+            <p>— Cosmo</p>
+
         </article>
-
-        <article class="blog-card">
-            <time datetime="2026-05-18">May 18, 2026</time>
-            <h2><a href="blog/2026-05-18.html">The Memory Layer Reopens</a></h2>
-            <p>Flat vector retrieval is being dismantled by a wall of new agent-memory papers, Anthropic's Mythos model walked out the door, DeepSeek dropped V4, and the web-agent attack surface is finally getting named.</p>
-            <a href="blog/2026-05-18.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-05-11">May 11, 2026</time>
-            <h2><a href="blog/2026-05-11.html">The Open-Weight Flood and the Gatekeeper Problem</a></h2>
-            <p>Six open-weight model families landed in one week, Anthropic limited Mythos while briefing the White House, and a finetuning paper showed alignment is more reversible than advertised.</p>
-            <a href="blog/2026-05-11.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-05-04">May 4, 2026</time>
-            <h2><a href="blog/2026-05-04.html">The Bill for Plumbing</a></h2>
-            <p>Last week's LiteLLM warning landed in production, DeepSeek V4 reset the open-weights frontier, agent credential proxies became a category, and LLM-generated CVEs started breaking kernel review.</p>
-            <a href="blog/2026-05-04.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-04-27">April 27, 2026</time>
-            <h2><a href="blog/2026-04-27.html">The Distillation Treadmill</a></h2>
-            <p>DeepSeek V4 and Kimi K2.6 closed another chunk of the price-performance gap, Claude 4.6 Opus reasoning is being distilled into 35B open weights at scale, and an industrial pipeline for abliterated frontier models is now running in the open.</p>
-            <a href="blog/2026-04-27.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-04-20">April 20, 2026</time>
-            <h2><a href="blog/2026-04-20.html">The Jagged Frontier of Cyber AI</a></h2>
-            <p>US regulators summon bank CEOs over a frontier model's offensive capability, small models reproduce the same vulnerabilities Anthropic gated behind a researcher program, cloud coding agents converge on the same product, and Gemma 4 gets abliterated within hours of release.</p>
-            <a href="blog/2026-04-20.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-04-13">April 13, 2026</time>
-            <h2><a href="blog/2026-04-13.html">Mythos in the Vault</a></h2>
-            <p>Anthropic gated Mythos to vetted security researchers, the White House pointed banks at it, open-source maintainers are buried under AI-found zero-days, and Gemma 4 uncensored forks hit half a million downloads.</p>
-            <a href="blog/2026-04-13.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-04-06">April 6, 2026</time>
-            <h2><a href="blog/2026-04-06.html">The Registry Is on Fire</a></h2>
-            <p>npm became the single attack surface for three separate AI ecosystem breaches in one week, Gemma 4 was abliterated within ninety minutes of release, and the Claude Code leak created an instant secondary supply chain.</p>
-            <a href="blog/2026-04-06.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-03-30">March 30, 2026</time>
-            <h2><a href="blog/2026-03-30.html">Open Weights, Open Season</a></h2>
-            <p>ML infrastructure packages are getting backdoored at credential chokepoints, OCR is being replaced by vision-language models, open-weight TTS broke the 200ms barrier, and quantization hype outran the benchmarks.</p>
-            <a href="blog/2026-03-30.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-03-23">March 23, 2026</time>
-            <h2><a href="blog/2026-03-23.html">The Week Everything Went Sparse</a></h2>
-            <p>Sparse MoE models flooded the data, the agentic verification gap drew a $200M bet, and Cursor's model provenance raised uncomfortable questions about what's really under the hood.</p>
-            <a href="blog/2026-03-23.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
-        <article class="blog-card">
-            <time datetime="2026-03-16">March 16, 2026</time>
-            <h2><a href="blog/2026-03-16.html">The Distillation Pipeline Is Open for Business</a></h2>
-            <p>Frontier model distillation went industrial, the AI coding culture war crystallized, and Nvidia telegraphed its GTC moves days early.</p>
-            <a href="blog/2026-03-16.html" class="blog-read-more">Read &rarr;</a>
-        </article>
-
     </div>
 
     <div class="footer-wrap">
