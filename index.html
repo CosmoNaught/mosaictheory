@@ -1830,6 +1830,14 @@
         var idx1 = 0, idx2 = 0;
         var DEL_SPEED = 55, TYPE_SPEED = 70, PAUSE = 150;
         var turn = 0; // 0 = rotate word1, 1 = rotate word2
+        var tokens = new WeakMap();
+
+        function nextToken(el) {
+            var t = (tokens.get(el) || 0) + 1;
+            tokens.set(el, t);
+            return t;
+        }
+        function isCurrent(el, t) { return tokens.get(el) === t; }
 
         function setCursor(el, show) {
             var cur = el.querySelector('.hero-cursor');
@@ -1843,12 +1851,14 @@
         }
 
         function deleteWord(el, cb) {
+            var myToken = nextToken(el);
             setCursor(el, true);
             var text = el.childNodes[0];
             if (!text || !text.textContent) { setCursor(el, false); cb(); return; }
             function step() {
+                if (!isCurrent(el, myToken)) return;
                 var str = text.textContent;
-                if (str.length <= 0) { setTimeout(cb, PAUSE); return; }
+                if (str.length <= 0) { setTimeout(function() { if (isCurrent(el, myToken)) cb(); }, PAUSE); return; }
                 text.textContent = str.slice(0, -1);
                 setTimeout(step, DEL_SPEED);
             }
@@ -1856,6 +1866,7 @@
         }
 
         function typeWord(el, word, cb) {
+            var myToken = nextToken(el);
             var text = el.childNodes[0];
             if (!text || text.nodeType !== 3) {
                 text = document.createTextNode('');
@@ -1864,6 +1875,7 @@
             text.textContent = '';
             var i = 0;
             function step() {
+                if (!isCurrent(el, myToken)) return;
                 if (i >= word.length) { setCursor(el, false); if (cb) cb(); return; }
                 text.textContent += word[i];
                 i++;
