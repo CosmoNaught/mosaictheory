@@ -15,8 +15,7 @@
   </defs>
   <rect width="1200" height="630" fill="url(#bg)"/>
   <rect width="1200" height="630" fill="url(#bg)" filter="url(#grain)" opacity="0.08"/>
-  <text x="600" y="240" text-anchor="middle" font-family="Inter, -apple-system, sans-serif" font-size="76" font-weight="800" fill="#ffffff" letter-spacing="-3">Markets follow.</text>
-  <text x="600" y="330" text-anchor="middle" font-family="Inter, -apple-system, sans-serif" font-size="76" font-weight="300" fill="rgba(255,255,255,0.8)" font-style="italic" letter-spacing="-3">Move first.</text>
-  <text x="600" y="400" text-anchor="middle" font-family="Inter, -apple-system, sans-serif" font-size="22" font-weight="400" fill="rgba(255,255,255,0.6)">Research intelligence infrastructure for capital markets</text>
+  <text x="600" y="300" text-anchor="middle" font-family="Inter, -apple-system, sans-serif" font-size="96" font-weight="800" fill="#ffffff" letter-spacing="-4">Evidence first.</text>
+  <text x="600" y="400" text-anchor="middle" font-family="Inter, -apple-system, sans-serif" font-size="22" font-weight="400" fill="rgba(255,255,255,0.6)">The intelligence layer between AI research and what comes next.</text>
   <text x="600" y="570" text-anchor="middle" font-family="Inter, -apple-system, sans-serif" font-size="15" font-weight="700" fill="rgba(255,255,255,0.4)" letter-spacing="3">MOSAIC THEORY</text>
 </svg>

@@ -2,7 +2,7 @@
 
 ## Writing Style
 
-The Mosaic Theory weekly briefing discusses what we observed in HiddenState's signal data over the past week. It is written for VCs, hedge fund analysts, and policy professionals. The tone is that of a colleague walking you through what stood out in the data, what played out in the market, and where the interesting overlaps were.
+The Mosaic Theory weekly briefing discusses what we observed in HiddenState's signal data over the past week. It is written for venture investors, AI-lab strategy teams, consulting practices, policy desks, enterprise CTOs, and tech analysts. The tone is that of a colleague walking you through what stood out in the data, what played out in the news, and where the interesting overlaps were.
 
 ### Tone & Voice
 
@@ -90,7 +90,7 @@ Don't force a "main feature." If one signal clearly dominates, give it more spac
 
 - **Frequency**: Weekly, covering the prior Mon-Sun
 - **Voice**: First person plural ("we"). Conversational, not corporate. "We noticed", "the data showed", "what stood out this week", "we'd been tracking this for a few days when..."
-- **Audience**: VCs, hedge fund analysts, policy professionals. But write for smart people, not for a specific job title.
+- **Audience**: venture investors, AI-lab strategy teams, consulting AI practices, policy desks, enterprise CTOs, tech analysts. But write for smart people, not for a specific job title.
 - **Do NOT mention**: W-index scores, source counts by exact number, convergence trail mechanics by name, specific platform names as data sources
 - **DO mention**: Rough timelines ("we'd been tracking this since Tuesday"), pattern descriptions ("multiple independent sources converged on the same mechanism"), confirmation when it happened naturally ("three days later, [outlet] reported the same thing")
 - **Keep it natural**: The post should read like someone talking through their week's observations, not like a product demo or a press release.
