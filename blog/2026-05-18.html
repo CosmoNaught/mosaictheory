@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Memory Layer Reopens — Mosaic Theory Blog</title>
+    <title>The Memory Layer Reopens â€” Mosaic Theory Blog</title>
     <meta name="description" content="Flat vector retrieval is being dismantled by a wall of new agent-memory papers, Anthropic's Mythos model walked out the door, DeepSeek dropped V4, and the web-agent attack surface is finally getting named.">
 
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='4' fill='%231a1a2e'/><text x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' fill='%23ffffff' font-family='serif' font-size='14' font-weight='400'>MT</text></svg>">
@@ -385,9 +385,9 @@
                 </span>
             </a>
             <div class="nav-links">
-                <a href="/">About</a>
-                <a href="/">Product</a>
-                <a href="/">Team</a>
+                <a href="../index.html#about">About</a>
+                <a href="../index.html#product">Product</a>
+                <a href="../index.html#team">Team</a>
                 <a href="/blog.html" class="active">Blog</a>
                 <a href="mailto:support@hiddenstate.io">Contact</a>
                 <a href="https://hiddenstate.io" class="nav-cta">HiddenState</a>
@@ -438,7 +438,7 @@
 
             <p><em>Signal data for this briefing is provided by <a href="https://hiddenstate.io">HiddenState</a>, Mosaic Theory's signal intelligence platform.</em></p>
 
-            <p>— Cosmo</p>
+            <p>â€” Cosmo</p>
 
         </article>
     </div>
@@ -464,7 +464,7 @@
         var right = document.getElementById('nav-expand-right');
         if (!brand || !left || !right) return;
 
-        var glyphs = '▪▫▬▮▯◻◼◾◽▣▤▥▦▧▨▩░▒';
+        var glyphs = 'â–ªâ–«â–¬â–®â–¯â—»â—¼â—¾â—½â–£â–¤â–¥â–¦â–§â–¨â–©â–‘â–’';
 
         function buildSpans(container, text) {
             for (var i = 0; i < text.length; i++) {
@@ -510,7 +510,7 @@
                         if (flick >= flickCount) {
                             clearInterval(iv);
                             var orig = span.getAttribute('data-original');
-                            span.textContent = orig === ' ' ? ' ' : orig;
+                            span.textContent = orig === ' ' ? 'Â ' : orig;
                             span.classList.remove('scrambling');
                         }
                     }, 55);
@@ -535,7 +535,7 @@
                             if (flick >= fc) {
                                 clearInterval(iv);
                                 var orig = span.getAttribute('data-original');
-                                span.textContent = orig === ' ' ? ' ' : orig;
+                                span.textContent = orig === ' ' ? 'Â ' : orig;
                                 span.classList.remove('scrambling');
                             }
                         }, 55);
@@ -549,7 +549,7 @@
             [left, right].forEach(function(container) {
                 container.querySelectorAll('.mosaic-char').forEach(function(s) {
                     var orig = s.getAttribute('data-original');
-                    s.textContent = orig === ' ' ? ' ' : orig;
+                    s.textContent = orig === ' ' ? 'Â ' : orig;
                     s.classList.remove('scrambling');
                 });
             });
